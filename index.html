@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>axaxaxa</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'MS Gothic', 'MS ゴシック', 'Noto Sans JP', monospace;
+      background: #0a0408;
+      color: #c8c4c8;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .about {
+      position: relative;
+      z-index: 2;
+      width: 280px;
+      height: 100%;
+      padding: 60px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: transparent;
+    }
+
+    .name {
+      font-size: 20px;
+      color: #9a8a9a;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .links {
+      margin-top: 0;
+    }
+
+    .links a {
+      display: block;
+      font-size: 18px;
+      color: #5a5058;
+      text-decoration: none;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .links a:hover {
+      color: #b0a0b0;
+    }
+
+    .lang {
+      margin-top: 24px;
+      font-size: 16px;
+      color: #4a4048;
+    }
+
+    .lang a {
+      color: #4a4048;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .lang a:hover {
+      color: #9a8a9a;
+    }
+
+    .lang a.active {
+      color: #9a8a9a;
+    }
+
+    .visual {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      background: #0a0408;
+    }
+
+    .visual img {
+      position: absolute;
+      top: 0;
+      left: 20%;
+      width: 80%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.92;
+      mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 25%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 25%);
+    }
+
+    .scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="container">
+    <aside class="about">
+      <div class="name" data-en="kolmogorov, c++, and music" data-ru="колмогоров, c++, и музыка">kolmogorov, c++, and music</div>
+      <div class="links">
+        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax" data-en="github" data-ru="github">github</a>
+        <a href="#" data-en="papers" data-ru="статьи">papers</a>
+        <a href="#" data-en="contact" data-ru="контакт">contact</a>
+      </div>
+      <div class="lang">
+        <a id="lang-en" class="active">english</a> / <a id="lang-ru">russian</a>
+      </div>
+    </aside>
+    <main class="visual">
+      <img src="assets/limitorderbookfinal.png" alt="limit order book visualization">
+      <div class="scanlines"></div>
+    </main>
+  </div>
+  <script>
+    const langEn = document.getElementById('lang-en');
+    const langRu = document.getElementById('lang-ru');
+    const translatables = document.querySelectorAll('[data-en]');
+
+    function setLang(lang) {
+      translatables.forEach(el => {
+        el.textContent = el.getAttribute('data-' + lang);
+      });
+      if (lang === 'en') {
+        langEn.classList.add('active');
+        langRu.classList.remove('active');
+        document.documentElement.lang = 'en';
+      } else {
+        langRu.classList.add('active');
+        langEn.classList.remove('active');
+        document.documentElement.lang = 'ru';
+      }
+    }
+
+    langEn.addEventListener('click', () => setLang('en'));
+    langRu.addEventListener('click', () => setLang('ru'));
+  </script>
+</body>
+</html>
