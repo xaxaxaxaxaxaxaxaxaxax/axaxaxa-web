@@ -3,7 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>axaxaxa</title>
+  <title>✦</title>
+
+  <!-- OpenGraph / Embed -->
+  <meta property="og:title" content="✦">
+  <meta property="og:description" content="kolmogorov, code, and coffee">
+  <meta property="og:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
+  <meta property="og:url" content="https://www.axaxaxaxaxaxa.org">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="✦">
+  <meta name="twitter:description" content="kolmogorov, code, and coffee">
+  <meta name="twitter:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
+  <meta name="description" content="kolmogorov, code, and coffee">
+  <meta name="theme-color" content="#0a0408">
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
@@ -35,20 +49,21 @@
     .about {
       position: relative;
       z-index: 2;
-      width: 280px;
+      width: 900px;
       height: 100%;
-      padding: 60px 40px;
+      padding: 80px 70px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      background: transparent;
+      justify-content: space-between;
+      background: linear-gradient(90deg, #0a0408 0%, #0a0408 50%, rgba(10,4,8,0.95) 65%, rgba(10,4,8,0.7) 78%, transparent 100%);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
     .name {
-      font-size: 20px;
-      color: #9a8a9a;
-      margin-bottom: 32px;
-      line-height: 1.6;
+      font-size: 74px;
+      color: #b8a8b8;
+      line-height: 1.3;
     }
 
     .links {
@@ -57,10 +72,10 @@
 
     .links a {
       display: block;
-      font-size: 18px;
-      color: #5a5058;
+      font-size: 63px;
+      color: #7a6a78;
       text-decoration: none;
-      margin-bottom: 14px;
+      margin-bottom: 28px;
       letter-spacing: 0.02em;
       transition: color 0.3s ease;
     }
@@ -70,9 +85,8 @@
     }
 
     .lang {
-      margin-top: 24px;
-      font-size: 16px;
-      color: #4a4048;
+      font-size: 53px;
+      color: #6a5a68;
     }
 
     .lang a {
@@ -100,17 +114,36 @@
       background: #0a0408;
     }
 
-    .visual img {
+    .img-main {
       position: absolute;
       top: 0;
-      left: 20%;
-      width: 80%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      opacity: 0.92;
-      mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 25%);
-      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.3) 8%, rgba(0,0,0,1) 25%);
+      left: 25%;
+      width: 50%;
+      bottom: 0;
+      background: url('assets/limitorderbookfinal.png') no-repeat right center;
+      background-size: auto 130%;
+    }
+
+    .img-mirror {
+      position: absolute;
+      top: 0;
+      left: 75%;
+      right: 0;
+      bottom: 0;
+      background: url('assets/limitorderbookfinal.png') no-repeat right center;
+      background-size: auto 130%;
+      transform: scaleX(-1);
+      opacity: 0.7;
+    }
+
+    .visual-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, #0a0408 0%, #0a0408 30%, rgba(10,4,8,0.95) 42%, rgba(10,4,8,0.7) 55%, rgba(10,4,8,0.3) 70%, transparent 85%);
+      pointer-events: none;
     }
 
     .scanlines {
@@ -128,6 +161,8 @@
       );
       pointer-events: none;
       z-index: 1;
+      mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, transparent 50%);
+      -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, transparent 50%);
     }
 
     .noise {
@@ -147,18 +182,20 @@
   <div class="noise"></div>
   <div class="container">
     <aside class="about">
-      <div class="name" data-en="kolmogorov, c++, and music" data-ru="колмогоров, c++, и музыка">kolmogorov, c++, and music</div>
+      <div class="name" data-en="kolmogorov, code, and coffee" data-ru="колмогоров, код и кофе">kolmogorov, code, and coffee</div>
       <div class="links">
         <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax" data-en="github" data-ru="github">github</a>
         <a href="#" data-en="papers" data-ru="статьи">papers</a>
-        <a href="#" data-en="contact" data-ru="контакт">contact</a>
+        <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
       </div>
       <div class="lang">
         <a id="lang-en" class="active">english</a> / <a id="lang-ru">russian</a>
       </div>
     </aside>
     <main class="visual">
-      <img src="assets/limitorderbookfinal.png" alt="limit order book visualization">
+      <div class="img-mirror"></div>
+      <div class="img-main"></div>
+      <div class="visual-gradient"></div>
       <div class="scanlines"></div>
     </main>
   </div>
@@ -184,6 +221,7 @@
 
     langEn.addEventListener('click', () => setLang('en'));
     langRu.addEventListener('click', () => setLang('ru'));
+
   </script>
 </body>
 </html>
