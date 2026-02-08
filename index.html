@@ -6,20 +6,34 @@
   <title>✦</title>
 
   <!-- OpenGraph / Embed -->
-  <meta property="og:title" content="✦">
-  <meta property="og:description" content="kolmogorov, code, and coffee">
+  <meta property="og:title" content="axaxaxaxa.org">
+  <meta property="og:description" content="All models are wrong, but some are useful.">
   <meta property="og:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://www.axaxaxaxaxaxa.org">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="axaxaxaxa.org">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="✦">
-  <meta name="twitter:description" content="kolmogorov, code, and coffee">
+  <meta name="twitter:title" content="axaxaxaxa.org">
+  <meta name="twitter:description" content="All models are wrong, but some are useful.">
   <meta name="twitter:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
-  <meta name="description" content="kolmogorov, code, and coffee">
+  <meta name="description" content="All models are wrong, but some are useful.">
   <meta name="theme-color" content="#0a0408">
+  <link rel="canonical" href="https://www.axaxaxaxaxaxa.org">
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+    :root {
+      --bg-deep: #0a0408;
+      --text-primary: #d4ccd2;
+      --text-secondary: #8a7a88;
+      --text-muted: #5a4a58;
+      --text-dim: #3a2a38;
+      --accent-hover: #c4b4c2;
+    }
 
     * {
       margin: 0;
@@ -34,10 +48,12 @@
 
     body {
       font-family: 'MS Gothic', 'MS ゴシック', 'Noto Sans JP', monospace;
-      background: #0a0408;
-      color: #c8c4c8;
+      background: var(--bg-deep);
+      color: var(--text-primary);
       display: flex;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .container {
@@ -49,59 +65,133 @@
     .about {
       position: relative;
       z-index: 2;
-      width: 900px;
+      width: min(900px, 55vw);
       height: 100%;
-      padding: 80px 70px;
+      padding: clamp(40px, 8vh, 80px) clamp(40px, 5vw, 70px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      background: linear-gradient(90deg, #0a0408 0%, #0a0408 50%, rgba(10,4,8,0.95) 65%, rgba(10,4,8,0.7) 78%, transparent 100%);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      background: linear-gradient(90deg,
+        var(--bg-deep) 0%,
+        var(--bg-deep) 45%,
+        rgba(10,4,8,0.97) 60%,
+        rgba(10,4,8,0.8) 75%,
+        transparent 100%
+      );
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .name {
-      font-size: 74px;
-      color: #b8a8b8;
-      line-height: 1.3;
+      font-size: clamp(34px, 5vw, 44px);
+      font-weight: 400;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .rule {
+      width: 100vw;
+      height: 1px;
+      background: var(--text-dim);
+      margin-top: clamp(24px, 4vh, 36px);
+      margin-left: calc(-1 * clamp(40px, 5vw, 70px));
+    }
+
+    .rule-bottom {
+      margin-top: 0;
+      margin-bottom: clamp(24px, 4vh, 36px);
+    }
+
+    .blurb {
+      font-size: clamp(14px, 1.8vw, 17px);
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      max-width: 480px;
+      margin-top: clamp(20px, 3vh, 32px);
     }
 
     .links {
-      margin-top: 0;
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(12px, 2vh, 20px);
+      padding: clamp(20px, 4vh, 40px) 0;
     }
 
-    .links a {
-      display: block;
-      font-size: 63px;
-      color: #7a6a78;
+    .links a, .links span.nav-item {
+      display: inline-block;
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 400;
+      color: var(--text-secondary);
       text-decoration: none;
-      margin-bottom: 28px;
-      letter-spacing: 0.02em;
-      transition: color 0.3s ease;
-    }
-
-    .links a:hover {
-      color: #b0a0b0;
-    }
-
-    .lang {
-      font-size: 53px;
-      color: #6a5a68;
-    }
-
-    .lang a {
-      color: #4a4048;
-      text-decoration: none;
-      transition: color 0.3s ease;
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease, opacity 0.3s ease;
       cursor: pointer;
     }
 
+    .links a:hover, .links span.nav-item:hover {
+      color: var(--accent-hover);
+    }
+
+    .links .back-arrow {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: color 0.3s ease;
+      letter-spacing: 0.06em;
+      margin-bottom: clamp(4px, 1vh, 8px);
+    }
+
+    .links .back-arrow:hover {
+      color: var(--text-secondary);
+    }
+
+    .links .sub-item {
+      font-size: clamp(18px, 2.5vw, 24px);
+      padding-left: 2px;
+    }
+
+
+    .lang {
+      font-size: clamp(20px, 2.5vw, 27px);
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .lang-sep {
+      color: var(--text-dim);
+      margin: 0 8px;
+      user-select: none;
+    }
+
+    .lang a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
     .lang a:hover {
-      color: #9a8a9a;
+      color: var(--text-secondary);
     }
 
     .lang a.active {
-      color: #9a8a9a;
+      color: var(--text-secondary);
     }
 
     .visual {
@@ -111,7 +201,7 @@
       right: 0;
       bottom: 0;
       overflow: hidden;
-      background: #0a0408;
+      background: var(--bg-deep);
     }
 
     .img-main {
@@ -136,13 +226,30 @@
       opacity: 0.7;
     }
 
+    .visual-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 75%;
+      width: 1px;
+      background: var(--text-dim);
+      z-index: 1;
+    }
+
     .visual-gradient {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(90deg, #0a0408 0%, #0a0408 30%, rgba(10,4,8,0.95) 42%, rgba(10,4,8,0.7) 55%, rgba(10,4,8,0.3) 70%, transparent 85%);
+      background: linear-gradient(90deg,
+        var(--bg-deep) 0%,
+        var(--bg-deep) 28%,
+        rgba(10,4,8,0.96) 40%,
+        rgba(10,4,8,0.75) 52%,
+        rgba(10,4,8,0.35) 68%,
+        transparent 85%
+      );
       pointer-events: none;
     }
 
@@ -156,13 +263,13 @@
         0deg,
         transparent,
         transparent 2px,
-        rgba(0, 0, 0, 0.15) 2px,
-        rgba(0, 0, 0, 0.15) 4px
+        rgba(0, 0, 0, 0.12) 2px,
+        rgba(0, 0, 0, 0.12) 4px
       );
       pointer-events: none;
       z-index: 1;
-      mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, transparent 50%);
-      -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, transparent 50%);
+      mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 15%, transparent 45%);
+      -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 15%, transparent 45%);
     }
 
     .noise {
@@ -171,30 +278,65 @@
       left: 0;
       width: 100%;
       height: 100%;
-      opacity: 0.03;
+      opacity: 0.025;
       pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       z-index: 100;
+    }
+
+    /* Subtle vignette */
+    .vignette {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 99;
+      background: radial-gradient(ellipse at center, transparent 0%, transparent 60%, rgba(10,4,8,0.4) 100%);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .about {
+        width: 100%;
+        background: linear-gradient(90deg,
+          var(--bg-deep) 0%,
+          var(--bg-deep) 60%,
+          rgba(10,4,8,0.95) 80%,
+          rgba(10,4,8,0.8) 100%
+        );
+      }
     }
   </style>
 </head>
 <body>
   <div class="noise"></div>
+  <div class="vignette"></div>
   <div class="container">
     <aside class="about">
-      <div class="name" data-en="kolmogorov, code, and coffee" data-ru="колмогоров, код и кофе">kolmogorov, code, and coffee</div>
-      <div class="links">
-        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax" data-en="github" data-ru="github">github</a>
-        <a href="#" data-en="papers" data-ru="статьи">papers</a>
-        <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
+      <div class="header">
+        <div class="name">axaxaxaxa.org</div>
+        <div class="rule"></div>
+        <div class="blurb" data-en="All models are wrong, but some are useful." data-ru="Все модели ошибочны, но некоторые полезны.">All models are wrong, but some are useful.</div>
       </div>
+      <nav class="links" id="nav-links">
+        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax" data-en="github" data-ru="github">github</a>
+        <span class="nav-item" id="nav-projects" data-en="projects" data-ru="проекты">projects</span>
+        <span class="nav-item" id="nav-papers" data-en="papers" data-ru="статьи">papers</span>
+        <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
+      </nav>
+      <div class="rule rule-bottom"></div>
       <div class="lang">
-        <a id="lang-en" class="active">english</a> / <a id="lang-ru">russian</a>
+        <a id="lang-en" class="active">english</a>
+        <span class="lang-sep">/</span>
+        <a id="lang-ru">russian</a>
       </div>
     </aside>
     <main class="visual">
       <div class="img-mirror"></div>
       <div class="img-main"></div>
+      <div class="visual-divider"></div>
       <div class="visual-gradient"></div>
       <div class="scanlines"></div>
     </main>
@@ -202,10 +344,26 @@
   <script>
     const langEn = document.getElementById('lang-en');
     const langRu = document.getElementById('lang-ru');
-    const translatables = document.querySelectorAll('[data-en]');
+    const nav = document.getElementById('nav-links');
+    let currentLang = 'en';
 
-    function setLang(lang) {
-      translatables.forEach(el => {
+    // Projects data
+    const projects = [
+      { en: 'log.h', ru: 'log.h', href: 'projects/log.html' },
+    ];
+
+    // Papers data
+    const papers = [
+      { en: 'microprice (preprint)', ru: 'микроцена (препринт)', href: 'papers/microprice.html' },
+    ];
+
+    function getTranslatables() {
+      return document.querySelectorAll('[data-en]');
+    }
+
+    function setLang(lang, save = true) {
+      currentLang = lang;
+      getTranslatables().forEach(el => {
         el.textContent = el.getAttribute('data-' + lang);
       });
       if (lang === 'en') {
@@ -217,11 +375,53 @@
         langEn.classList.remove('active');
         document.documentElement.lang = 'ru';
       }
+      if (save) {
+        try { localStorage.setItem('lang', lang); } catch(e) {}
+      }
     }
+
+    // Store original nav HTML
+    const mainNavHTML = nav.innerHTML;
+
+    function swapNav(newHTML) {
+      nav.innerHTML = newHTML;
+      setLang(currentLang, false);
+      bindNav();
+    }
+
+    function buildListHTML(items, labelEn, labelRu) {
+      const label = currentLang === 'ru' ? labelRu : labelEn;
+      let html = '<span class="back-arrow" id="nav-back" data-en="← ' + labelEn + '" data-ru="← ' + labelRu + '">← ' + label + '</span>';
+      items.forEach(p => {
+        html += '<a class="sub-item" href="' + p.href + '" data-en="' + p.en + '" data-ru="' + p.ru + '">' + p[currentLang] + '</a>';
+      });
+      return html;
+    }
+
+    function bindNav() {
+      const projBtn = document.getElementById('nav-projects');
+      const papersBtn = document.getElementById('nav-papers');
+      const backBtn = document.getElementById('nav-back');
+      if (projBtn) {
+        projBtn.addEventListener('click', () => swapNav(buildListHTML(projects, 'projects', 'проекты')));
+      }
+      if (papersBtn) {
+        papersBtn.addEventListener('click', () => swapNav(buildListHTML(papers, 'papers', 'статьи')));
+      }
+      if (backBtn) {
+        backBtn.addEventListener('click', () => swapNav(mainNavHTML));
+      }
+    }
+
+    // Load saved preference
+    try {
+      const saved = localStorage.getItem('lang');
+      if (saved === 'ru') setLang('ru', false);
+    } catch(e) {}
 
     langEn.addEventListener('click', () => setLang('en'));
     langRu.addEventListener('click', () => setLang('ru'));
-
+    bindNav();
   </script>
 </body>
 </html>

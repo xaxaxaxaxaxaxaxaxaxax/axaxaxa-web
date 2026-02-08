@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>log.h</title>
+  <meta name="description" content="Single-header C++23 structured logging library. Zero allocations, ~110ns per call.">
+  <meta name="theme-color" content="#0a0408">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+    :root {
+      --bg-deep: #0a0408;
+      --text-primary: #d4ccd2;
+      --text-secondary: #8a7a88;
+      --text-muted: #5a4a58;
+      --text-dim: #3a2a38;
+      --accent-hover: #c4b4c2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: 'MS Gothic', 'MS ゴシック', 'Noto Sans JP', monospace;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(10, 4, 8, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 3vw, 40px);
+      z-index: 10;
+    }
+
+    .topbar a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .topbar a:hover {
+      color: var(--accent-hover);
+    }
+
+    .topbar .title {
+      color: var(--text-secondary);
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 24px;
+    }
+
+    .content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: clamp(80px, 10vh, 120px) clamp(20px, 3vw, 40px) 80px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4vw, 38px);
+      font-weight: 400;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      margin-bottom: clamp(28px, 4vh, 48px);
+    }
+
+    p {
+      font-size: clamp(14px, 1.6vw, 16px);
+      color: var(--text-muted);
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.4em;
+    }
+
+    a.inline {
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--text-dim);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    a.inline:hover {
+      color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    code {
+      font-family: 'MS Gothic', 'MS ゴシック', monospace;
+      font-size: 0.92em;
+      color: var(--text-secondary);
+    }
+
+    pre {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--text-dim);
+      padding: 16px 20px;
+      margin: 1.2em 0 1.6em;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .noise {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      opacity: 0.015;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="topbar">
+    <a href="../index.html">&larr; axaxaxaxa.org</a>
+    <span class="title">log.h</span>
+    <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h">github</a>
+  </div>
+  <div class="content">
+    <h1>log.h</h1>
+    <div class="subtitle">C++23 / single header / Linux</div>
+
+    <p>
+      Single-header C++23 structured logging library. No allocations, ~110ns per log call.
+      Formats integers, floats, containers, optionals, variants, durations, error codes, pointers, hex dumps, etc.
+      Uses SIMD (SSE2 through AVX2) for JSON escaping, hex encoding, and digit formatting when available, scalar fallback otherwise.
+    </p>
+
+    <pre>#include "log.h"
+
+Log::info("App", "starting");
+Log::info("HTTP", "req", Log::kv("status", 200), Log::kv("ms", 3.14));</pre>
+
+    <p>
+      Needs C++23 (GCC 13+ / Clang 17+) and Linux/POSIX.
+    </p>
+
+    <p>
+      <a class="inline" href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h">source</a>
+    </p>
+  </div>
+</body>
+</html>
