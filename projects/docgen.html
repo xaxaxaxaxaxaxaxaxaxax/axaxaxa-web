@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>log.h</title>
-  <meta name="description" content="Single-header C++23 structured logging library. Zero allocations, ~110ns per call.">
+  <title>docgen</title>
+  <meta name="description" content="Zig documentation generator. Parses C++ headers and emits static HTML reference sites.">
   <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)">
   <style>
@@ -134,17 +134,17 @@
       width: 100%;
       border-radius: 6px;
       border: 1px solid var(--rule);
-      margin: 1rem 0 1.25rem
+      margin: 1rem 0 .5rem
     }
 
-    .source-link {
+    .screenshot-label {
       font-family: var(--mono);
-      font-size: .78rem;
+      font-size: .72rem;
       color: var(--faint);
-      letter-spacing: .03em
+      letter-spacing: .03em;
+      margin-bottom: 1.25rem;
+      display: block
     }
-
-    .source-link:hover { color: var(--accent) }
   </style>
 </head>
 <body>
@@ -157,28 +157,23 @@
     <a href="mailto:tworsquared@proton.me">contact</a>
   </nav>
 
-  <div class="project-title">log.h</div>
-  <div class="subtitle">C++23 / single header / Linux</div>
+  <div class="project-title">docgen <span style="font-weight:400;font-size:.78rem;color:var(--faint);font-family:var(--mono)">private</span></div>
+  <div class="subtitle">Zig / C++ docs / static site generator</div>
 
   <p>
-    Single-header C++23 structured logging library. No allocations, ~110ns per log call.
-    Formats integers, floats, containers, optionals, variants, durations, error codes, pointers, hex dumps, etc.
-    Uses SIMD (SSE2 through AVX2) for JSON escaping, hex encoding, and digit formatting when available, scalar fallback otherwise.
+    Documentation generator written in Zig. Parses C++ headers via libclang, resolves cross-references, and emits static HTML reference sites with search, syntax highlighting, and Mermaid/KaTeX support.
   </p>
 
-  <pre>#include "log.h"
-
-Log::info("App", "starting");
-Log::info("HTTP", "req", Log::kv("status", 200), Log::kv("ms", 3.14));</pre>
+  <pre>docgen --input include/ --output docs/ --config docgen.json</pre>
 
   <p>
-    Needs C++23 (GCC 13+ / Clang 17+) and Linux/POSIX.
+    Requires Zig 0.15+. Mustache templating, markdown rendering, full-text search index generation.
   </p>
 
-  <img class="screenshot" src="../assets/log-demo.svg" alt="log.h output demo showing structured logging with colors, hex dumps, and JSON">
+  <img class="screenshot" src="../assets/reinforce-docs.png" alt="docgen example output: reinforce namespace overview">
+  <span class="screenshot-label">example output (reinforce API reference)</span>
 
-  <p>
-    <a class="source-link" href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h">source</a>
-  </p>
+  <img class="screenshot" src="../assets/reinforce-api.png" alt="docgen example output: td_control class detail">
+  <span class="screenshot-label">class detail page with template parameters and descriptions</span>
 </body>
 </html>

@@ -3,105 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>Value Functions for Microprice Operators</title>
   <meta name="description" content="A Companion Note to Microprice as a Martingale Corrector — Lev Petersen">
-  <meta name="theme-color" content="#0a0408">
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
-
     :root {
-      --bg-deep: #0a0408;
-      --text-primary: #d4ccd2;
-      --text-secondary: #8a7a88;
-      --text-muted: #5a4a58;
-      --text-dim: #3a2a38;
-      --accent-hover: #c4b4c2;
+      --bg: #fafafa;
+      --text: #111;
+      --dim: #666;
+      --faint: #999;
+      --rule: #e0e0e0;
+      --ghost: #f3f3f3;
+      --mono: "Berkeley Mono", "IBM Plex Mono", "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+      --body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --ease: cubic-bezier(.22, .61, .36, 1)
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --text: #ddd;
+        --dim: #999;
+        --faint: #666;
+        --rule: #282828;
+        --ghost: #1a1a1a
+      }
+    }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg-deep);
-      color: var(--text-primary);
-      font-family: 'MS Gothic', 'MS ゴシック', 'Noto Sans JP', monospace;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+    html {
+      font-size: 17px;
+      line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility
+    }
+
+    html, body { height: 100%; overflow: hidden }
+
+    body {
+      font-family: var(--body);
+      color: var(--text);
+      background: var(--bg)
     }
 
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 48px;
-      background: rgba(10, 4, 8, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--text-dim);
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 clamp(20px, 3vw, 40px);
-      z-index: 10;
+      padding: 0 clamp(1rem, 3vw, 2.5rem);
+      z-index: 10
     }
 
     .topbar a {
-      color: var(--text-muted);
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--faint);
       text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 0.04em;
-      transition: color 0.3s ease;
-      white-space: nowrap;
+      letter-spacing: .03em;
+      transition: color .15s var(--ease);
+      white-space: nowrap
     }
 
-    .topbar a:hover {
-      color: var(--accent-hover);
-    }
+    .topbar a:hover { color: var(--text) }
 
     .topbar .title {
-      color: var(--text-secondary);
-      font-size: 13px;
-      letter-spacing: 0.02em;
+      font-size: .9rem;
+      color: var(--dim);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding: 0 24px;
+      padding: 0 1.5rem;
+      flex: 1;
+      text-align: center
     }
 
     .pdf-wrap {
       position: fixed;
       top: 48px;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      left: 0; right: 0; bottom: 0;
+      background: var(--bg)
     }
 
     .pdf-wrap embed {
       width: 100%;
       height: 100%;
+      border: none
     }
 
-    .noise {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      opacity: 0.015;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      z-index: 100;
-    }
   </style>
 </head>
 <body>
-  <div class="noise"></div>
   <div class="topbar">
     <a href="../index.html">&larr; axaxaxaxa.org</a>
-    <span class="title">Value Functions for Microprice Operators — Petersen (companion note)</span>
+    <span class="title">Value Functions for Microprice Operators &mdash; Petersen (companion note)</span>
     <a href="../assets/microprice-value-functions.pdf" download>download</a>
   </div>
   <div class="pdf-wrap">
-    <embed src="../assets/microprice-value-functions.pdf" type="application/pdf">
+    <embed src="../assets/microprice-value-functions.pdf#toolbar=0&navpanes=0&view=FitH" type="application/pdf">
   </div>
 </body>
 </html>

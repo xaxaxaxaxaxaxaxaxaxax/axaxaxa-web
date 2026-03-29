@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✦</title>
+  <meta name="color-scheme" content="light dark">
+  <title>&#10022;</title>
 
-  <!-- OpenGraph / Embed -->
   <meta property="og:title" content="axaxaxaxa.org">
   <meta property="og:description" content="Lev Petersen. QR/QD at Tower. Notes on microstructure, operator methods, and whatever else converges.">
   <meta property="og:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
@@ -20,409 +20,271 @@
   <meta name="twitter:description" content="Lev Petersen. QR/QD at Tower. Notes on microstructure, operator methods, and whatever else converges.">
   <meta name="twitter:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
   <meta name="description" content="Lev Petersen. QR/QD at Tower. Notes on microstructure, operator methods, and whatever else converges.">
-  <meta name="theme-color" content="#0a0408">
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://www.axaxaxaxaxaxa.org">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
-
     :root {
-      --bg-deep: #0a0408;
-      --text-primary: #d4ccd2;
-      --text-secondary: #8a7a88;
-      --text-muted: #5a4a58;
-      --text-dim: #3a2a38;
-      --accent-hover: #c4b4c2;
+      --bg: #fafafa;
+      --text: #111;
+      --dim: #666;
+      --faint: #999;
+      --rule: #e0e0e0;
+      --ghost: #f3f3f3;
+      --accent: #0055ff;
+      --accent-dim: #0044cc;
+      --mono: "Berkeley Mono", "IBM Plex Mono", "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+      --body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --ease: cubic-bezier(.22, .61, .36, 1)
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111;
+        --text: #ddd;
+        --dim: #999;
+        --faint: #666;
+        --rule: #282828;
+        --ghost: #1a1a1a;
+        --accent: #4d9fff;
+        --accent-dim: #6ab0ff
+      }
     }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+
+    html {
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility
     }
 
     body {
-      font-family: 'MS Gothic', 'MS ゴシック', 'Noto Sans JP', monospace;
-      background: var(--bg-deep);
-      color: var(--text-primary);
-      display: flex;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: var(--body);
+      color: var(--text);
+      background: var(--bg);
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem 3rem
     }
 
-    .container {
-      position: relative;
-      width: 100%;
-      height: 100vh;
+    * { scrollbar-width: thin; scrollbar-color: var(--rule) transparent }
+    ::-webkit-scrollbar { width: 6px; height: 6px }
+    ::-webkit-scrollbar-track { background: transparent }
+    ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px }
+
+    a { color: var(--accent); text-decoration: none; transition: color .15s var(--ease) }
+    a:hover { color: var(--accent-dim) }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      line-height: 1.3;
+      margin-bottom: .15rem
     }
+
+    .role {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--faint);
+      letter-spacing: .03em;
+      margin-bottom: 1.5rem
+    }
+
+    nav {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--rule)
+    }
+
+    nav a {
+      font-family: var(--mono);
+      font-size: .82rem;
+      letter-spacing: .02em;
+      margin-right: 1rem
+    }
+
+    section { margin-bottom: 2.5rem }
+
+    h2 {
+      font-size: .7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--faint);
+      margin-bottom: 1.25rem
+    }
+
+    .entry { margin-bottom: 1.5rem }
+    .entry:last-child { margin-bottom: 0 }
+
+    .entry-name {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: .1rem
+    }
+
+    .entry-desc {
+      font-size: .9rem;
+      color: var(--dim);
+      line-height: 1.6;
+      margin-bottom: .25rem
+    }
+
+    .entry-links {
+      font-family: var(--mono);
+      font-size: .78rem;
+      letter-spacing: .02em
+    }
+
+    .entry-links a { margin-right: .75rem }
 
     .about {
-      position: relative;
-      z-index: 2;
-      width: min(900px, 55vw);
-      height: 100%;
-      padding: clamp(40px, 8vh, 80px) clamp(40px, 5vw, 70px);
+      font-size: .9rem;
+      color: var(--dim);
+      line-height: 1.7;
+      margin-bottom: 2.5rem
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--rule);
       display: flex;
-      flex-direction: column;
       justify-content: space-between;
-      background: linear-gradient(90deg,
-        var(--bg-deep) 0%,
-        var(--bg-deep) 45%,
-        rgba(10,4,8,0.97) 60%,
-        rgba(10,4,8,0.8) 75%,
-        transparent 100%
-      );
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-    }
-
-    .header {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .name {
-      font-size: clamp(34px, 5vw, 44px);
-      font-weight: 400;
-      color: var(--text-primary);
-      letter-spacing: 0.04em;
-      line-height: 1.2;
-    }
-
-    .rule {
-      width: 100vw;
-      height: 1px;
-      background: var(--text-dim);
-      margin-top: clamp(24px, 4vh, 36px);
-      margin-left: calc(-1 * clamp(40px, 5vw, 70px));
-    }
-
-    .rule-bottom {
-      margin-top: 0;
-      margin-bottom: clamp(24px, 4vh, 36px);
-    }
-
-    .blurb {
-      font-size: clamp(14px, 1.8vw, 17px);
-      font-weight: 400;
-      color: var(--text-muted);
-      line-height: 1.85;
-      letter-spacing: 0.01em;
-      max-width: 480px;
-      margin-top: clamp(20px, 3vh, 32px);
-    }
-
-    .links {
-      margin: auto 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: clamp(12px, 2vh, 20px);
-      padding: clamp(20px, 4vh, 40px) 0;
-    }
-
-    .links a, .links span.nav-item {
-      display: inline-block;
-      font-size: clamp(22px, 3vw, 30px);
-      font-weight: 400;
-      color: var(--text-secondary);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      transition: color 0.3s ease, opacity 0.3s ease;
-      cursor: pointer;
-    }
-
-    .links a:hover, .links span.nav-item:hover {
-      color: var(--accent-hover);
-    }
-
-    .links .back-arrow {
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: color 0.3s ease;
-      letter-spacing: 0.06em;
-      margin-bottom: clamp(4px, 1vh, 8px);
-    }
-
-    .links .back-arrow:hover {
-      color: var(--text-secondary);
-    }
-
-    .links .sub-item {
-      font-size: clamp(18px, 2.5vw, 24px);
-      padding-left: 2px;
-    }
-
-
-    .lang {
-      font-size: clamp(20px, 2.5vw, 27px);
-      font-weight: 400;
-      color: var(--text-muted);
-      letter-spacing: 0.04em;
-      display: flex;
       align-items: center;
-      gap: 0;
+      font-size: .82rem;
+      color: var(--faint)
     }
 
-    .lang-sep {
-      color: var(--text-dim);
-      margin: 0 8px;
-      user-select: none;
-    }
+    .tagline { letter-spacing: .02em }
 
+    .lang { font-family: var(--mono); font-size: .78rem }
     .lang a {
-      color: var(--text-dim);
+      color: var(--faint);
       text-decoration: none;
-      transition: color 0.3s ease;
       cursor: pointer;
-      padding: 4px 0;
+      transition: color .15s var(--ease)
     }
+    .lang a.active { color: var(--text) }
+    .lang a:hover { color: var(--text) }
 
-    .lang a:hover {
-      color: var(--text-secondary);
-    }
-
-    .lang a.active {
-      color: var(--text-secondary);
-    }
-
-    .visual {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      overflow: hidden;
-      background: var(--bg-deep);
-    }
-
-    .img-main {
-      position: absolute;
-      top: 0;
-      left: 25%;
-      width: 50%;
-      bottom: 0;
-      background: url('assets/limitorderbookfinal.png') no-repeat right center;
-      background-size: auto 130%;
-    }
-
-    .img-mirror {
-      position: absolute;
-      top: 0;
-      left: 75%;
-      right: 0;
-      bottom: 0;
-      background: url('assets/limitorderbookfinal.png') no-repeat right center;
-      background-size: auto 130%;
-      transform: scaleX(-1);
-      opacity: 0.7;
-    }
-
-    .visual-divider {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 75%;
-      width: 1px;
-      background: var(--text-dim);
-      z-index: 1;
-    }
-
-    .visual-gradient {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg,
-        var(--bg-deep) 0%,
-        var(--bg-deep) 28%,
-        rgba(10,4,8,0.96) 40%,
-        rgba(10,4,8,0.75) 52%,
-        rgba(10,4,8,0.35) 68%,
-        transparent 85%
-      );
-      pointer-events: none;
-    }
-
-    .scanlines {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.12) 2px,
-        rgba(0, 0, 0, 0.12) 4px
-      );
-      pointer-events: none;
-      z-index: 1;
-      mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 15%, transparent 45%);
-      -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 15%, transparent 45%);
-    }
-
-    .noise {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.025;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      z-index: 100;
-    }
-
-    /* Subtle vignette */
-    .vignette {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 99;
-      background: radial-gradient(ellipse at center, transparent 0%, transparent 60%, rgba(10,4,8,0.4) 100%);
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 768px) {
-      .about {
-        width: 100%;
-        background: linear-gradient(90deg,
-          var(--bg-deep) 0%,
-          var(--bg-deep) 60%,
-          rgba(10,4,8,0.95) 80%,
-          rgba(10,4,8,0.8) 100%
-        );
-      }
-    }
   </style>
 </head>
 <body>
-  <div class="noise"></div>
-  <div class="vignette"></div>
-  <div class="container">
-    <aside class="about">
-      <div class="header">
-        <div class="name">toward a fixed point</div>
-        <div class="rule"></div>
-        <div class="blurb" data-en="qr/qd @ tower. wellington, nz. All models are wrong, but some are useful." data-ru="qr/qd @ tower. веллингтон, нз. Все модели ошибочны, но некоторые полезны.">qr/qd @ tower. wellington, nz. All models are wrong, but some are useful.</div>
+
+  <h1>Lev Petersen</h1>
+  <div class="role" data-en="qr/qd @ tower &mdash; wellington, nz" data-ru="qr/qd @ tower &mdash; веллингтон, нз">qr/qd @ tower &mdash; wellington, nz</div>
+
+  <nav>
+    <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax">github</a>
+    <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
+  </nav>
+
+  <p class="about" data-en="A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Немного обо мне: меня всегда занимали задачи об ограничениях. Поиск границ и пределов, будь то производительность, функции или аксиоматические системы. Мысль о том, что у всего этого есть форма, бесконечно интересна. Это привело меня к огромному спектру интересов, но те, по которым вы, возможно, меня знаете: RL, исследования в трейдинге и разработка ПО. На работе я занимаюсь полумарковскими системами и микроструктурой; за её пределами: deep RL и написанием максимально производительных систем. Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, Wunderfund, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
+
+  <section>
+    <h2 data-en="Papers" data-ru="Статьи">Papers</h2>
+
+    <div class="entry">
+      <div class="entry-name" data-en="microprice as a martingale corrector" data-ru="микроцена как мартингальный корректор">microprice as a martingale corrector</div>
+      <div class="entry-desc">A Unified Markov-Operator Framework for Fair Value and Value-Function Extensions.</div>
+      <div class="entry-links">
+        <a href="papers/microprice.html" data-en="read" data-ru="читать">read</a>
+        <a href="assets/microprice.pdf" download data-en="pdf" data-ru="pdf">pdf</a>
       </div>
-      <nav class="links" id="nav-links">
-        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax" data-en="github" data-ru="github">github</a>
-        <span class="nav-item" id="nav-projects" data-en="projects" data-ru="проекты">projects</span>
-        <span class="nav-item" id="nav-papers" data-en="papers" data-ru="статьи">papers</span>
-        <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
-      </nav>
-      <div class="rule rule-bottom"></div>
-      <div class="lang">
-        <a id="lang-en" class="active">english</a>
-        <span class="lang-sep">/</span>
-        <a id="lang-ru">russian</a>
+    </div>
+
+    <div class="entry">
+      <div class="entry-name" data-en="value functions for microprice operators" data-ru="функции стоимости для микроценовых операторов">value functions for microprice operators</div>
+      <div class="entry-desc">Companion note on value-function extensions to the microprice framework.</div>
+      <div class="entry-links">
+        <a href="papers/microprice-value-functions.html" data-en="read" data-ru="читать">read</a>
+        <a href="assets/microprice-value-functions.pdf" download data-en="pdf" data-ru="pdf">pdf</a>
       </div>
-    </aside>
-    <main class="visual">
-      <div class="img-mirror"></div>
-      <div class="img-main"></div>
-      <div class="visual-divider"></div>
-      <div class="visual-gradient"></div>
-      <div class="scanlines"></div>
-    </main>
-  </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-en="Projects" data-ru="Проекты">Projects</h2>
+
+    <div class="entry">
+      <div class="entry-name">evolve.h</div>
+      <div class="entry-desc">C++26 evolutionary algorithm framework. Bandit-driven mutation, multi-island search, chasing Schur(6).</div>
+      <div class="entry-links">
+        <a href="projects/evolve.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-name">reinforce</div>
+      <div class="entry-desc">Header-only C++26 reinforcement learning library. Type-safe tabular RL with compile-time hyperparameter validation.</div>
+      <div class="entry-links">
+        <a href="projects/reinforce.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-name">docgen</div>
+      <div class="entry-desc">Zig documentation generator. Parses C++ headers and emits static HTML reference sites.</div>
+      <div class="entry-links">
+        <a href="projects/docgen.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-name">log.h</div>
+      <div class="entry-desc">Single-header C++23 structured logging. Zero allocations, ~110ns per call. SIMD-accelerated formatting.</div>
+      <div class="entry-links">
+        <a href="projects/log.html" data-en="view" data-ru="смотреть">view</a>
+        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h">github</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-en="Collaborators" data-ru="Коллеги">Collaborators</h2>
+    <p class="entry-desc"><a href="https://genesistradetech.com/">Ollie Smith</a> (Genesis Trade Tech) · <a href="https://www.linkedin.com/in/sync-seis/">Joel Bannister</a> (TRV Trading)</p>
+  </section>
+
+  <footer>
+    <span class="tagline" data-en="toward a fixed point" data-ru="к неподвижной точке">toward a fixed point</span>
+    <div class="lang">
+      <a id="lang-en" class="active">en</a> /
+      <a id="lang-ru">ru</a>
+    </div>
+  </footer>
+
   <script>
-    const langEn = document.getElementById('lang-en');
-    const langRu = document.getElementById('lang-ru');
-    const nav = document.getElementById('nav-links');
-    let currentLang = 'en';
+    var langEn = document.getElementById('lang-en');
+    var langRu = document.getElementById('lang-ru');
+    var currentLang = 'en';
 
-    // Projects data
-    const projects = [
-      { en: 'log.h', ru: 'log.h', href: 'projects/log.html' },
-    ];
-
-    // Papers data
-    const papers = [
-      { en: 'microprice (preprint)', ru: 'микроцена (препринт)', href: 'papers/microprice.html' },
-      { en: 'microprice value functions (companion)', ru: 'микроцена функции стоимости (дополнение)', href: 'papers/microprice-value-functions.html' },
-    ];
-
-    function getTranslatables() {
-      return document.querySelectorAll('[data-en]');
-    }
-
-    function setLang(lang, save = true) {
+    function setLang(lang, save) {
       currentLang = lang;
-      getTranslatables().forEach(el => {
+      document.querySelectorAll('[data-en]').forEach(function (el) {
         el.textContent = el.getAttribute('data-' + lang);
       });
-      if (lang === 'en') {
-        langEn.classList.add('active');
-        langRu.classList.remove('active');
-        document.documentElement.lang = 'en';
-      } else {
-        langRu.classList.add('active');
-        langEn.classList.remove('active');
-        document.documentElement.lang = 'ru';
-      }
-      if (save) {
-        try { localStorage.setItem('lang', lang); } catch(e) {}
+      langEn.classList.toggle('active', lang === 'en');
+      langRu.classList.toggle('active', lang === 'ru');
+      document.documentElement.lang = lang;
+      if (save !== false) {
+        try { localStorage.setItem('lang', lang); } catch (e) {}
       }
     }
 
-    // Store original nav HTML
-    const mainNavHTML = nav.innerHTML;
-
-    function swapNav(newHTML) {
-      nav.innerHTML = newHTML;
-      setLang(currentLang, false);
-      bindNav();
-    }
-
-    function buildListHTML(items, labelEn, labelRu) {
-      const label = currentLang === 'ru' ? labelRu : labelEn;
-      let html = '<span class="back-arrow" id="nav-back" data-en="← ' + labelEn + '" data-ru="← ' + labelRu + '">← ' + label + '</span>';
-      items.forEach(p => {
-        html += '<a class="sub-item" href="' + p.href + '" data-en="' + p.en + '" data-ru="' + p.ru + '">' + p[currentLang] + '</a>';
-      });
-      return html;
-    }
-
-    function bindNav() {
-      const projBtn = document.getElementById('nav-projects');
-      const papersBtn = document.getElementById('nav-papers');
-      const backBtn = document.getElementById('nav-back');
-      if (projBtn) {
-        projBtn.addEventListener('click', () => swapNav(buildListHTML(projects, 'projects', 'проекты')));
-      }
-      if (papersBtn) {
-        papersBtn.addEventListener('click', () => swapNav(buildListHTML(papers, 'papers', 'статьи')));
-      }
-      if (backBtn) {
-        backBtn.addEventListener('click', () => swapNav(mainNavHTML));
-      }
-    }
-
-    // Load saved preference
     try {
-      const saved = localStorage.getItem('lang');
-      if (saved === 'ru') setLang('ru', false);
-    } catch(e) {}
+      var saved = localStorage.getItem('lang');
+      if (saved === 'ru') currentLang = 'ru';
+    } catch (e) {}
 
-    langEn.addEventListener('click', () => setLang('en'));
-    langRu.addEventListener('click', () => setLang('ru'));
-    bindNav();
+    setLang(currentLang, false);
+    langEn.addEventListener('click', function () { setLang('en'); });
+    langRu.addEventListener('click', function () { setLang('ru'); });
   </script>
 </body>
 </html>
