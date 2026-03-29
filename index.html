@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <title>&#10022;</title>
-
   <meta property="og:title" content="axaxaxaxa.org">
   <meta property="og:description" content="Lev Petersen. QR/QD at Tower. Notes on microstructure, operator methods, and whatever else converges.">
   <meta property="og:image" content="https://www.axaxaxaxaxaxa.org/assets/limitorderbookfinal.png">
@@ -23,7 +22,6 @@
   <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#111" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://www.axaxaxaxaxaxa.org">
-
   <style>
     :root {
       --bg: #fafafa;
@@ -31,14 +29,12 @@
       --dim: #666;
       --faint: #999;
       --rule: #e0e0e0;
-      --ghost: #f3f3f3;
       --accent: #0055ff;
       --accent-dim: #0044cc;
       --mono: "Berkeley Mono", "IBM Plex Mono", "JetBrains Mono", "SF Mono", ui-monospace, monospace;
       --body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
       --ease: cubic-bezier(.22, .61, .36, 1)
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #111;
@@ -46,21 +42,17 @@
         --dim: #999;
         --faint: #666;
         --rule: #282828;
-        --ghost: #1a1a1a;
         --accent: #4d9fff;
         --accent-dim: #6ab0ff
       }
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-
     html {
       font-size: 17px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility
     }
-
     body {
       font-family: var(--body);
       color: var(--text);
@@ -69,15 +61,12 @@
       margin: 0 auto;
       padding: 5rem 1.5rem 3rem
     }
-
     * { scrollbar-width: thin; scrollbar-color: var(--rule) transparent }
     ::-webkit-scrollbar { width: 6px; height: 6px }
     ::-webkit-scrollbar-track { background: transparent }
     ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px }
-
     a { color: var(--accent); text-decoration: none; transition: color .15s var(--ease) }
     a:hover { color: var(--accent-dim) }
-
     h1 {
       font-size: 1.5rem;
       font-weight: 600;
@@ -85,7 +74,6 @@
       line-height: 1.3;
       margin-bottom: .15rem
     }
-
     .role {
       font-family: var(--mono);
       font-size: .78rem;
@@ -93,22 +81,20 @@
       letter-spacing: .03em;
       margin-bottom: 1.5rem
     }
-
     nav {
       margin-bottom: 2.5rem;
       padding-bottom: 2.5rem;
       border-bottom: 1px solid var(--rule)
     }
-
     nav a {
       font-family: var(--mono);
       font-size: .82rem;
       letter-spacing: .02em;
       margin-right: 1rem
     }
-
+    .muted { color: var(--faint) }
+    .muted:hover { color: var(--dim) }
     section { margin-bottom: 2.5rem }
-
     h2 {
       font-size: .7rem;
       font-weight: 500;
@@ -117,39 +103,32 @@
       color: var(--faint);
       margin-bottom: 1.25rem
     }
-
     .entry { margin-bottom: 1.5rem }
     .entry:last-child { margin-bottom: 0 }
-
     .entry-name {
       font-size: 1rem;
       font-weight: 500;
       color: var(--text);
       margin-bottom: .1rem
     }
-
     .entry-desc {
       font-size: .9rem;
       color: var(--dim);
       line-height: 1.6;
       margin-bottom: .25rem
     }
-
     .entry-links {
       font-family: var(--mono);
       font-size: .78rem;
       letter-spacing: .02em
     }
-
     .entry-links a { margin-right: .75rem }
-
     .about {
       font-size: .9rem;
       color: var(--dim);
       line-height: 1.7;
       margin-bottom: 2.5rem
     }
-
     footer {
       margin-top: 2.5rem;
       padding-top: 1.25rem;
@@ -160,9 +139,7 @@
       font-size: .82rem;
       color: var(--faint)
     }
-
     .tagline { letter-spacing: .02em }
-
     .lang { font-family: var(--mono); font-size: .78rem }
     .lang a {
       color: var(--faint);
@@ -172,24 +149,18 @@
     }
     .lang a.active { color: var(--text) }
     .lang a:hover { color: var(--text) }
-
   </style>
 </head>
 <body>
-
   <h1>Lev Petersen</h1>
   <div class="role" data-en="qr/qd @ tower &mdash; wellington, nz" data-ru="qr/qd @ tower &mdash; веллингтон, нз">qr/qd @ tower &mdash; wellington, nz</div>
-
   <nav>
     <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax">github</a>
     <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
   </nav>
-
   <p class="about" data-en="A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Немного обо мне: меня всегда занимали задачи об ограничениях. Поиск границ и пределов, будь то производительность, функции или аксиоматические системы. Мысль о том, что у всего этого есть форма, бесконечно интересна. Это привело меня к огромному спектру интересов, но те, по которым вы, возможно, меня знаете: RL, исследования в трейдинге и разработка ПО. На работе я занимаюсь полумарковскими системами и микроструктурой; за её пределами: deep RL и написанием максимально производительных систем. Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, Wunderfund, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
-
   <section>
     <h2 data-en="Papers" data-ru="Статьи">Papers</h2>
-
     <div class="entry">
       <div class="entry-name" data-en="microprice as a martingale corrector" data-ru="микроцена как мартингальный корректор">microprice as a martingale corrector</div>
       <div class="entry-desc">A Unified Markov-Operator Framework for Fair Value and Value-Function Extensions.</div>
@@ -198,7 +169,6 @@
         <a href="assets/microprice.pdf" download data-en="pdf" data-ru="pdf">pdf</a>
       </div>
     </div>
-
     <div class="entry">
       <div class="entry-name" data-en="value functions for microprice operators" data-ru="функции стоимости для микроценовых операторов">value functions for microprice operators</div>
       <div class="entry-desc">Companion note on value-function extensions to the microprice framework.</div>
@@ -208,34 +178,32 @@
       </div>
     </div>
   </section>
-
   <section>
     <h2 data-en="Projects" data-ru="Проекты">Projects</h2>
-
     <div class="entry">
       <div class="entry-name">evolve.h</div>
       <div class="entry-desc">C++26 evolutionary algorithm framework. Bandit-driven mutation, multi-island search, chasing Schur(6).</div>
       <div class="entry-links">
-        <a href="projects/evolve.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+        <a href="projects/evolve.html" data-en="view" data-ru="смотреть">view</a>
+        <span class="muted" data-en="github" data-ru="github">github</span>
       </div>
     </div>
-
     <div class="entry">
       <div class="entry-name">reinforce</div>
       <div class="entry-desc">Header-only C++26 reinforcement learning library. Type-safe tabular RL with compile-time hyperparameter validation.</div>
       <div class="entry-links">
-        <a href="projects/reinforce.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+        <a href="projects/reinforce.html" data-en="view" data-ru="смотреть">view</a>
+        <span class="muted" data-en="github" data-ru="github">github</span>
       </div>
     </div>
-
     <div class="entry">
       <div class="entry-name">docgen</div>
       <div class="entry-desc">Zig documentation generator. Parses C++ headers and emits static HTML reference sites.</div>
       <div class="entry-links">
-        <a href="projects/docgen.html" data-en="view (private)" data-ru="смотреть (приватный)">view (private)</a>
+        <a href="projects/docgen.html" data-en="view" data-ru="смотреть">view</a>
+        <span class="muted" data-en="github" data-ru="github">github</span>
       </div>
     </div>
-
     <div class="entry">
       <div class="entry-name">log.h</div>
       <div class="entry-desc">Single-header C++23 structured logging. Zero allocations, ~110ns per call. SIMD-accelerated formatting.</div>
@@ -245,12 +213,10 @@
       </div>
     </div>
   </section>
-
   <section>
     <h2 data-en="Collaborators" data-ru="Коллеги">Collaborators</h2>
     <p class="entry-desc"><a href="https://genesistradetech.com/">Ollie Smith</a> (Genesis Trade Tech) · <a href="https://www.linkedin.com/in/sync-seis/">Joel Bannister</a> (TRV Trading)</p>
   </section>
-
   <footer>
     <span class="tagline" data-en="toward a fixed point" data-ru="к неподвижной точке">toward a fixed point</span>
     <div class="lang">
@@ -258,12 +224,10 @@
       <a id="lang-ru">ru</a>
     </div>
   </footer>
-
   <script>
     var langEn = document.getElementById('lang-en');
     var langRu = document.getElementById('lang-ru');
     var currentLang = 'en';
-
     function setLang(lang, save) {
       currentLang = lang;
       document.querySelectorAll('[data-en]').forEach(function (el) {
@@ -276,12 +240,10 @@
         try { localStorage.setItem('lang', lang); } catch (e) {}
       }
     }
-
     try {
       var saved = localStorage.getItem('lang');
       if (saved === 'ru') currentLang = 'ru';
     } catch (e) {}
-
     setLang(currentLang, false);
     langEn.addEventListener('click', function () { setLang('en'); });
     langRu.addEventListener('click', function () { setLang('ru'); });
