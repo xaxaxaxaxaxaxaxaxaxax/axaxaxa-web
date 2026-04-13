@@ -36,7 +36,7 @@
       --ease: cubic-bezier(.22, .61, .36, 1)
     }
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --bg: #111;
         --text: #ddd;
         --dim: #999;
@@ -45,6 +45,15 @@
         --accent: #4d9fff;
         --accent-dim: #6ab0ff
       }
+    }
+    :root[data-theme="dark"] {
+      --bg: #111;
+      --text: #ddd;
+      --dim: #999;
+      --faint: #666;
+      --rule: #282828;
+      --accent: #4d9fff;
+      --accent-dim: #6ab0ff
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
     html {
@@ -56,10 +65,7 @@
     body {
       font-family: var(--body);
       color: var(--text);
-      background: var(--bg);
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 5rem 1.5rem 3rem
+      background: var(--bg)
     }
     * { scrollbar-width: thin; scrollbar-color: var(--rule) transparent }
     ::-webkit-scrollbar { width: 6px; height: 6px }
@@ -67,78 +73,145 @@
     ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px }
     a { color: var(--accent); text-decoration: none; transition: color .15s var(--ease) }
     a:hover { color: var(--accent-dim) }
+    .site-head-row {
+      display: flex;
+      align-items: baseline;
+      gap: .75rem;
+      margin-bottom: .75rem
+    }
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       font-weight: 600;
       letter-spacing: -.01em;
-      line-height: 1.3;
-      margin-bottom: .15rem
+      line-height: 1.3
     }
     .role {
       font-family: var(--mono);
-      font-size: .78rem;
+      font-size: .72rem;
       color: var(--faint);
-      letter-spacing: .03em;
-      margin-bottom: 1.5rem
+      letter-spacing: .03em
     }
     nav {
-      margin-bottom: 2.5rem;
-      padding-bottom: 2.5rem;
+      padding-bottom: 1.25rem;
       border-bottom: 1px solid var(--rule)
     }
     nav a {
       font-family: var(--mono);
-      font-size: .82rem;
+      font-size: .78rem;
       letter-spacing: .02em;
-      margin-right: 1rem
+      margin-right: .75rem
     }
     .muted { color: var(--faint) }
     .muted:hover { color: var(--dim) }
-    section { margin-bottom: 2.5rem }
+    section { margin-bottom: 2.25rem }
     h2 {
-      font-size: .7rem;
+      font-size: .65rem;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: .1em;
       color: var(--faint);
-      margin-bottom: 1.25rem
+      margin-bottom: 1rem
     }
-    .entry { margin-bottom: 1.5rem }
+    .entry { margin-bottom: 1.1rem }
     .entry:last-child { margin-bottom: 0 }
-    .entry-name {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text);
+    .entry-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: .5rem;
       margin-bottom: .1rem
     }
-    .entry-desc {
-      font-size: .9rem;
-      color: var(--dim);
-      line-height: 1.6;
-      margin-bottom: .25rem
+    .entry-name {
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--text)
     }
     .entry-links {
       font-family: var(--mono);
-      font-size: .78rem;
-      letter-spacing: .02em
+      font-size: .72rem;
+      letter-spacing: .02em;
+      white-space: nowrap;
+      flex-shrink: 0
     }
-    .entry-links a { margin-right: .75rem }
+    .entry-links a { margin-left: .4rem }
+    .entry-links .muted { margin-left: .4rem }
+    .gh-icon {
+      display: inline-block;
+      width: .8em;
+      height: .8em;
+      vertical-align: -.1em;
+      background: currentColor;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center;
+      mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center
+    }
+    .entry-date {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--faint);
+      font-weight: 400
+    }
+    .entry-desc {
+      font-size: .82rem;
+      color: var(--dim);
+      line-height: 1.55
+    }
+    .writing-list a {
+      color: var(--dim);
+      display: block;
+      padding: .15rem 0;
+      font-family: var(--mono);
+      font-size: .82rem
+    }
+    .writing-list a:hover { color: var(--text) }
+    .writing-date { color: var(--faint); font-size: .72rem; margin-right: .4rem }
     .about {
-      font-size: .9rem;
+      font-size: .85rem;
       color: var(--dim);
       line-height: 1.7;
-      margin-bottom: 2.5rem
+      margin-bottom: 1rem
     }
+    .about:last-of-type { margin-bottom: 2.25rem }
     footer {
-      margin-top: 2.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--rule);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--bg);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: .82rem;
-      color: var(--faint)
+      gap: 1.5rem;
+      border-top: 1px solid var(--rule);
+      font-size: .78rem;
+      color: var(--faint);
+      font-family: var(--mono)
     }
+    .footer-left {
+      flex: 1;
+      max-width: 640px;
+      display: flex;
+      align-items: center;
+      padding: .4rem 0
+    }
+    .footer-right {
+      width: 240px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--rule);
+      padding: .4rem 0 .4rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      font-size: .6rem
+    }
+    .footer-names {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5
+    }
+    .footer-right a { color: var(--faint) }
+    .footer-right a:hover { color: var(--text) }
     .tagline { letter-spacing: .02em }
     .lang { font-family: var(--mono); font-size: .78rem }
     .lang a {
@@ -149,79 +222,291 @@
     }
     .lang a.active { color: var(--text) }
     .lang a:hover { color: var(--text) }
+    .footer-controls { display: flex; align-items: center; gap: .5rem }
+    #theme-toggle {
+      color: var(--faint);
+      cursor: pointer;
+      font-size: .9rem;
+      transition: color .15s var(--ease);
+      user-select: none
+    }
+    #theme-toggle:hover { color: var(--text) }
+    html, body { height: 100%; overflow: hidden }
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: var(--bg);
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 0
+    }
+    .page {
+      display: flex;
+      gap: 1.5rem;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 100vh
+    }
+    .core {
+      flex: 1;
+      max-width: 640px;
+      min-width: 0;
+      overflow-y: auto;
+      padding-top: 9rem;
+      padding-bottom: 3.5rem;
+      scrollbar-width: none
+    }
+    .core::-webkit-scrollbar { display: none }
+    .stack {
+      width: 240px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--rule);
+      padding-top: 8rem;
+      padding-bottom: 3.5rem;
+      overflow-y: auto;
+      scrollbar-width: none
+    }
+    .stack::-webkit-scrollbar { display: none }
+    .stack-block {
+      padding: .875rem .5rem .875rem 1.25rem;
+      font-family: var(--mono);
+      font-size: .76rem;
+      line-height: 1.5
+    }
+    .stack-block + .stack-block { border-top: 1px solid var(--rule) }
+    .stack-label {
+      font-size: .6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--faint);
+      margin-bottom: .6rem
+    }
+    .stack-item { margin-bottom: .4rem }
+    .stack-item:last-child { margin-bottom: 0 }
+    .stack-title { color: var(--text); display: block }
+    .stack-meta { color: var(--faint); display: block; font-size: .65rem }
+    .now-list {
+      display: flex;
+      justify-content: center;
+      gap: .75rem;
+      font-size: .65rem
+    }
+    .now-list a { color: var(--faint) }
+    .now-list a:hover { color: var(--accent) }
+    .now-list .icon { color: var(--faint); font-size: .5rem; margin-left: .15rem; vertical-align: middle }
+    .stack-commits {
+      font-size: .6rem;
+      line-height: 1.5
+    }
+    .stack-commits a {
+      color: var(--dim);
+      display: block;
+      padding: .15rem 0;
+      font-family: var(--mono);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap
+    }
+    .stack-commits a:hover { color: var(--text) }
+    .commit-hash { color: var(--faint) }
+    .cal-title {
+      font-size: .6rem;
+      letter-spacing: .08em;
+      color: var(--faint);
+      margin-bottom: .4rem;
+      text-align: center
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      font-size: .6rem;
+      text-align: center
+    }
+    .cal-head {
+      color: var(--faint);
+      font-size: .5rem;
+      padding: .25rem 0
+    }
+    .cal-day {
+      padding: .3rem 0;
+      color: var(--dim);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background .15s var(--ease), color .15s var(--ease)
+    }
+    .cal-day:hover { background: var(--rule); color: var(--text) }
+    .cal-today { color: var(--accent); font-weight: 600 }
+    .cal-selected { background: var(--accent) !important; color: var(--bg) !important }
+    .cal-empty { cursor: default }
+    .cal-empty:hover { background: none; color: var(--dim) }
+    .stack-fractal {
+      padding: .5rem;
+      display: flex;
+      flex-direction: column;
+      height: 280px
+    }
+    .stack-fractal canvas {
+      width: 100%;
+      flex: 1;
+      display: block
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .stack-fractal canvas { filter: invert(1) }
+    }
+    :root[data-theme="dark"] .stack-fractal canvas { filter: invert(1) }
+    @media (max-width: 860px) {
+      html, body { height: auto; overflow: auto }
+      .site-header { position: static; padding-top: 2rem }
+      footer { position: static }
+      .page { flex-direction: column; max-width: 640px; height: auto }
+      .core { overflow: visible; padding-top: 0; padding-bottom: 0 }
+      .stack {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--rule);
+        padding-top: 1rem;
+        padding-bottom: 0;
+        overflow: visible
+      }
+      .stack-block { padding-left: 0 }
+    }
   </style>
 </head>
 <body>
-  <h1>Lev Petersen</h1>
-  <div class="role" data-en="qr/qd @ tower &mdash; wellington, nz" data-ru="qr/qd @ tower &mdash; веллингтон, нз">qr/qd @ tower &mdash; wellington, nz</div>
-  <nav>
-    <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax">github</a>
-    <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
-  </nav>
-  <p class="about" data-en="A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Немного обо мне: меня всегда занимали задачи об ограничениях. Поиск границ и пределов, будь то производительность, функции или аксиоматические системы. Мысль о том, что у всего этого есть форма, бесконечно интересна. Это привело меня к огромному спектру интересов, но те, по которым вы, возможно, меня знаете: RL, исследования в трейдинге и разработка ПО. На работе я занимаюсь полумарковскими системами и микроструктурой; за её пределами: deep RL и написанием максимально производительных систем. Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, Wunderfund, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">A little about me: I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
-  <section>
-    <h2 data-en="Papers" data-ru="Статьи">Papers</h2>
-    <div class="entry">
-      <div class="entry-name" data-en="microprice as a martingale corrector" data-ru="микроцена как мартингальный корректор">microprice as a martingale corrector</div>
-      <div class="entry-desc">A Unified Markov-Operator Framework for Fair Value and Value-Function Extensions.</div>
-      <div class="entry-links">
-        <a href="papers/microprice.html" data-en="read" data-ru="читать">read</a>
-        <a href="assets/microprice.pdf" download data-en="pdf" data-ru="pdf">pdf</a>
-      </div>
+  <div class="site-header">
+    <div class="site-head-row">
+      <h1>Lev Petersen</h1>
+      <div class="role" data-en="qr/qd @ tower &mdash; wellington, nz" data-ru="qr/qd @ tower &mdash; веллингтон, нз">qr/qd @ tower &mdash; wellington, nz</div>
     </div>
-    <div class="entry">
-      <div class="entry-name" data-en="value functions for microprice operators" data-ru="функции стоимости для микроценовых операторов">value functions for microprice operators</div>
-      <div class="entry-desc">Companion note on value-function extensions to the microprice framework.</div>
-      <div class="entry-links">
-        <a href="papers/microprice-value-functions.html" data-en="read" data-ru="читать">read</a>
-        <a href="assets/microprice-value-functions.pdf" download data-en="pdf" data-ru="pdf">pdf</a>
+    <nav>
+      <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax">github</a>
+      <a href="https://mathsceling.substack.com">substack</a>
+      <a href="mailto:tworsquared@proton.me" data-en="contact" data-ru="контакт">contact</a>
+    </nav>
+  </div>
+  <div class="page">
+    <main class="core">
+      <p class="about" data-en="I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. Right now I am particularly interested in the intersection of compiler design and reinforcement learning &mdash; generating optimal bytecode sequences via policy search." data-ru="Меня всегда занимали задачи об ограничениях. Поиск границ и пределов, будь то производительность, функции или аксиоматические системы. Мысль о том, что у всего этого есть форма, бесконечно интересна. Это привело меня к огромному спектру интересов, но те, по которым вы, возможно, меня знаете: RL, исследования в трейдинге и разработка ПО. На работе я занимаюсь полумарковскими системами и микроструктурой; за её пределами: deep RL и написанием максимально производительных систем. Сейчас меня особенно интересует пересечение компиляторов и обучения с подкреплением &mdash; генерация оптимальных последовательностей байткода через поиск политик.">I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. Right now I am particularly interested in the intersection of compiler design and reinforcement learning &mdash; generating optimal bytecode sequences via policy search.</p>
+      <p class="about" data-en="I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, Wunderfund, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
+      <section>
+        <h2 data-en="Papers &amp; Code" data-ru="Статьи и Код">Papers &amp; Code</h2>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name">evolve.h</div>
+            <div class="entry-links">
+              <a href="projects/evolve.html" data-en="view" data-ru="смотреть">view</a>
+              <span class="muted"><span class="gh-icon"></span></span>
+              <span class="entry-date">2026</span>
+            </div>
+          </div>
+          <div class="entry-desc">C++26 evolutionary algorithm framework. Bandit-driven operator selection, multi-island topology with migration, and adaptive mutation rates. Currently chasing Schur(6) via large-scale combinatorial search.</div>
+        </div>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name" data-en="value functions for microprice operators" data-ru="функции стоимости для микроценовых операторов">value functions for microprice operators</div>
+            <div class="entry-links">
+              <a href="papers/microprice-value-functions.html" data-en="view" data-ru="смотреть">view</a>
+              <a href="assets/microprice-value-functions.pdf" download title="download">&#8595;</a>
+              <span class="entry-date">2026</span>
+            </div>
+          </div>
+          <div class="entry-desc">Companion note deriving value-function extensions to the microprice operator framework. Connects the Bellman equation to the Markov corrector and shows how to compute optimal spreads under inventory constraints.</div>
+        </div>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name" data-en="microprice as a martingale corrector" data-ru="микроцена как мартингальный корректор">microprice as a martingale corrector</div>
+            <div class="entry-links">
+              <a href="papers/microprice.html" data-en="view" data-ru="смотреть">view</a>
+              <a href="assets/microprice.pdf" download title="download">&#8595;</a>
+              <span class="entry-date">2025</span>
+            </div>
+          </div>
+          <div class="entry-desc">A unified Markov-operator framework that recasts the microprice as a martingale corrector to the midprice. Derives fair-value estimators and extends them to value-function approximations for optimal execution.</div>
+        </div>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name">reinforce</div>
+            <div class="entry-links">
+              <a href="projects/reinforce.html" data-en="view" data-ru="смотреть">view</a>
+              <span class="muted"><span class="gh-icon"></span></span>
+              <span class="entry-date">2025</span>
+            </div>
+          </div>
+          <div class="entry-desc">Header-only C++26 reinforcement learning library. Type-safe tabular RL with compile-time hyperparameter validation, policy iteration, and TD(&lambda;) methods.</div>
+        </div>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name">docgen</div>
+            <div class="entry-links">
+              <a href="projects/docgen.html" data-en="view" data-ru="смотреть">view</a>
+              <span class="muted"><span class="gh-icon"></span></span>
+              <span class="entry-date">2025</span>
+            </div>
+          </div>
+          <div class="entry-desc">Zig documentation generator that parses C++ headers and emits static HTML reference sites. Handles templates, concepts, and nested namespaces.</div>
+        </div>
+        <div class="entry">
+          <div class="entry-head">
+            <div class="entry-name">log.h</div>
+            <div class="entry-links">
+              <a href="projects/log.html" data-en="view" data-ru="смотреть">view</a>
+              <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h" title="github"><span class="gh-icon"></span></a>
+              <span class="entry-date">2025</span>
+            </div>
+          </div>
+          <div class="entry-desc">Single-header C++23 structured logging library. Zero heap allocations on the hot path, ~110ns per formatted call, SIMD-accelerated field serialisation.</div>
+        </div>
+      </section>
+      <section>
+        <h2 data-en="Writing" data-ru="Тексты">Writing</h2>
+        <div id="writing">
+          <p class="entry-desc"><a href="https://mathsceling.substack.com">mathsceling</a> &mdash; notes on microstructure, operator methods, and whatever else converges. coming soon.</p>
+        </div>
+      </section>
+    </main>
+    <aside class="stack">
+      <div class="stack-block stack-fractal">
+        <canvas id="fractal"></canvas>
+        <div style="height:.6rem"></div>
+        <div class="stack-meta" style="margin-top:.4rem;text-align:center;color:var(--dim)" data-en="now: rl-backed bytecodegen from first principles :)" data-ru="сейчас: rl-backed bytecodegen from first principles :)">now: rl-backed bytecodegen from first principles :)</div>
+        <div class="now-list" style="margin-top:.3rem">
+          <a href="https://en.wikipedia.org/wiki/PiHKAL" target="_blank">PiHKAL <span class="icon">&#9643;</span></a>
+          <a href="https://northernelectronics.bandcamp.com/album/nordic-flora-series-pt-3-gore-tex-city" target="_blank">Nordic Flora Pt. 3 <span class="icon">&#9835;</span></a>
+        </div>
       </div>
-    </div>
-  </section>
-  <section>
-    <h2 data-en="Projects" data-ru="Проекты">Projects</h2>
-    <div class="entry">
-      <div class="entry-name">evolve.h</div>
-      <div class="entry-desc">C++26 evolutionary algorithm framework. Bandit-driven mutation, multi-island search, chasing Schur(6).</div>
-      <div class="entry-links">
-        <a href="projects/evolve.html" data-en="view" data-ru="смотреть">view</a>
-        <span class="muted" data-en="github" data-ru="github">github</span>
+      <div class="stack-block">
+        <div class="stack-label">commits</div>
+        <div id="commits" class="stack-commits"></div>
       </div>
-    </div>
-    <div class="entry">
-      <div class="entry-name">reinforce</div>
-      <div class="entry-desc">Header-only C++26 reinforcement learning library. Type-safe tabular RL with compile-time hyperparameter validation.</div>
-      <div class="entry-links">
-        <a href="projects/reinforce.html" data-en="view" data-ru="смотреть">view</a>
-        <span class="muted" data-en="github" data-ru="github">github</span>
+      <div class="stack-block" style="margin-top:auto">
+        <div id="calendar"></div>
       </div>
-    </div>
-    <div class="entry">
-      <div class="entry-name">docgen</div>
-      <div class="entry-desc">Zig documentation generator. Parses C++ headers and emits static HTML reference sites.</div>
-      <div class="entry-links">
-        <a href="projects/docgen.html" data-en="view" data-ru="смотреть">view</a>
-        <span class="muted" data-en="github" data-ru="github">github</span>
-      </div>
-    </div>
-    <div class="entry">
-      <div class="entry-name">log.h</div>
-      <div class="entry-desc">Single-header C++23 structured logging. Zero allocations, ~110ns per call. SIMD-accelerated formatting.</div>
-      <div class="entry-links">
-        <a href="projects/log.html" data-en="view" data-ru="смотреть">view</a>
-        <a href="https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h">github</a>
-      </div>
-    </div>
-  </section>
-  <section>
-    <h2 data-en="Collaborators" data-ru="Коллеги">Collaborators</h2>
-    <p class="entry-desc"><a href="https://genesistradetech.com/">Ollie Smith</a> (Genesis Trade Tech) · <a href="https://www.linkedin.com/in/sync-seis/">Joel Bannister</a> (TRV Trading)</p>
-  </section>
+    </aside>
+  </div>
   <footer>
-    <span class="tagline" data-en="toward a fixed point" data-ru="к неподвижной точке">toward a fixed point</span>
-    <div class="lang">
-      <a id="lang-en" class="active">en</a> /
-      <a id="lang-ru">ru</a>
+    <div class="footer-left">
+      <span class="tagline" data-en="toward a fixed point" data-ru="к неподвижной точке">toward a fixed point</span>
+    </div>
+    <div class="footer-right">
+      <div class="footer-names">
+        <a href="https://genesistradetech.com/" target="_blank">Ollie Smith</a>
+        <a href="https://www.linkedin.com/in/sync-seis/" target="_blank">Joel Bannister</a>
+      </div>
+      <span class="footer-controls">
+        <a id="theme-toggle">&#9680;</a>
+        <span class="lang">
+          <a id="lang-en" class="active">en</a> /
+          <a id="lang-ru">ru</a>
+        </span>
+      </span>
     </div>
   </footer>
   <script>
@@ -247,6 +532,226 @@
     setLang(currentLang, false);
     langEn.addEventListener('click', function () { setLang('en'); });
     langRu.addEventListener('click', function () { setLang('ru'); });
+
+    (function () {
+      var toggle = document.getElementById('theme-toggle');
+      var root = document.documentElement;
+      function isDark() {
+        var t = root.getAttribute('data-theme');
+        if (t) return t === 'dark';
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      try {
+        var saved = localStorage.getItem('theme');
+        if (saved) root.setAttribute('data-theme', saved);
+      } catch (e) {}
+      toggle.addEventListener('click', function () {
+        var next = isDark() ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      });
+    })();
+
+    (function () {
+      var el = document.getElementById('calendar');
+      if (!el) return;
+      var now = new Date();
+      var y = now.getFullYear(), m = now.getMonth(), td = now.getDate();
+      var mn = ['january','february','march','april','may','june',
+        'july','august','september','october','november','december'];
+      var dn = ['mo','tu','we','th','fr','sa','su'];
+      var h = '<div class="cal-title">' + mn[m] + ' ' + y + '</div><div class="cal-grid">';
+      for (var i = 0; i < 7; i++) h += '<div class="cal-head">' + dn[i] + '</div>';
+      var f = (new Date(y, m, 1).getDay() + 6) % 7;
+      var t = new Date(y, m + 1, 0).getDate();
+      for (var i = 0; i < f; i++) h += '<div class="cal-day cal-empty"></div>';
+      for (var d = 1; d <= t; d++)
+        h += '<div class="cal-day' + (d === td ? ' cal-today' : '') + '">' + d + '</div>';
+      h += '</div>';
+      el.innerHTML = h;
+      el.addEventListener('click', function (e) {
+        var c = e.target;
+        if (!c.classList.contains('cal-day') || c.classList.contains('cal-empty')) return;
+        if (c.classList.contains('cal-selected')) { c.classList.remove('cal-selected'); return; }
+        var p = el.querySelector('.cal-selected');
+        if (p) p.classList.remove('cal-selected');
+        c.classList.add('cal-selected');
+      });
+    })();
+
+    (function () {
+      var el = document.getElementById('commits');
+      if (!el) return;
+      var CK = 'gh_commits', TTL = 3600000;
+
+      function render(items) {
+        if (!items.length) { el.innerHTML = '<span class="stack-meta">\u2014</span>'; return; }
+        var h = '';
+        items.slice(0, 5).forEach(function (c) {
+          var msg = c.msg;
+          if (msg.length > 28) msg = msg.slice(0, 28) + '\u2026';
+          h += '<a href="' + c.url + '" target="_blank"><span class="commit-hash">' + c.repo + '</span> ' + msg + '</a>';
+        });
+        el.innerHTML = h;
+      }
+
+      var seed = [
+        {msg:'restructure project layout into examples/ and bench/',url:'https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h/commit/53096597',repo:'log.h',date:'2026-02-27T02:00:50Z'},
+        {msg:'readme: update to c++26',url:'https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h/commit/d9d290f8',repo:'log.h',date:'2026-02-27T01:48:13Z'},
+        {msg:'clang-tidy fixes, reformat, add tooling config',url:'https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h/commit/b4b0b862',repo:'log.h',date:'2026-02-27T01:43:48Z'}
+      ];
+      try {
+        var cached = JSON.parse(localStorage.getItem(CK));
+        if (cached && Date.now() - cached.ts < TTL) { render(cached.data); return; }
+      } catch (e) {}
+
+      var user = 'xaxaxaxaxaxaxaxaxaxax';
+      var repos = ['log.h'];
+      var all = [], done = 0;
+      repos.forEach(function (repo) {
+        fetch('https://api.github.com/repos/' + user + '/' + repo + '/commits?per_page=3')
+          .then(function (r) { return r.ok ? r.json() : []; })
+          .then(function (data) {
+            if (!Array.isArray(data)) return;
+            data.forEach(function (c) {
+              all.push({ msg: c.commit.message.split('\n')[0], url: c.html_url, repo: repo, date: c.commit.author.date });
+            });
+          })
+          .catch(function () {})
+          .then(function () {
+            if (++done < repos.length) return;
+            if (!all.length) all = seed;
+            all.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+            try { localStorage.setItem(CK, JSON.stringify({ ts: Date.now(), data: all })); } catch (e) {}
+            render(all);
+          });
+      });
+    })();
+
+    (function () {
+      var el = document.getElementById('writing');
+      if (!el) return;
+      var CK = 'ss_writing', TTL = 3600000;
+      var fallback = '<p class="entry-desc"><a href="https://mathsceling.substack.com">mathsceling</a> \u2014 notes on microstructure, operator methods, and whatever else converges. coming soon.</p>';
+
+      function render(items) {
+        if (!items.length) { el.innerHTML = fallback; return; }
+        var h = '<div class="writing-list">';
+        items.slice(0, 5).forEach(function (p) {
+          h += '<a href="' + p.url + '" target="_blank"><span class="writing-date">' + p.date + '</span>' + p.title + '</a>';
+        });
+        h += '</div>';
+        el.innerHTML = h;
+      }
+
+      try {
+        var cached = JSON.parse(localStorage.getItem(CK));
+        if (cached && Date.now() - cached.ts < TTL) { render(cached.data); return; }
+      } catch (e) {}
+
+      fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://mathsceling.substack.com/feed'))
+        .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+        .then(function (txt) {
+          var doc = new DOMParser().parseFromString(txt, 'text/xml');
+          var items = doc.querySelectorAll('item');
+          var posts = [];
+          items.forEach(function (item) {
+            var title = item.querySelector('title');
+            var link = item.querySelector('link');
+            var pub = item.querySelector('pubDate');
+            if (!title || !link) return;
+            var d = pub ? new Date(pub.textContent) : null;
+            var ds = d ? (d.getMonth() + 1) + '/' + d.getDate() : '';
+            posts.push({ title: title.textContent, url: link.textContent, date: ds });
+          });
+          try { localStorage.setItem(CK, JSON.stringify({ ts: Date.now(), data: posts })); } catch (e) {}
+          render(posts);
+        })
+        .catch(function () { el.innerHTML = fallback; });
+    })();
+
+    (function () {
+      var canvas = document.getElementById('fractal');
+      if (!canvas) return;
+      var dpr = window.devicePixelRatio || 1;
+      var cw = canvas.offsetWidth || 200;
+      var ch = canvas.offsetHeight || cw;
+      canvas.width = cw * dpr;
+      canvas.height = ch * dpr;
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width, h = canvas.height;
+      var cx = 0, cy = 0, rangeX = 1.5, maxIter = 150;
+      var jr = 0.285, ji = 0.01;
+
+      function render() {
+        var ry = rangeX * (h / w);
+        var img = ctx.createImageData(w, h);
+        for (var py = 0; py < h; py++) {
+          for (var px = 0; px < w; px++) {
+            var x = cx + (px / w - 0.5) * 2 * rangeX;
+            var y = cy + (py / h - 0.5) * 2 * ry;
+            var iter = 0;
+            while (x * x + y * y < 4 && iter < maxIter) {
+              var xn = x * x - y * y + jr;
+              y = 2 * x * y + ji;
+              x = xn;
+              iter++;
+            }
+            var idx = (py * w + px) * 4;
+            img.data[idx] = 0;
+            img.data[idx + 1] = 0;
+            img.data[idx + 2] = 0;
+            if (iter >= maxIter) {
+              img.data[idx + 3] = 255;
+            } else {
+              var log_zn = Math.log(x * x + y * y) / 2;
+              var nu = Math.log(log_zn / Math.LN2) / Math.LN2;
+              var t = (iter + 1 - nu) / maxIter;
+              img.data[idx + 3] = Math.floor(255 * Math.pow(Math.min(t, 1), 1.5));
+            }
+          }
+        }
+        ctx.putImageData(img, 0, 0);
+      }
+
+      function pxToC(px, py) {
+        var ry = rangeX * (h / w);
+        return { r: cx + (px / cw - 0.5) * 2 * rangeX, i: cy + (py / ch - 0.5) * 2 * ry };
+      }
+
+      function updateIter() {
+        maxIter = Math.min(500, Math.floor(150 + 50 * Math.log(1.5 / rangeX) / Math.LN2));
+      }
+
+      canvas.style.cursor = 'crosshair';
+
+      canvas.addEventListener('click', function (e) {
+        var rect = canvas.getBoundingClientRect();
+        var c = pxToC(e.clientX - rect.left, e.clientY - rect.top);
+        cx = c.r; cy = c.i;
+        rangeX *= e.shiftKey ? 2 : 0.5;
+        updateIter(); render();
+      });
+
+      canvas.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+        cx = 0; cy = 0; rangeX = 1.5; maxIter = 150;
+        render();
+      });
+
+      canvas.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        var rect = canvas.getBoundingClientRect();
+        var c = pxToC(e.clientX - rect.left, e.clientY - rect.top);
+        var f = e.deltaY > 0 ? 1.3 : 1 / 1.3;
+        cx += (c.r - cx) * (1 - f);
+        cy += (c.i - cy) * (1 - f);
+        rangeX *= f;
+        updateIter(); render();
+      }, { passive: false });
+
+      render();
+    })();
   </script>
 </body>
 </html>
