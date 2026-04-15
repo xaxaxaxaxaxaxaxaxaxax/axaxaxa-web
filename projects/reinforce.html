@@ -45,92 +45,38 @@
       --code-bg: #161616
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
-    html {
-      font-size: 17px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility
-    }
-    body {
-      font-family: var(--body);
-      color: var(--text);
-      background: var(--bg)
-    }
+    html { font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility }
+    body { font-family: var(--body); color: var(--text); background: var(--bg) }
     * { scrollbar-width: thin; scrollbar-color: var(--rule) transparent }
     ::-webkit-scrollbar { width: 6px; height: 6px }
     ::-webkit-scrollbar-track { background: transparent }
     ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px }
     a { color: var(--accent); text-decoration: none; transition: color .15s var(--ease) }
     a:hover { color: var(--accent-dim) }
-    .site-head-row {
-      display: flex;
-      align-items: baseline;
-      gap: .75rem;
-      margin-bottom: .75rem
-    }
-    h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: -.01em;
-      line-height: 1.3
-    }
+    .site-head-row { display: flex; align-items: baseline; gap: .75rem; margin-bottom: .75rem }
+    h1 { font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.3 }
     h1 a { color: var(--text) }
     h1 a:hover { color: var(--accent) }
-    .role {
-      font-family: var(--mono);
-      font-size: .72rem;
-      color: var(--faint);
-      letter-spacing: .03em
-    }
-    nav {
-      display: flex;
-      align-items: center;
-      padding-bottom: 1.25rem;
-      border-bottom: none
-    }
-    nav a {
-      font-family: var(--mono);
-      font-size: .78rem;
-      letter-spacing: .02em;
-      margin-right: .75rem
-    }
-    #theme-toggle {
-      color: var(--faint);
-      cursor: pointer;
-      font-size: .9rem;
-      transition: color .15s var(--ease);
-      user-select: none
-    }
+    .role { font-family: var(--mono); font-size: .72rem; color: var(--faint); letter-spacing: .03em }
+    nav { display: flex; align-items: center; padding-bottom: 1.25rem }
+    nav a { font-family: var(--mono); font-size: .78rem; letter-spacing: .02em; margin-right: .75rem }
+    #theme-toggle { color: var(--faint); cursor: pointer; font-size: .9rem; transition: color .15s var(--ease); user-select: none }
     #theme-toggle:hover { color: var(--text) }
     .lang { font-family: var(--mono); font-size: .78rem }
-    .lang a {
-      color: var(--faint);
-      text-decoration: none;
-      cursor: pointer;
-      transition: color .15s var(--ease)
-    }
+    .lang a { color: var(--faint); text-decoration: none; cursor: pointer; transition: color .15s var(--ease) }
     .lang a.active { color: var(--text) }
     .lang a:hover { color: var(--text) }
     html, body { height: 100%; overflow: hidden }
     .site-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 10;
       background: var(--bg);
       max-width: 960px;
       margin: 0 auto;
       padding: 2rem 1.5rem 0
     }
-    .page {
-      display: flex;
-      gap: 1.5rem;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 100vh
-    }
+    .page { display: flex; gap: 1.5rem; max-width: 960px; margin: 0 auto; padding: 0 1.5rem; height: 100vh }
     .core {
       flex: 1;
       max-width: 640px;
@@ -141,25 +87,9 @@
       scrollbar-width: none
     }
     .core::-webkit-scrollbar { display: none }
-    .project-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: -.01em;
-      margin-bottom: .15rem
-    }
-    .subtitle {
-      font-family: var(--mono);
-      font-size: .78rem;
-      color: var(--faint);
-      letter-spacing: .03em;
-      margin-bottom: 2rem
-    }
-    p {
-      font-size: .95rem;
-      color: var(--dim);
-      line-height: 1.7;
-      margin-bottom: .8rem
-    }
+    .project-title { font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; margin-bottom: .15rem }
+    .subtitle { font-family: var(--mono); font-size: .78rem; color: var(--faint); letter-spacing: .03em; margin-bottom: 2rem }
+    p { font-size: .95rem; color: var(--dim); line-height: 1.7; margin-bottom: .8rem }
     pre {
       font-family: var(--mono);
       font-size: .82rem;
@@ -171,83 +101,32 @@
       border-radius: 4px;
       margin: .75rem 0 1.25rem
     }
-    .screenshot {
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid var(--rule);
-      margin: 1rem 0 .5rem
-    }
-    .screenshot-label {
-      font-family: var(--mono);
-      font-size: .72rem;
-      color: var(--faint);
-      letter-spacing: .03em;
-      margin-bottom: 1.25rem;
-      display: block
-    }
+    .screenshot { width: 100%; border-radius: 6px; border: 1px solid var(--rule); margin: 1rem 0 .5rem }
+    .screenshot-label { font-family: var(--mono); font-size: .72rem; color: var(--faint); letter-spacing: .03em; margin-bottom: 1.25rem; display: block }
     .stack {
       width: 240px;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      border-left: none;
       padding-top: 8rem;
       padding-bottom: 3.5rem;
       overflow-y: auto;
       scrollbar-width: none
     }
     .stack::-webkit-scrollbar { display: none }
-    .stack-block {
-      padding: .875rem .5rem .875rem 1.25rem;
-      font-family: var(--mono);
-      font-size: .76rem;
-      line-height: 1.5
-    }
-    .stack-block + .stack-block { border-top: none }
-    .stack-label {
-      font-size: .6rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--faint);
-      margin-bottom: .6rem
-    }
+    .stack-block { padding: .875rem .5rem .875rem 1.25rem; font-family: var(--mono); font-size: .76rem; line-height: 1.5 }
+    .stack-label { font-size: .6rem; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: var(--faint); margin-bottom: .6rem }
     .stack-meta { color: var(--faint); display: block; font-size: .65rem }
-    .now-list {
-      display: flex;
-      justify-content: center;
-      gap: .75rem;
-      font-size: .65rem
-    }
+    .now-list { display: flex; justify-content: center; gap: .75rem; font-size: .65rem }
     .now-list a { color: var(--faint) }
     .now-list a:hover { color: var(--accent) }
     .now-list .icon { color: var(--faint); font-size: .5rem; margin-left: .15rem; vertical-align: middle }
-    .stack-commits {
-      font-size: .6rem;
-      line-height: 1.5
-    }
-    .stack-commits a {
-      color: var(--dim);
-      display: block;
-      padding: .15rem 0;
-      font-family: var(--mono);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap
-    }
+    .stack-commits { font-size: .6rem; line-height: 1.5 }
+    .stack-commits a { color: var(--dim); display: block; padding: .15rem 0; font-family: var(--mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
     .stack-commits a:hover { color: var(--text) }
     .commit-hash { color: var(--faint) }
-    .stack-fractal {
-      padding: .5rem;
-      display: flex;
-      flex-direction: column;
-      height: 280px
-    }
-    .stack-fractal canvas {
-      width: 100%;
-      flex: 1;
-      display: block
-    }
+    .stack-fractal { padding: .5rem; display: flex; flex-direction: column; height: 280px }
+    .stack-fractal canvas { width: 100%; flex: 1; display: block }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) .stack-fractal canvas { filter: invert(1) }
     }
@@ -257,14 +136,7 @@
       .site-header { position: static; padding-top: 2rem }
       .page { flex-direction: column; max-width: 640px; height: auto }
       .core { overflow: visible; padding-top: 0; padding-bottom: 0 }
-      .stack {
-        width: 100%;
-        border-left: none;
-        border-top: none;
-        padding-top: 1rem;
-        padding-bottom: 0;
-        overflow: visible
-      }
+      .stack { width: 100%; padding-top: 1rem; padding-bottom: 0; overflow: visible }
       .stack-block { padding-left: 0 }
     }
   </style>
@@ -420,17 +292,24 @@ auto rng = make_prng(42);
       var canvas = document.getElementById('fractal');
       if (!canvas) return;
       var dpr = window.devicePixelRatio || 1;
-      var cw = canvas.offsetWidth || 200;
-      var ch = canvas.offsetHeight || cw;
-      canvas.width = cw * dpr;
-      canvas.height = ch * dpr;
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width, h = canvas.height;
       var cx = 0, cy = 0, rangeX = 1.5, maxIter = 150;
       var jr = 0.285, ji = 0.01;
-      function render() {
+      var w, h, cw, ch, ctx;
+
+      function init() {
+        cw = canvas.offsetWidth || 200;
+        ch = canvas.offsetHeight || cw;
+        canvas.width = cw * dpr;
+        canvas.height = ch * dpr;
+        ctx = canvas.getContext('2d');
+        w = canvas.width;
+        h = canvas.height;
+      }
+
+      function drawFrame() {
         var ry = rangeX * (h / w);
         var img = ctx.createImageData(w, h);
+        var d = img.data;
         for (var py = 0; py < h; py++) {
           for (var px = 0; px < w; px++) {
             var x = cx + (px / w - 0.5) * 2 * rangeX;
@@ -443,40 +322,41 @@ auto rng = make_prng(42);
               iter++;
             }
             var idx = (py * w + px) * 4;
-            img.data[idx] = 0;
-            img.data[idx + 1] = 0;
-            img.data[idx + 2] = 0;
+            d[idx] = 0; d[idx + 1] = 0; d[idx + 2] = 0;
             if (iter >= maxIter) {
-              img.data[idx + 3] = 255;
+              d[idx + 3] = 255;
             } else {
               var log_zn = Math.log(x * x + y * y) / 2;
               var nu = Math.log(log_zn / Math.LN2) / Math.LN2;
               var t = (iter + 1 - nu) / maxIter;
-              img.data[idx + 3] = Math.floor(255 * Math.pow(Math.min(t, 1), 1.5));
+              d[idx + 3] = Math.floor(255 * Math.pow(t < 1 ? t : 1, 1.5));
             }
           }
         }
         ctx.putImageData(img, 0, 0);
       }
+
       function pxToC(px, py) {
         var ry = rangeX * (h / w);
         return { r: cx + (px / cw - 0.5) * 2 * rangeX, i: cy + (py / ch - 0.5) * 2 * ry };
       }
+
       function updateIter() {
         maxIter = Math.min(500, Math.floor(150 + 50 * Math.log(1.5 / rangeX) / Math.LN2));
       }
+
       canvas.style.cursor = 'crosshair';
       canvas.addEventListener('click', function (e) {
         var rect = canvas.getBoundingClientRect();
         var c = pxToC(e.clientX - rect.left, e.clientY - rect.top);
         cx = c.r; cy = c.i;
         rangeX *= e.shiftKey ? 2 : 0.5;
-        updateIter(); render();
+        updateIter(); drawFrame();
       });
       canvas.addEventListener('dblclick', function (e) {
         e.preventDefault();
         cx = 0; cy = 0; rangeX = 1.5; maxIter = 150;
-        render();
+        drawFrame();
       });
       canvas.addEventListener('wheel', function (e) {
         e.preventDefault();
@@ -486,9 +366,14 @@ auto rng = make_prng(42);
         cx += (c.r - cx) * (1 - f);
         cy += (c.i - cy) * (1 - f);
         rangeX *= f;
-        updateIter(); render();
+        updateIter(); drawFrame();
       }, { passive: false });
-      render();
+
+      requestAnimationFrame(function () {
+        init();
+        var idle = window.requestIdleCallback || function (fn) { setTimeout(fn, 0); };
+        idle(drawFrame);
+      });
     })();
   </script>
 </body>

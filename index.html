@@ -62,47 +62,18 @@
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility
     }
-    body {
-      font-family: var(--body);
-      color: var(--text);
-      background: var(--bg)
-    }
+    body { font-family: var(--body); color: var(--text); background: var(--bg) }
     * { scrollbar-width: thin; scrollbar-color: var(--rule) transparent }
     ::-webkit-scrollbar { width: 6px; height: 6px }
     ::-webkit-scrollbar-track { background: transparent }
     ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px }
     a { color: var(--accent); text-decoration: none; transition: color .15s var(--ease) }
     a:hover { color: var(--accent-dim) }
-    .site-head-row {
-      display: flex;
-      align-items: baseline;
-      gap: .75rem;
-      margin-bottom: .75rem
-    }
-    h1 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: -.01em;
-      line-height: 1.3
-    }
-    .role {
-      font-family: var(--mono);
-      font-size: .72rem;
-      color: var(--faint);
-      letter-spacing: .03em
-    }
-    nav {
-      display: flex;
-      align-items: center;
-      padding-bottom: 1.25rem;
-      border-bottom: none
-    }
-    nav a {
-      font-family: var(--mono);
-      font-size: .78rem;
-      letter-spacing: .02em;
-      margin-right: .75rem
-    }
+    .site-head-row { display: flex; align-items: baseline; gap: .75rem; margin-bottom: .75rem }
+    h1 { font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.3 }
+    .role { font-family: var(--mono); font-size: .72rem; color: var(--faint); letter-spacing: .03em }
+    nav { display: flex; align-items: center; padding-bottom: 1.25rem }
+    nav a { font-family: var(--mono); font-size: .78rem; letter-spacing: .02em; margin-right: .75rem }
     .muted { color: var(--faint) }
     .muted:hover { color: var(--dim) }
     section { margin-bottom: 2.25rem }
@@ -123,11 +94,7 @@
       gap: .5rem;
       margin-bottom: .1rem
     }
-    .entry-name {
-      font-size: .95rem;
-      font-weight: 500;
-      color: var(--text)
-    }
+    .entry-name { font-size: .95rem; font-weight: 500; color: var(--text) }
     .entry-links {
       font-family: var(--mono);
       font-size: .72rem;
@@ -146,17 +113,8 @@
       -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center;
       mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z'/%3E%3C/svg%3E") no-repeat center
     }
-    .entry-date {
-      font-family: var(--mono);
-      font-size: .68rem;
-      color: var(--faint);
-      font-weight: 400
-    }
-    .entry-desc {
-      font-size: .82rem;
-      color: var(--dim);
-      line-height: 1.55
-    }
+    .entry-date { font-family: var(--mono); font-size: .68rem; color: var(--faint); font-weight: 400 }
+    .entry-desc { font-size: .82rem; color: var(--dim); line-height: 1.55 }
     .writing-list a {
       color: var(--dim);
       display: block;
@@ -166,24 +124,12 @@
     }
     .writing-list a:hover { color: var(--text) }
     .writing-date { color: var(--faint); font-size: .72rem; margin-right: .4rem }
-    .about {
-      font-size: .85rem;
-      color: var(--dim);
-      line-height: 1.7;
-      margin-bottom: 1rem
-    }
+    .about { font-size: .85rem; color: var(--dim); line-height: 1.7; margin-bottom: 1rem }
     .about:last-of-type { margin-bottom: 2.25rem }
-    .tagline { letter-spacing: .02em }
     .lang { font-family: var(--mono); font-size: .78rem }
-    .lang a {
-      color: var(--faint);
-      text-decoration: none;
-      cursor: pointer;
-      transition: color .15s var(--ease)
-    }
+    .lang a { color: var(--faint); text-decoration: none; cursor: pointer; transition: color .15s var(--ease) }
     .lang a.active { color: var(--text) }
     .lang a:hover { color: var(--text) }
-    .footer-controls { display: flex; align-items: center; gap: .5rem }
     #theme-toggle {
       color: var(--faint);
       cursor: pointer;
@@ -195,9 +141,7 @@
     html, body { height: 100%; overflow: hidden }
     .site-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 10;
       background: var(--bg);
       max-width: 960px;
@@ -227,7 +171,6 @@
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      border-left: none;
       padding-top: 8rem;
       padding-bottom: 3.5rem;
       overflow-y: auto;
@@ -240,7 +183,6 @@
       font-size: .76rem;
       line-height: 1.5
     }
-    .stack-block + .stack-block { border-top: none }
     .stack-label {
       font-size: .6rem;
       font-weight: 500;
@@ -249,23 +191,12 @@
       color: var(--faint);
       margin-bottom: .6rem
     }
-    .stack-item { margin-bottom: .4rem }
-    .stack-item:last-child { margin-bottom: 0 }
-    .stack-title { color: var(--text); display: block }
     .stack-meta { color: var(--faint); display: block; font-size: .65rem }
-    .now-list {
-      display: flex;
-      justify-content: center;
-      gap: .75rem;
-      font-size: .65rem
-    }
+    .now-list { display: flex; justify-content: center; gap: .75rem; font-size: .65rem }
     .now-list a { color: var(--faint) }
     .now-list a:hover { color: var(--accent) }
     .now-list .icon { color: var(--faint); font-size: .5rem; margin-left: .15rem; vertical-align: middle }
-    .stack-commits {
-      font-size: .6rem;
-      line-height: 1.5
-    }
+    .stack-commits { font-size: .6rem; line-height: 1.5 }
     .stack-commits a {
       color: var(--dim);
       display: block;
@@ -277,17 +208,8 @@
     }
     .stack-commits a:hover { color: var(--text) }
     .commit-hash { color: var(--faint) }
-    .stack-fractal {
-      padding: .5rem;
-      display: flex;
-      flex-direction: column;
-      height: 280px
-    }
-    .stack-fractal canvas {
-      width: 100%;
-      flex: 1;
-      display: block
-    }
+    .stack-fractal { padding: .5rem; display: flex; flex-direction: column; height: 280px }
+    .stack-fractal canvas { width: 100%; flex: 1; display: block }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) .stack-fractal canvas { filter: invert(1) }
     }
@@ -295,17 +217,9 @@
     @media (max-width: 860px) {
       html, body { height: auto; overflow: auto }
       .site-header { position: static; padding-top: 2rem }
-      footer { position: static }
       .page { flex-direction: column; max-width: 640px; height: auto }
       .core { overflow: visible; padding-top: 0; padding-bottom: 0 }
-      .stack {
-        width: 100%;
-        border-left: none;
-        border-top: none;
-        padding-top: 1rem;
-        padding-bottom: 0;
-        overflow: visible
-      }
+      .stack { width: 100%; padding-top: 1rem; padding-bottom: 0; overflow: visible }
       .stack-block { padding-left: 0 }
     }
   </style>
@@ -331,7 +245,7 @@
   <div class="page">
     <main class="core">
       <p class="about" data-en="I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. Right now I am particularly interested in the intersection of compiler design and reinforcement learning &mdash; generating optimal bytecode sequences via policy search." data-ru="Меня всегда занимали задачи об ограничениях. Поиск границ и пределов, будь то производительность, функции или аксиоматические системы. Мысль о том, что у всего этого есть форма, бесконечно интересна. Это привело меня к огромному спектру интересов, но те, по которым вы, возможно, меня знаете: RL, исследования в трейдинге и разработка ПО. На работе я занимаюсь полумарковскими системами и микроструктурой; за её пределами: deep RL и написанием максимально производительных систем. Сейчас меня особенно интересует пересечение компиляторов и обучения с подкреплением &mdash; генерация оптимальных последовательностей байткода через поиск политик.">I have always been obsessed with bounding problems. Finding the edges and limits of things, whether performance, functions, or axiomatic systems. The idea that these things have shapes is endlessly interesting to me. This has taken me across an enormous range of interests, but the ones you may know me for are RL, trading research, and software engineering. At work I focus on semi-Markov systems and microstructure; outside of it, deep RL and writing maximally performant systems. Right now I am particularly interested in the intersection of compiler design and reinforcement learning &mdash; generating optimal bytecode sequences via policy search.</p>
-      <p class="about" data-en="I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, Wunderfund, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, Wunderfund, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
+      <p class="about" data-en="I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack." data-ru="Я занимаюсь этим не ради вознаграждения; делать это хорошо и есть вознаграждение. Я люблю это, и всегда любил. Я разрабатывал ПО и проводил исследования во многих известных фирмах: Tower Research Capital, TRV Trading, и неоднократно участвовал в публичных исследованиях в QR, особенно в области мартингальной средней цены. Также я котировал BTC-USDT на Binance, используя собственный стек.">I don't do this for compensation; doing these things well is the compensation. I love it, and I always have. I have written software and researched at many familiar firms: Tower Research Capital, TRV Trading, and contributed to public research in QR many times, particularly regarding the martingale midprice. I have also historically quoted BTC-USDT on Binance using my own software and research stack.</p>
       <section>
         <h2 data-en="Papers &amp; Code" data-ru="Статьи и Код">Papers &amp; Code</h2>
         <div class="entry">
@@ -467,12 +381,10 @@
       });
     })();
 
-
     (function () {
       var el = document.getElementById('commits');
       if (!el) return;
       var CK = 'gh_commits', TTL = 3600000;
-
       function render(items) {
         if (!items.length) { el.innerHTML = '<span class="stack-meta">\u2014</span>'; return; }
         var h = '';
@@ -483,7 +395,6 @@
         });
         el.innerHTML = h;
       }
-
       var seed = [
         {msg:'restructure project layout into examples/ and bench/',url:'https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h/commit/53096597',repo:'log.h',date:'2026-02-27T02:00:50Z'},
         {msg:'readme: update to c++26',url:'https://github.com/xaxaxaxaxaxaxaxaxaxax/log.h/commit/d9d290f8',repo:'log.h',date:'2026-02-27T01:48:13Z'},
@@ -493,7 +404,6 @@
         var cached = JSON.parse(localStorage.getItem(CK));
         if (cached && Date.now() - cached.ts < TTL) { render(cached.data); return; }
       } catch (e) {}
-
       var user = 'xaxaxaxaxaxaxaxaxaxax';
       var repos = ['log.h'];
       var all = [], done = 0;
@@ -522,7 +432,6 @@
       if (!el) return;
       var CK = 'ss_writing', TTL = 3600000;
       var fallback = '<p class="entry-desc"><a href="https://mathsceling.substack.com">mathsceling</a> \u2014 notes on microstructure, operator methods, and whatever else converges. coming soon.</p>';
-
       function render(items) {
         if (!items.length) { el.innerHTML = fallback; return; }
         var h = '<div class="writing-list">';
@@ -532,12 +441,10 @@
         h += '</div>';
         el.innerHTML = h;
       }
-
       try {
         var cached = JSON.parse(localStorage.getItem(CK));
         if (cached && Date.now() - cached.ts < TTL) { render(cached.data); return; }
       } catch (e) {}
-
       fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://mathsceling.substack.com/feed'))
         .then(function (r) { if (!r.ok) throw 0; return r.text(); })
         .then(function (txt) {
@@ -563,18 +470,24 @@
       var canvas = document.getElementById('fractal');
       if (!canvas) return;
       var dpr = window.devicePixelRatio || 1;
-      var cw = canvas.offsetWidth || 200;
-      var ch = canvas.offsetHeight || cw;
-      canvas.width = cw * dpr;
-      canvas.height = ch * dpr;
-      var ctx = canvas.getContext('2d');
-      var w = canvas.width, h = canvas.height;
       var cx = 0, cy = 0, rangeX = 1.5, maxIter = 150;
       var jr = 0.285, ji = 0.01;
+      var w, h, cw, ch, ctx;
 
-      function render() {
+      function init() {
+        cw = canvas.offsetWidth || 200;
+        ch = canvas.offsetHeight || cw;
+        canvas.width = cw * dpr;
+        canvas.height = ch * dpr;
+        ctx = canvas.getContext('2d');
+        w = canvas.width;
+        h = canvas.height;
+      }
+
+      function drawFrame() {
         var ry = rangeX * (h / w);
         var img = ctx.createImageData(w, h);
+        var d = img.data;
         for (var py = 0; py < h; py++) {
           for (var px = 0; px < w; px++) {
             var x = cx + (px / w - 0.5) * 2 * rangeX;
@@ -587,16 +500,14 @@
               iter++;
             }
             var idx = (py * w + px) * 4;
-            img.data[idx] = 0;
-            img.data[idx + 1] = 0;
-            img.data[idx + 2] = 0;
+            d[idx] = 0; d[idx + 1] = 0; d[idx + 2] = 0;
             if (iter >= maxIter) {
-              img.data[idx + 3] = 255;
+              d[idx + 3] = 255;
             } else {
               var log_zn = Math.log(x * x + y * y) / 2;
               var nu = Math.log(log_zn / Math.LN2) / Math.LN2;
               var t = (iter + 1 - nu) / maxIter;
-              img.data[idx + 3] = Math.floor(255 * Math.pow(Math.min(t, 1), 1.5));
+              d[idx + 3] = Math.floor(255 * Math.pow(t < 1 ? t : 1, 1.5));
             }
           }
         }
@@ -613,21 +524,18 @@
       }
 
       canvas.style.cursor = 'crosshair';
-
       canvas.addEventListener('click', function (e) {
         var rect = canvas.getBoundingClientRect();
         var c = pxToC(e.clientX - rect.left, e.clientY - rect.top);
         cx = c.r; cy = c.i;
         rangeX *= e.shiftKey ? 2 : 0.5;
-        updateIter(); render();
+        updateIter(); drawFrame();
       });
-
       canvas.addEventListener('dblclick', function (e) {
         e.preventDefault();
         cx = 0; cy = 0; rangeX = 1.5; maxIter = 150;
-        render();
+        drawFrame();
       });
-
       canvas.addEventListener('wheel', function (e) {
         e.preventDefault();
         var rect = canvas.getBoundingClientRect();
@@ -636,10 +544,15 @@
         cx += (c.r - cx) * (1 - f);
         cy += (c.i - cy) * (1 - f);
         rangeX *= f;
-        updateIter(); render();
+        updateIter(); drawFrame();
       }, { passive: false });
 
-      render();
+      // Defer initial render until after first paint so it doesn't block page display
+      requestAnimationFrame(function () {
+        init();
+        var idle = window.requestIdleCallback || function (fn) { setTimeout(fn, 0); };
+        idle(drawFrame);
+      });
     })();
   </script>
 </body>
