@@ -1,0 +1,1260 @@
+\documentclass[11pt,twoside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxmath}
+\usepackage[
+  activate={true,nocompatibility},
+  tracking=true,
+  expansion=true,
+  factor=1100,
+  stretch=10,
+  shrink=10
+]{microtype}
+\microtypecontext{spacing=nonfrench}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+\usepackage{tocloft}
+
+\geometry{
+  paperwidth=8.5in,
+  paperheight=11in,
+  left=1.2in,
+  right=1.2in,
+  top=1.2in,
+  bottom=1.2in,
+  headheight=15pt
+}
+
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+\setlength{\abovedisplayskip}{12pt plus 3pt minus 4pt}
+\setlength{\belowdisplayskip}{10pt plus 3pt minus 4pt}
+\setlength{\abovedisplayshortskip}{6pt plus 3pt}
+\setlength{\belowdisplayshortskip}{8pt plus 3pt minus 3pt}
+
+\definecolor{sectioncolor}{RGB}{25,25,45}
+\definecolor{linkcolor}{RGB}{60,50,130}
+\definecolor{citecolor}{RGB}{100,50,50}
+\definecolor{theorembar}{RGB}{50,50,80}
+\definecolor{defnbg}{RGB}{245,243,248}
+\definecolor{remarkbar}{RGB}{140,140,160}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sectioncolor}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{sectioncolor}}
+  {\thesubsubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{3.5ex plus 1.5ex minus 1ex}{2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .5ex}{1.2ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{2ex plus 0.8ex minus .3ex}{1ex plus .2ex}
+
+% Prevent section/subsection headings from appearing at the bottom of a page
+\pretocmd{\section}{\needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
+
+% TOC styling
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\normalfont\bfseries}
+\renewcommand{\cftsecpagefont}{\normalfont\bfseries}
+\renewcommand{\cftsubsecfont}{\normalfont\small}
+\renewcommand{\cftsubsecpagefont}{\normalfont\small}
+\setlength{\cftbeforesecskip}{4pt plus 1pt}
+\setlength{\cftbeforesubsecskip}{1pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[RE]{\small\itshape Beyond Microprice}
+\fancyhead[LO]{\small\itshape L.\,Petersen}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\small\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}{Assumption}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Theorem-class styling: subtle left bar
+\tcolorboxenvironment{theorem}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{proposition}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{lemma}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{corollary}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+
+% Definition styling: light background
+\tcolorboxenvironment{definition}{
+  colback=defnbg, colframe=defnbg, boxrule=0pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+
+% Remark styling: thinner gray left bar
+\tcolorboxenvironment{remark}{
+  blanker, borderline west={1.5pt}{0pt}{remarkbar},
+  left=10pt, before skip=8pt plus 2pt minus 2pt,
+  after skip=8pt plus 2pt minus 2pt, breakable
+}
+
+% Spacing between consecutive proofs
+\AtEndEnvironment{proof}{\medskip}
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Ran}{Ran}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\ippi}[2]{\left\langle #1,#2\right\rangle_\pi}
+
+
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkcolor,
+  citecolor=citecolor,
+  urlcolor=linkcolor,
+  bookmarksnumbered=true,
+  pdfauthor={Lev Petersen},
+  pdftitle={Beyond Microprice: Martingale Correctors and Value Functions from the Limit Order Book}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+
+\vspace*{1.4cm}
+
+{\Huge\bfseries\color{sectioncolor} Beyond Microprice\\[0.5em]
+Martingale Correctors and Value Functions\\[0.3em]
+from the Limit Order Book\par}
+
+\vspace{0.6cm}
+{\color{sectioncolor}\rule{0.4\textwidth}{0.8pt}}
+
+\vspace{1cm}
+
+{\Large Lev Petersen\par}
+
+\vspace{1.4cm}
+
+\begin{minipage}{0.85\textwidth}
+\setstretch{1.15}
+\small
+\noindent\textbf{Abstract.}
+Stoikov (2018) introduced the \emph{microprice} as a horizon-free limit of conditional expectations of future prices computed from Level-I order-book data via an absorbing Markov chain. We take that construction as a starting point and push beyond it: at mid-price move times the problem becomes a finite Markov additive system, and the microprice correction is one instance of a broader Poisson-corrector framework.
+
+The key object is the one-move conditional drift $G_1$ of the mid-price on the embedded post-move chain $B$. When the stationary drift vanishes, Stoikov's adjustment is exactly the unique centered solution of the Poisson equation $(I-B)g=G_1$. Consequently $p_k+g(X_k)$ is a martingale. The same Poisson equation yields martingale correctors for arbitrary additive order-book functionals.
+
+We give transparent conditions for the absorbing fundamental matrix $(I-Q)^{-1}$ and the post-move chain $B$, prove convergence and truncation bounds for the microprice series, derive an exact finite-horizon decomposition that separates stationary drift from the centered corrector, and record a mean-square optimality identity against state-based baselines. We also introduce discounted resolvent regularization, which is always well posed, and quantify its bias as the discount tends to one. Empirically, we first reproduce Stoikov's BAC/CVX March~2011 public-data benchmark, then test the broader family on five names from the raw WSELOB-2017 limit-order-book data. On that out-of-sample panel the weighted mid is uniformly dominated, the price corrector remains close to a move-time martingale, and the discounted resolvent is again nearly indistinguishable from the centered Poisson correction.
+
+\vspace{0.9em}
+\noindent\textbf{Keywords:} microprice, martingale corrector, Poisson equation, Markov additive process, Markov potential, value function, Neumann series, resolvent, absorbing Markov chain
+
+\end{minipage}
+
+\vfill
+
+{\small\color{sectioncolor} Draft \textbullet\ \today}
+
+\end{titlepage}
+
+\tableofcontents
+\thispagestyle{plain}
+
+\newpage
+
+% ============================
+\section{Introduction}\label{sec:intro}
+
+Stoikov's microprice \cite{Stoikov2018} starts from a practical microstructure question: given the current state of the limit order book, what is a fair estimate of the asset's value? The classical mid-price
+\[
+p_t := \frac{b_t+a_t}{2}
+\]
+ignores information in queue imbalance and related order-flow imbalance signals \cite{GouldEtAl2013,ContKukanovStoikov2014}. A fair value should incorporate how the current book state predicts future mid-price moves.
+
+This paper isolates the operator structure behind that prediction problem. At \emph{move times} (times when the mid-price changes), the pair consisting of the book state and the price increment forms a finite Markov additive system. The one-step predictable drift of the price is state dependent. The microprice correction is precisely the Poisson corrector that removes this drift.
+
+Three consequences are central. First, the absorbing-chain computation used by Stoikov can be written cleanly in terms of the no-move kernel $Q$, the post-move chain $B$, and the one-move drift $G_1$. Second, when the stationary drift per move vanishes, the infinite-horizon correction is the unique centered solution of $(I-B)g=G_1$, so price plus corrector is a martingale. Third, even when the stationary drift does not vanish, the same Poisson equation separates the linear trend from a bounded state correction; this gives the correct martingale decomposition and explains exactly why the undiscounted microprice diverges in trending regimes. The broader message is that the microprice is just the first example in a larger operator family.
+
+\paragraph{Roadmap.}
+Section~\ref{sec:setup} fixes the two clocks (event time and move time) and the Markov assumptions. Section~\ref{sec:microprice_mech} derives $G_1$ and $B$ from the absorbing event-time dynamics, proves the Poisson-equation representation, and records finite-horizon, prediction, and discounted-resolvent consequences. Section~\ref{sec:martingale_general} abstracts the same argument to general additive functionals. The companion note \cite{Petersen2025Value} isolates the discounted value-function viewpoint.
+
+% ============================
+\section{Setup and notation}\label{sec:setup}
+
+We work with Level-I order book data. At each event time $t$ we observe the best bid $b_t$, best ask $a_t$, and their queue sizes $B_t$ and $A_t$.
+
+\subsection{Prices and book features}
+
+We use the following derived quantities:
+\begin{equation}
+\begin{aligned}
+\text{Mid-price:} \quad & p_t = (b_t + a_t)/2, \\[0.3em]
+\text{Spread:} \quad & s_t = a_t - b_t, \\[0.3em]
+\text{Imbalance:} \quad & i_t = \frac{B_t - A_t}{B_t + A_t} \in [-1,1], \\[0.3em]
+\text{Size-weighted mid:} \quad &
+m_t = \frac{a_t B_t + b_t A_t}{B_t + A_t} = p_t + i_t \cdot \frac{s_t}{2}.
+\end{aligned}
+\end{equation}
+
+\paragraph{Mapping to Stoikov (2018) notation.}
+Stoikov \cite{Stoikov2018} uses an imbalance $I_{\mathrm{S}}\in[0,1]$ and the \emph{half-spread}
+$S=\tfrac12(a_t-b_t)$.
+Our imbalance $i_t\in[-1,1]$ and \emph{full spread} $s_t=a_t-b_t$ are related by
+\[
+ i_t = 2I_{\mathrm{S}}-1, \qquad s_t = 2S.
+\]
+With this identification, the size-weighted mid identity agrees exactly with Stoikov's weighted mid:
+\[
+ m_t = p_t + i_t\frac{s_t}{2} = p_t + (2I_{\mathrm{S}}-1)S.
+\]
+
+The object of interest is not $m_t$ itself, but rather a \emph{fair value} obtained by conditioning on the book state and looking forward to future price moves.
+
+\subsection{Event time vs.\ move time}
+
+There are two natural clocks. Event time counts every book update (queue change, trade, etc.); the discretized state evolves as a Markov chain at this clock. Move time counts only events that change the mid-price, and this embedded chain is the right object for the microprice/martingale-corrector viewpoint.
+
+Let $\tau_0=0$ and let
+\begin{equation}\label{eq:move_times_def}
+\tau_{k+1} := \inf\{t > \tau_k : p_t \neq p_{t-}\}
+\end{equation}
+be the $(k+1)$-st mid-price move time. Define the move-time price and state
+\[
+p_k := p_{\tau_k}, \qquad X_k := X_{\tau_k}.
+\]
+We write $\mathcal{F}_k:=\sigma\!\left(\,(p_j,X_j)_{0\le j\le k}\,\right)$ for the \emph{move-time filtration}.
+All ``fair value'' objects in this paper are conditional expectations given the information available at time $k$,
+i.e.\ conditional on $\mathcal{F}_k$ (not merely on $X_k$).
+
+Because the mid-price is additive across moves, it is natural to forecast \emph{increments} relative to the current price level.
+Under the Markov-additive structure formalized in Assumption~\ref{assump:map}, the conditional law of future price increments depends on the book state $X_k$ but not on the absolute price level $p_k$.
+Consequently, many conditional expectations take the form ``current value + state-dependent correction''.
+
+\subsection{State discretization}
+
+We discretize continuous features into buckets. For the single-instrument setting, a common choice is
+\[
+X_t = (\text{spread bucket}, \text{imbalance bucket}),
+\]
+with $m$ spread buckets and $n$ imbalance buckets, giving $L=mn$ states. Nothing in the operator algebra depends on this particular choice; any finite Markov state can be used.
+
+\subsection{Standing assumptions}
+
+\begin{assumption}[Markov property]\label{assump:markov}
+The discretized state $X_t$ is Markov at event times.
+\end{assumption}
+
+\begin{assumption}[Bounded increments]\label{assump:bounded-increments}
+One-step mid-price changes satisfy $|\Delta p_t| \le D$ for some constant $D$.
+\end{assumption}
+
+\begin{assumption}[Markov additive structure / translation invariance]\label{assump:map}
+At move times, the pair $(X_k,p_k)$ is a \emph{Markov additive process} in the following sense:
+conditional on $\mathcal{F}_k$, the law of $(X_{k+1},\Delta p_{k+1})$ depends on the past only through $X_k$,
+and the conditional distribution of the increment $\Delta p_{k+1}:=p_{k+1}-p_k$ depends on $X_k$ but not on the absolute price level $p_k$.
+In particular, the conditional mean increment is state dependent: there exists a deterministic function $m:\mathcal{X}\to\R$ such that
+\[
+\E[\Delta p_{k+1}\mid \mathcal{F}_k]=m(X_k).
+\]
+In Section~\ref{sec:microprice_mech} this function is identified with the first adjustment $G_1$ produced by the absorbing-chain construction.
+\end{assumption}
+
+\begin{assumption}[Ergodicity at move times]\label{assump:ergodicity}
+The post-move chain ($B := (I-Q)^{-1}T$, defined in Section~\ref{sec:microprice_mech}) is irreducible and aperiodic, admitting a unique stationary distribution.
+\end{assumption}
+
+% ============================
+\section{Microprice mechanics: from absorbing event time to a Poisson equation}\label{sec:microprice_mech}
+
+This section makes explicit the mechanics behind Stoikov's microprice computation \cite{Stoikov2018}. We first decompose the event-time kernel into no-move and move pieces $(Q,T)$, then use the fundamental matrix $(I-Q)^{-1}$ to compute the embedded post-move chain $B$ and the one-move drift $G_1$, and finally recognize the infinite-horizon adjustment as the centered solution to a Poisson equation on $B$.
+
+\subsection{Transition decomposition}
+
+Partition event-time transitions according to whether the mid-price moves. Let $Q_{xy}$ denote the probability of transitioning from state $x$ to $y$ without a price move, and $T_{xy}$ the probability with a move. The full event-time transition matrix is
+\[
+P := Q + T,
+\]
+and is row-stochastic.
+Whenever stopping-time arguments are needed, we write
+\[
+\mathcal{E}_n:=\sigma\!\left((X_j,p_j)_{0\le j\le n}\right)
+\]
+for the event-time filtration.
+
+Let
+\[
+p_{\mathrm{move}}(x) := \sum_y T_{xy} = 1 - \sum_y Q_{xy}
+\]
+be the probability the next event is a mid-price move.
+
+For price changes, we allow the (conditional) move size to depend on the \emph{move transition}.
+Let
+\[
+\Delta^p_{xy} := \E\!\left[\Delta p \,\middle|\, X_{n-1}=x,\ X_n=y,\ \text{the step }(x\to y)\text{ is a price move}\right]
+\]
+denote the conditional mean mid-price change associated with a move transition $x\to y$.
+Collect these means into the matrix $\Delta^p\in\R^{L\times L}$.
+Then the unconditional one-step drift at event time (including zero change on no-move events) is
+\begin{equation}\label{eq:bar_r_general}
+\bar r_x := \E[\Delta p_n\mid X_{n-1}=x] = \sum_y T_{xy}\,\Delta^p_{xy},
+\qquad\text{i.e.}\qquad
+\bar r = (T\odot \Delta^p)\,\1,
+\end{equation}
+where $\odot$ denotes entrywise (Hadamard) product and $\1$ is the all-ones column vector.
+
+A common special case is that the move size distribution depends only on the \emph{pre-move} state $x$ and takes values $\{\delta_j\}_j$ (e.g.\ $\pm$ one tick).
+Writing $R_{xj}:=\Prob(\Delta p=\delta_j\mid X_{n-1}=x,\ \text{move})$ and $\boldsymbol{\delta}$ for the vector with entries $\delta_j$, the conditional mean move size is
+\[
+r^{\mathrm{move}}_x := \sum_j R_{xj}\,\delta_j,
+\qquad\text{i.e.}\qquad
+r^{\mathrm{move}} = R\,\boldsymbol{\delta}.
+\]
+In this factorized setting $\Delta^p_{xy}=r^{\mathrm{move}}_x$ does not depend on $y$ and \eqref{eq:bar_r_general} reduces to
+\[
+\bar r_x = p_{\mathrm{move}}(x)\,r^{\mathrm{move}}_x,
+\qquad\text{i.e.}\qquad
+\bar r = D_{p_{\mathrm{move}}}\, r^{\mathrm{move}},
+\]
+where $D_{p_{\mathrm{move}}} := \diag(p_{\mathrm{move}}(x))$.
+
+\subsection{The fundamental matrix of the no-move kernel}
+
+Between consecutive price moves, the book state evolves according to the no-move kernel $Q$. Understanding this transient dynamics is essential: the fundamental matrix $(I-Q)^{-1}$ aggregates expected visits before the next move, and its invertibility guarantees that moves eventually arrive from every state.
+
+The no-move matrix $Q$ is substochastic: each row sums to at most $1$. When moves occur with uniformly positive probability, the spectral radius of $Q$ is strictly less than one, and the fundamental matrix exists.
+
+\begin{definition}
+A matrix $Q \in \R^{L \times L}$ is \emph{substochastic} if $Q_{xy} \ge 0$ for all $x,y$ and $\sum_y Q_{xy} \le 1$ for all $x$.
+\end{definition}
+
+\begin{lemma}[Spectral radius bound]\label{lem:substoch_spectral}
+Let $Q$ be substochastic with $\sum_y Q_{xy} \le 1 - \varepsilon$ for all $x$. Then $\rho(Q) \le 1 - \varepsilon < 1$.
+\end{lemma}
+
+\begin{proposition}[Fundamental matrix]\label{prop:neumann}
+Under the conditions of Lemma~\ref{lem:substoch_spectral}, the matrix $I - Q$ is invertible with
+\[
+N := (I - Q)^{-1} = \sum_{k=0}^\infty Q^k,
+\qquad
+\|N\|_\infty \le \frac{1}{\varepsilon}.
+\]
+The entries $N_{xy}$ equal the expected number of visits to $y$, starting from $x$, before the first price move \cite{KemenySnell1976}.
+\end{proposition}
+
+\begin{remark}[Sufficient versus necessary conditions for $I-Q$ invertibility]
+Lemma~\ref{lem:substoch_spectral} assumes a uniform bound $\sum_y Q_{xy}\le 1-\varepsilon$, i.e. a state-independent lower bound on move probability.
+This is a convenient \emph{sufficient} condition yielding the clean norm bound $\|N\|_\infty\le 1/\varepsilon$.
+For the microprice algebra itself, the essential requirement is the \emph{transience} of the no-move subchain, equivalently $\rho(Q)<1$ (eventual arrival of a move almost surely from every state).
+\end{remark}
+
+\begin{lemma}[Non-negativity]\label{lem:N_nonneg}
+The fundamental matrix $N$ has non-negative entries, with $N_{xx} \ge 1$ for all $x$.
+\end{lemma}
+
+\subsection{Post-move chain and first adjustment}
+
+\begin{definition}
+The \emph{first adjustment} is the expected cumulative price change up to the first move:
+\[
+G_1 := (I - Q)^{-1} \bar r = N\,\bar r .
+\]
+In the factorized setting $\bar r=D_{p_{\mathrm{move}}} r^{\mathrm{move}}$ (see \eqref{eq:bar_r_general}), this reads $G_1 = N D_{p_{\mathrm{move}}} r^{\mathrm{move}}$.
+The \emph{post-move chain} is the transition matrix observed only at move times:
+\[
+B := (I-Q)^{-1} T = N\, T.
+\]
+\end{definition}
+
+\begin{lemma}[Embedded-chain interpretation]\label{lem:embedded_chain}
+Let $(X_n)_{n\ge 0}$ be the event-time Markov chain with transition matrix $P=Q+T$, and let
+\[
+\tau := \inf\{n\ge 1 : \text{the step }(X_{n-1}\to X_n)\text{ is a price move}\}.
+\]
+Then $B_{xy}=\Prob_x(X_\tau=y)$ is the distribution of the post-move state, and the first adjustment is
+\[
+G_1(x)=\E_x[\Delta p_\tau],
+\]
+the expected mid-price change at the next move. Equivalently, $G_1$ is the unique solution of the first-step system
+\begin{equation}\label{eq:G1_firststep}
+G_1 = \bar r + QG_1.
+\end{equation}
+\end{lemma}
+
+\begin{lemma}[Move-time chain is Markov with kernel $B$]\label{lem:move_time_markov}
+Let $(X_n)_{n\ge 0}$ be the event-time Markov chain with transition matrix $P=Q+T$, and let $(\tau_k)_{k\ge 0}$ be the successive move times as in \eqref{eq:move_times_def}.
+Then the sampled process $(X_{\tau_k})_{k\ge 0}$ is a Markov chain on $\mathcal X$ with transition kernel $B$:
+\[
+\Prob\big(X_{\tau_{k+1}}=y\mid \mathcal E_{\tau_k}\big)=B_{X_{\tau_k},y} \qquad \text{a.s.}
+\]
+In particular, conditional on the full event-time history up to $\tau_k$, the law of the next post-move state depends only on $X_{\tau_k}$.
+\end{lemma}
+
+\begin{lemma}\label{lem:B_stochastic}
+If $Q + T$ is row-stochastic and $\rho(Q) < 1$, then $B$ is row-stochastic.
+\end{lemma}
+
+\subsection{The microprice adjustment as a Poisson equation}
+
+Fix a move-time index $k$ and recall the move-time filtration $\mathcal{F}_k=\sigma\!\left((p_j,X_j)_{0\le j\le k}\right)$.
+For $n\ge 0$, define the \emph{$n$-move fair value} (the best mean-square predictor of the future mid-price at horizon $n$ moves) by
+\[
+p_k^{(n)} := \E\!\left[p_{k+n}\mid \mathcal{F}_k\right].
+\]
+Because $p_k$ is $\mathcal{F}_k$-measurable and the mid-price is additive across moves, we can write
+\[
+p_{k+n}=p_k+\sum_{\ell=1}^{n}\Delta p_{k+\ell},\qquad \Delta p_{k+\ell}:=p_{k+\ell}-p_{k+\ell-1}.
+\]
+Under the Markov-additive/translation-invariance Assumption~\ref{assump:map}, the conditional law of future increments given $\mathcal{F}_k$ depends on the past only through $X_k$.
+Hence there exists a deterministic function $G^{(n)}:\mathcal{X}\to\R$ such that
+\begin{equation}\label{eq:fair_value_decomp}
+p_k^{(n)} \;=\; p_k \;+\; G^{(n)}(X_k),
+\qquad\text{where}\qquad
+G^{(n)}(x) := \E\!\left[p_{k+n}-p_k \,\middle|\, X_k=x\right].
+\end{equation}
+By time-homogeneity of the move-time dynamics, $G^{(n)}$ does not depend on $k$.
+
+\begin{remark}[Conditioning on $X_k$ versus conditioning on $\mathcal{F}_k$]\label{rem:conditioning}
+If one conditions only on $X_k$ (and not on the current price level), then
+$\E[p_{k+n}\mid X_k]=\E[p_k\mid X_k]+G^{(n)}(X_k)$.
+In trading applications, $p_k$ is observed, so the relevant fair value is \eqref{eq:fair_value_decomp}.
+\end{remark}
+
+When the limit exists, the \emph{microprice} (horizon-free fair value at move times) is
+\[
+p_k^{\mathrm{micro}} := \lim_{n\to\infty} p_k^{(n)} = p_k + G^*(X_k),
+\qquad\text{where}\qquad
+G^* := \lim_{n\to\infty} G^{(n)}.
+\]
+
+By the tower property and the Markov property at move times, the adjustments satisfy the recursion
+\[
+G^{(0)}=0,\qquad G^{(n)} = G_1 + B G^{(n-1)}.
+\]
+Unrolling gives
+\[
+G^{(n)} = \sum_{\ell=0}^{n-1} B^{\ell} G_1.
+\]
+When it converges, the infinite-horizon adjustment is
+\begin{equation}\label{eq:microprice_series}
+G^* := \lim_{n\to\infty} G^{(n)} = \sum_{\ell=0}^\infty B^{\ell} G_1.
+\end{equation}
+
+Since $B$ is stochastic (hence has eigenvalue $1$), the convergence of \eqref{eq:microprice_series} requires a \emph{centering} condition.
+
+\begin{definition}[Centering]\label{def:centering}
+Let $\pi$ be the stationary distribution of $B$. We say $G_1$ is \emph{centered} if $\pi^T G_1 = 0$.
+Equivalently, if the move-time chain is started from stationarity, then the mean price increment per move vanishes:
+\[
+\E_\pi[\Delta p_{k+1}] = \pi^T G_1 = 0.
+\]
+\end{definition}
+
+\begin{remark}[Equivalence with Stoikov's $B^*G_1=0$ condition]
+For a finite ergodic chain, $B^k\to \1\pi^T$ as $k\to\infty$, so Stoikov's limit kernel satisfies $B^*=\1\pi^T$.
+Hence $B^*G_1=0$ is equivalent to $\pi^T G_1=0$.
+\end{remark}
+
+\begin{theorem}[Microprice convergence]\label{thm:convergence}
+Let $B$ be an ergodic Markov kernel on a finite state space with stationary distribution $\pi$.
+Let
+\[
+\lambda_* := \max\{|\lambda| : \lambda \in \sigma(B),\ \lambda\neq 1\}\in[0,1)
+\]
+be the second-largest eigenvalue modulus (SLEM). See, e.g., \cite{Norris1997,LevinPeres2017} for background on the spectral picture of finite ergodic chains.
+If $G_1$ is centered, i.e.\ $\pi^T G_1 = 0$, then:
+
+\begin{enumerate}
+\item The series \eqref{eq:microprice_series} converges absolutely to
+\[
+G^* = (I - B + \1\pi^T)^{-1} G_1;
+\]
+see \cite{KemenySnell1976,Meyer1975}.
+In particular, $G^*$ is centered: $\pi^T G^*=0$.
+
+\item $G^*$ is the unique solution of the centered Poisson equation
+\begin{equation}\label{eq:poisson_main}
+(I-B)G^* = G_1, \qquad \pi^T G^* = 0.
+\end{equation}
+
+\item For any $\rho \in (\lambda_*, 1)$ there exists $C_\rho<\infty$ such that the truncation error after $n$ terms satisfies
+\[
+\left\| G^* - \sum_{k=0}^{n-1} B^k G_1 \right\|_\infty \le \frac{C_\rho \rho^n}{1 - \rho} \|G_1\|_\infty.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proposition}[Finite-horizon decomposition and trend term]\label{prop:finite_horizon_decomp}
+Let $\mu:=\pi^T G_1$ and write $h:=G_1-\mu\1$.
+Assume $B$ is ergodic, and let $\tilde G$ be the unique centered solution of
+\[
+(I-B)\tilde G = h, \qquad \pi^T \tilde G = 0.
+\]
+Then for every $n\ge 1$,
+\begin{equation}\label{eq:finite_horizon_decomp}
+G^{(n)} = n\mu\,\1 + \tilde G - B^n \tilde G.
+\end{equation}
+In particular, in the centered regime $\mu=0$ and $\tilde G=G^*$, so
+\[
+G^{(n)} = G^* - B^n G^*.
+\]
+\end{proposition}
+
+\subsection{Microprice as a martingale corrector}
+
+At move times, $(X_k,p_k)$ is a Markov additive process:
+\[
+\Prob(X_{k+1}=y\mid X_k=x)=B_{xy},
+\qquad
+\E[\Delta p_{k+1}\mid X_k=x]=G_1(x),
+\]
+where $\Delta p_{k+1}:=p_{k+1}-p_k$.
+
+\begin{theorem}[Microprice martingale]\label{thm:microprice_martingale}
+Assume the centered Poisson equation \eqref{eq:poisson_main} has solution $G^*$ (equivalently, $\pi^T G_1=0$). Then the move-time process
+\begin{equation}\label{eq:microprice_process}
+\mathcal{P}_k := p_k^{\mathrm{micro}} := p_k + G^*(X_k)
+\end{equation}
+is a martingale with respect to the move-time filtration.
+\end{theorem}
+
+\begin{remark}[Trending markets and discounted surrogates]
+When $\mu:=\pi^T G_1\neq 0$, Proposition~\ref{prop:finite_horizon_decomp} shows that the fair-value adjustment grows as $n\mu\,\1$ plus a bounded state term. Thus the undiscounted microprice is not finite, but the centered corrector $\tilde G$ still yields the martingale decomposition
+\[
+p_k - k\mu + \tilde G(X_k)
+\]
+up to an additive constant. Discounted resolvents therefore play a regularizing role in nonstationary or weakly centered regimes.
+\end{remark}
+
+\begin{proposition}[First adjustment bounds]\label{prop:G1_bound}
+If the mid-price move size is uniformly bounded by $|\Delta p| \le D$, then $\|G_1\|_\infty \le D$.
+
+If one instead bounds via the operator norm, $\|G_1\|_\infty \le \|N\|_\infty\|\bar r\|_\infty$, and imposes an absorption floor $p_{\mathrm{move}}(x)\ge \varepsilon$ so that $\|N\|_\infty\le 1/\varepsilon$, then $\|G_1\|_\infty \le \|\bar r\|_\infty/\varepsilon$.
+\end{proposition}
+
+% ============================
+
+\subsection{Prediction optimality and mean-square improvement}\label{sec:prediction_optimality}
+
+For a fixed horizon $n\ge 1$, the $n$-move fair value $p_k^{(n)}=\E[p_{k+n}\mid\mathcal F_k]$ is, by definition, the conditional expectation of the future mid-price given the information available at move time~$k$.
+This elementary fact already yields a strong \emph{dominance} statement: $p_k^{(n)}$ minimizes mean-squared prediction error among \emph{all} $\mathcal F_k$-measurable predictors.
+Specializing to predictors of the form ``current mid-price + state-based correction'' yields a clean improvement guarantee over baselines such as the mid-price itself or the size-weighted mid.
+
+\begin{proposition}[Pythagorean identity for conditional expectations]\label{prop:pythag_condexp}
+Let $\mathcal G\subseteq\mathcal F$ be a sub-$\sigma$-algebra and let $Z\in L^2$.
+Write $\hat Z:=\E[Z\mid\mathcal G]$.
+Then for any $\mathcal G$-measurable $Y\in L^2$,
+\begin{equation}\label{eq:pythag_condexp}
+\E\big[(Z-Y)^2\big]
+=
+\E\big[(Z-\hat Z)^2\big]
++
+\E\big[(\hat Z-Y)^2\big].
+\end{equation}
+\end{proposition}
+
+\begin{corollary}[Dominance over state-based baselines]\label{cor:dominance_state_based}
+Fix $n\ge 1$ and let $\hat p_k:=p_k+a(X_k)$ for some deterministic function $a:\mathcal X\to\R$.
+Then
+\begin{equation}\label{eq:mse_dominance}
+\E\big[(p_{k+n}-\hat p_k)^2\big]
+=
+\E\big[(p_{k+n}-p_k^{(n)})^2\big]
++
+\E\big[(G^{(n)}(X_k)-a(X_k))^2\big],
+\end{equation}
+where $G^{(n)}$ is the adjustment from \eqref{eq:fair_value_decomp}.
+In particular:
+\begin{itemize}
+\item The mean-square optimal predictor among all $\hat p_k=p_k+a(X_k)$ is obtained by taking $a=G^{(n)}$. It is unique up to modification on states with $\Prob(X_k=x)=0$; in particular it is unique whenever $X_k$ has full support.
+\item Taking the baseline $a\equiv 0$ (mid-price predictor) gives the strict improvement identity
+\[
+\E\big[(p_{k+n}-p_k)^2\big]
+=
+\E\big[(p_{k+n}-p_k^{(n)})^2\big]
++
+\E\big[(G^{(n)}(X_k))^2\big],
+\]
+so the $n$-move fair value improves MSE over the mid-price by $\E[(G^{(n)}(X_k))^2]$ (unless $G^{(n)}\equiv 0$).
+\item If the size-weighted mid $m_k$ is included in the state (so that $m_k=p_k+a_{\mathrm{wm}}(X_k)$ for some $a_{\mathrm{wm}}$), then \eqref{eq:mse_dominance} applies verbatim and $p_k^{(n)}$ dominates $m_k$ in mean-square error.
+\end{itemize}
+\end{corollary}
+
+\begin{remark}[As $n\to\infty$ in the centered regime]\label{rem:mse_limit}
+When the centering condition $\pi^T G_1=0$ holds, $G^{(n)}\to G^*$ and $p_k^{(n)}\to p_k^{\mathrm{micro}}$.
+Equation \eqref{eq:mse_dominance} shows that the \emph{MSE gap} between any fixed state-based baseline $a(X_k)$ and the optimal $n$-move predictor is exactly $\E[(G^{(n)}(X_k)-a(X_k))^2]$, which converges to $\E[(G^*(X_k)-a(X_k))^2]$ as $n\to\infty$.
+Thus, in stationary centered regimes the advantage of using the microprice correction saturates to a finite limit even though the absolute prediction error typically grows with horizon.
+\end{remark}
+
+\subsection{A regularized microprice via discounted resolvents}\label{sec:regularized_micro}
+
+The microprice $G^*=\sum_{k\ge 0}B^kG_1$ is an \emph{undiscounted} potential and therefore requires centering because $B$ has eigenvalue~$1$.
+A simple and useful regularization is to introduce a discount factor $\alpha\in(0,1)$, which yields a well-posed resolvent on all of $\R^L$ without any centering.
+
+\begin{definition}[Discounted adjustment]\label{def:discounted_adjustment}
+For $\alpha\in(0,1)$ define the discounted potential
+\begin{equation}\label{eq:discounted_potential}
+G^{(\alpha)} := \sum_{k=0}^{\infty} \alpha^k B^k G_1 = (I-\alpha B)^{-1}G_1,
+\end{equation}
+and the associated discounted microprice process
+\[
+p_k^{(\alpha)} := p_k + G^{(\alpha)}(X_k).
+\]
+\end{definition}
+
+\begin{proposition}[Interpretations of the discounted adjustment]\label{prop:discounted_interp}
+For $\alpha\in(0,1)$ and any move-time index $k$,
+\begin{equation}\label{eq:discounted_increment_interp}
+G^{(\alpha)}(X_k)
+=
+\E\!\left[\sum_{j=1}^{\infty}\alpha^{j-1}\Delta p_{k+j}\,\middle|\,\mathcal F_k\right].
+\end{equation}
+Moreover, if $N$ is an independent geometric random variable on $\{0,1,2,\dots\}$ with $\Prob(N=n)=(1-\alpha)\alpha^n$, then
+\begin{equation}\label{eq:geom_horizon}
+\E[p_{k+N}\mid \mathcal F_k]
+=
+p_k + \alpha (I-\alpha B)^{-1}G_1(X_k)
+=
+p_k + \alpha\,G^{(\alpha)}(X_k).
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Discount-to-undiscounted limit with quantitative bias control]\label{prop:discount_limit_bound}
+Assume $B$ is ergodic and $G_1$ is centered ($\pi^T G_1=0$), so that the undiscounted microprice adjustment $G^*$ exists.
+Let $\rho\in(\lambda_*,1)$ and let $C_\rho$ be such that $\|B^kG_1\|_\infty\le C_\rho\rho^k\|G_1\|_\infty$ for all $k\ge 0$ (as in the proof of Theorem~\ref{thm:convergence}).
+Then for every $\alpha\in(0,1)$,
+\[
+\|G^{(\alpha)}-G^*\|_\infty
+\le
+(1-\alpha)\,\frac{C_\rho\,\rho}{(1-\rho)^2}\,\|G_1\|_\infty.
+\]
+In particular, $G^{(\alpha)}\to G^*$ as $\alpha\uparrow 1$.
+\end{proposition}
+
+\begin{remark}[Why discounting is useful even when centering holds]
+In applications $B$ and $G_1$ are estimated from data and may violate exact centering due to sampling error or nonstationarity.
+The discounted adjustment $G^{(\alpha)}$ is always well-defined and acts as a stable surrogate: it suppresses long-horizon amplification by the nearly-invariant constant mode and yields explicit control of the bias as $\alpha\uparrow 1$.
+A systematic discounted value-function treatment is developed in the companion note \cite{Petersen2025Value}.
+\end{remark}
+
+\section{Microprice as a general martingale constructor}\label{sec:martingale_general}
+
+The microprice construction in Section~\ref{sec:microprice_mech} used only two properties of the mid-price: additivity across moves and a state-dependent conditional mean increment.
+These two properties suffice for a general martingale construction.
+Any additive functional driven by a Markov state admits a predictable drift term plus a martingale term, and the martingale term is obtained by solving a Poisson equation.
+
+\subsection{Doob decomposition for state observables}
+
+Let $(X_k)_{k\ge 0}$ be a Markov chain with transition matrix $B$. For any bounded function $f:\mathcal{X}\to\R$, the process $f(X_k)$ admits the decomposition
+\begin{equation}\label{eq:doob_decomp}
+f(X_k) = f(X_0) + M_k + A_k,
+\end{equation}
+where
+\[
+A_{k+1}-A_k = (Bf-f)(X_k),\qquad
+M_{k+1}-M_k = f(X_{k+1})-Bf(X_k),
+\]
+and $(M_k)$ is a martingale. Equation \eqref{eq:doob_decomp} is the discrete-time Doob decomposition; see, e.g., \cite{Williams1991}.
+
+\subsection{Poisson correctors for additive functionals}
+
+Now let $(Y_k)_{k\ge 0}$ be an \emph{additive} functional driven by the chain:
+\[
+Y_{k+1} = Y_k + \xi_{k+1},
+\]
+where each increment $\xi_{k+1}$ is integrable and
+\[
+\bar\xi(x):=\E[\xi_{k+1}\mid X_k=x].
+\]
+Let $\mathcal G_k:=\sigma\!\left((X_j,Y_j)_{0\le j\le k}\right)$ be the natural filtration of the pair.
+The stationary mean drift is $\mu:=\pi^T\bar\xi$. The centered drift is $h:=\bar\xi-\mu\1$.
+
+\begin{theorem}[Markov additive martingale corrector]\label{thm:map_corrector}
+Assume $B$ is ergodic with stationary distribution $\pi$, and define $h:=\bar\xi-\mu\1$ with $\mu=\pi^T\bar\xi$.
+Let $g$ be the unique centered solution of the Poisson equation
+\begin{equation}\label{eq:poisson_general}
+(I-B)g = h, \qquad \pi^T g=0.
+\end{equation}
+Then the compensated process
+\begin{equation}\label{eq:map_martingale}
+\mathcal{M}_k := Y_k - k\mu + g(X_k)-g(X_0)
+\end{equation}
+is a martingale with respect to $(\mathcal G_k)_{k\ge 0}$.
+\end{theorem}
+
+Theorem~\ref{thm:map_corrector} is a standard way to construct martingales from additive functionals via Poisson's equation; see, e.g., \cite{MeynTweedie2009,GlynnMeyn1996} for general treatments.
+
+The microprice martingale (Theorem~\ref{thm:microprice_martingale}) is the special case $Y_k=p_k$ and $h=G_1-\mu\1$.
+
+\paragraph{Scope.}
+Theorem~\ref{thm:map_corrector} is purely structural: once an observable is written as an additive functional with conditional mean drift $\bar\xi(x)$, solving the Poisson equation \eqref{eq:poisson_general} produces the drift-corrected martingale.
+We omit application-specific choices of $\xi$ and focus on the operator construction.
+
+\subsection{Operator notation: potentials, projections, and generalized ``micro-'' transforms}\label{sec:operator_language}
+
+Recasting the Poisson equation in operator language clarifies what the construction really does: the map from drift profiles to correctors is a single linear operator, and all microprice-type constructions are instances of applying it.
+
+It is convenient to phrase the preceding results as statements about linear operators on functions on the state space.
+Identify a function $f:\mathcal{X}\to\R$ with its coordinate vector in $\R^L$.
+The post-move chain $B$ then acts as a Markov operator
+\[
+(\mathsf{B}f)(x) := \E[f(X_{k+1})\mid X_k=x] = \sum_y B_{xy}f(y).
+\]
+
+Let $\pi$ be the stationary distribution of $B$ and define the rank-one projection onto constants
+\[
+(\Pi f)(x) := (\pi^T f)\,\1(x),\qquad\text{equivalently}\qquad \Pi = \1\pi^T,
+\]
+so that $\Ran(\Pi)=\spn\{\1\}$ and $\ker(\Pi)=\{f:\pi^T f=0\}$.
+On the centered subspace $\ker(\Pi)$, the operator $I-\mathsf{B}$ is invertible and its inverse is the \emph{potential} (or \emph{Poisson-solver}) operator
+\begin{equation}\label{eq:potential_operator}
+\mathsf{U} := (I-\mathsf{B})^{-1}\ \text{on }\ker(\Pi),
+\qquad\text{so that}\qquad
+\mathsf{U}h=\sum_{n=0}^\infty \mathsf{B}^n h
+\ \ \text{for }\pi^T h=0.
+\end{equation}
+In matrix form, $\mathsf{U}$ is represented by the \emph{fundamental matrix} / \emph{group inverse} expression
+\[
+\mathsf{U}h = (I-B+\Pi)^{-1}h,
+\qquad (\pi^T h=0),
+\]
+and one may record the deviation-matrix identity
+\[
+(I-B)^{\#} := (I-B+\Pi)^{-1}-\Pi
+= \sum_{n=0}^\infty (B^n-\Pi),
+\]
+where $(I-B)^{\#}$ is the group inverse of $I-B$ \cite{Meyer1975}, and the series representation is the deviation-matrix identity \cite{KemenySnell1976}.
+
+\paragraph{Generalized microvalues.}
+Given any integrable additive functional $Y_{k+1}=Y_k+\xi_{k+1}$ with conditional drift $\bar\xi(x)=\E[\xi_{k+1}\mid X_k=x]$ and stationary mean $\mu=\pi^T\bar\xi$,
+define the centered drift $h=\bar\xi-\mu\1$.
+Then Theorem~\ref{thm:map_corrector} says that the unique martingale corrector is exactly the potential
+\[
+g=\mathsf{U}h,
+\]
+and the compensated process $Y_k-k\mu+g(X_k)-g(X_0)$ is a martingale.
+In this sense, the map $h\mapsto \mathsf{U}h$ is the canonical ``micro-'' transform associated with the Markov skeleton $B$:
+it takes a predictable drift profile and returns the unique centered correction that removes it.
+
+The connection between the infinite-horizon corrector and finite-horizon partial sums is made precise by the following identity.
+\paragraph{Finite-horizon identity.}
+If $h$ is centered and $g=\mathsf{U}h$ solves the Poisson equation $(I-B)g=h$ with $\pi^T g=0$, then for every $n\ge 1$,
+\begin{equation}\label{eq:finite_horizon_identity}
+\sum_{\ell=0}^{n-1} B^{\ell}h \;=\; g - B^n g.
+\end{equation}
+Since $B^n g\to \Pi g=0$ as $n\to\infty$, \eqref{eq:finite_horizon_identity} makes explicit that $g(X_k)$ is the horizon-free limit of the expected \emph{centered} cumulative drift from time $k$ onward.
+
+\subsection{Vector-valued functionals}
+
+All results extend componentwise to $\R^d$-valued rewards: one solves the same Poisson equation with multiple right-hand sides to obtain a vector martingale corrector.
+
+% ============================
+\section{Empirical evidence}\label{sec:empirical}
+
+The empirical section has a narrower purpose than the theory sections. It is
+not meant to re-prove that Stoikov's benchmark works; that part is already
+well documented. Instead, it should do two things in a conventional order:
+anchor the paper by reproducing the public BAC/CVX benchmark, and then show on
+independent public data where the broader centered-corrector and resolvent
+viewpoints add information.
+
+\subsection{Data sets and evaluation design}
+
+We use three public data sources. First, we rerun the BAC and CVX March~2011
+quote files distributed with Stoikov's notebook, keeping Stoikov's original
+state discretizations and forecast horizons (BAC: $10$ imbalance bins and $2$
+spread buckets at $1$ and $3$ minutes; CVX: $4$ imbalance bins and $4$ spread
+buckets at $10$ seconds). This is the replication anchor.
+
+Second, we estimate the same operator family on five raw WSELOB-2017 limit
+order book files (PEKAO, PZU, PKOBP, PKNORLEN, KGHM), using the first $20$
+trading days of each file and a common $(\text{spread},\text{imbalance})$
+state with $10$ imbalance bins and $4$ spread buckets. On that panel we report
+grouped conditional-curve RMSE at $10$ and $60$ seconds together with a
+move-time martingale diagnostic for the price-corrected process.
+
+Third, we run the same coarse pipeline on a full public IEX HIST TOPS PCAP for
+2017-03-01 (BAC, SPY, GLD). This venue-local feed is intentionally harder than
+the first two data sets and is used as a stress test rather than as headline
+validation.
+
+\subsection{Replication on Stoikov's public BAC/CVX files}
+
+Figure~\ref{fig:bac_public} shows the BAC grouped conditional curves at
+Stoikov's $1$- and $3$-minute horizons. The familiar monotone relation between
+imbalance and future price change is present in both panels, and the longer
+horizon is easier to fit: the grouped RMSE for $G^*$ falls from
+$8.92\times 10^{-4}$ at $1$ minute to $5.47\times 10^{-4}$ at $3$ minutes. On
+this centered BAC sample the weighted mid remains competitive, but the
+discounted resolvent already sits directly on top of the undiscounted
+correction.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{stoikov-bac-curves.png}
+  \caption{BAC March~2011 public data, using Stoikov's original discretization. The empirical conditional drift is monotone in imbalance, the fit improves from $1$ to $3$ minutes, and Disc(.99) is visually indistinguishable from $G^*$.}
+  \label{fig:bac_public}
+\end{figure}
+
+Figure~\ref{fig:cvx_public} shows the small-tick CVX case. Here the Poisson
+correction is the right state-based predictor: at $10$ seconds the grouped
+RMSE is $6.97\times 10^{-4}$ for $G^*$, versus $9.10\times 10^{-4}$ for the
+one-step drift $G_1$, $1.83\times 10^{-3}$ for the raw mid, and
+$3.94\times 10^{-3}$ for the weighted mid. The figure also makes the
+centered-limit point concrete: Disc(.99) is again almost indistinguishable
+from $G^*$ in every spread bucket.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{stoikov-cvx-curves.png}
+  \caption{CVX March~2011 public data at the $10$-second horizon. The post-move Poisson correction tracks the empirical conditional drift across spread buckets far better than the weighted mid, while the discounted resolvent remains on the same centered curve as $G^*$.}
+  \label{fig:cvx_public}
+\end{figure}
+
+Taken together, the BAC/CVX figures do exactly what a replication section
+should do. They recover Stoikov's baseline, show that the discounted
+resolvent collapses back onto the centered Poisson correction in the
+near-zero-drift regime, and establish a clean benchmark before the paper moves
+to more informative data.
+
+\subsection{Out-of-sample panel: WSELOB-2017}
+
+The WSELOB panel is where the empirical contribution begins. Figure
+~\ref{fig:wselob_summary} summarizes the out-of-sample grouped RMSE at $10$
+and $60$ seconds together with the move-time martingale check for the same
+operator family on five raw-book names.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{wselob-summary.png}
+  \caption{WSELOB-2017, five-name public raw-order-book panel (PEKAO, PZU, PKOBP, PKNORLEN, KGHM), using the first $20$ trading days of each 2017 file. At $10$ seconds the raw mid remains competitive, but the weighted mid is already far off the conditional drift. By $60$ seconds $G^*$ dominates both the weighted mid and the raw mid on every name, while Disc(.99) remains numerically indistinguishable from $G^*$. The price-corrected move-time process stays within the usual $|t|<2$ band across all five names.}
+  \label{fig:wselob_summary}
+\end{figure}
+
+\paragraph{Weighted mid versus state-based operators.}
+The weighted mid is not a robust state-based value proxy outside Stoikov's
+original examples. On the Warsaw panel its grouped RMSE is $4.7\times$ to
+$7.4\times$ larger than $G^*$ at $10$ seconds, and still $2.1\times$ to
+$6.6\times$ larger at $60$ seconds. That is the cleanest empirical reason not
+to treat the weighted mid as a general benchmark for state-based fair-value
+estimation.
+
+\paragraph{Short-horizon crossover.}
+The finite-horizon decomposition predicts that the raw mid can remain best at
+very short horizons even when the longer-horizon correction is informative. The
+Warsaw panel shows exactly that pattern. At $10$ seconds the raw mid is still
+the best grouped predictor on all five names, but by $60$ seconds the Poisson
+correction overtakes it on every name, with grouped-RMSE improvements ranging
+from $25\%$ to $126\%$.
+
+\paragraph{Martingale check and discounted continuation.}
+The move-time statement needs to be reported separately from RMSE. On the
+Warsaw panel the corrected price process remains close to a martingale on every
+name, with absolute move-time $t$-statistics between $0.68$ and $1.97$. At the
+same time, the discounted operator sits numerically on top of the centered one,
+with maximal grouped-RMSE gaps of only $1.5\times 10^{-5}$ at $10$ seconds and
+$2\times 10^{-6}$ at $60$ seconds. Empirically, this is the out-of-sample
+counterpart of the operator theory: the centered correction remains credible,
+and the resolvent family provides a stable continuation of the same object.
+
+\subsection{Stress test: venue-local IEX TOPS}
+
+To check that the Warsaw results are not an artifact of that particular panel,
+we also decoded a full public IEX HIST TOPS PCAP for 2017-03-01 and reran the
+same coarse $(\text{spread},\text{imbalance})$ pipeline on three liquid
+symbols (BAC, SPY, GLD). This is a deliberately harder setting: unlike
+Stoikov's notebook files and WSELOB, the feed is venue-local and only sees the
+top of the IEX book.
+
+The result is informative precisely because it is mixed. BAC still behaves like
+a near-centered case, with move-time price $|t|=0.16$ and a modest
+$60$-second grouped-RMSE gain for $G^*$ over both the raw mid and the weighted
+mid ($2.49\times 10^{-2}$ versus $2.64\times 10^{-2}$ and
+$2.71\times 10^{-2}$). SPY and GLD, however, fail the same centering
+diagnostic on this one-day venue-specific feed ($|t|=3.09$ and $2.24$), and
+the discounted resolvent is no longer a harmless boundary approximation.
+
+This is better presented as a boundary case than as another success story. The
+IEX run shows that the centered-corrector picture is structurally right but can
+be empirically fragile when the observed book is too local or the state is too
+coarse. That limitation belongs in the main empirical section, not only in the
+discussion, because it materially qualifies how the earlier results should be
+read.
+
+% ============================
+\section{Discussion and limitations}\label{sec:limitations}
+
+The literature often uses ``microprice'' both for the instantaneous size-weighted mid $m_t$ and for the long-horizon fair value $p_k + G^*(X_k)$; compare the discussion in \cite{Stoikov2018}.
+Keeping these distinct avoids conceptual confusion.
+
+The condition $\pi^T G_1=0$ asserts zero stationary drift per move and is substantive.
+If the drift is nonzero (trends, regime shifts), the undiscounted microprice is ill-posed; one should work with centered Poisson equations (removing the stationary drift as in Theorem~\ref{thm:map_corrector}) or with discounted resolvents.
+
+Bounds based on $\|N\|_\infty\le 1/\varepsilon$ require a uniform lower bound on move probabilities.
+In practice, some states may exhibit extremely rare moves, making $N$ ill-conditioned and amplifying estimation error.
+
+The framework is operator-theoretic: it applies to whatever finite-state Markov approximation is used.
+If the chosen state is not approximately Markov, the resulting kernels are unstable and predictive performance degrades; this is an empirical modelling issue rather than a limitation of the algebra.
+
+% ============================
+\section{Conclusion}
+
+Stoikov's microprice can be read as an operator identity rather than a collection of model variants.
+At mid-price move times, the mid-price is a Markov additive process; the microprice adjustment is the Poisson corrector on the post-move chain.
+Adding this corrector to the price produces a martingale, and the same Poisson equation constructs martingales for general additive order-book functionals.
+
+The companion note develops the value-function extensions: discounted resolvents, Neumann-series representations, and the centered-limit interpretation of the microprice operator as the discount vanishes.
+
+The public BAC/CVX rerun provides the anchor, but the Warsaw raw-book panel shows why the broader family matters. Stoikov's correction is one centered Poisson solution inside a larger operator class; on five additional public names the weighted mid is uniformly dominated, the raw mid only wins at the very shortest horizons, the Poisson correction takes over by $60$ seconds, and the discounted resolvent collapses back onto the same centered object. The one-day IEX venue-level check then shows the boundary of that story: once the feed is local and centering weakens, the same coarse state can fail. The value-function viewpoint is therefore not a replacement claim; it is the stable continuation of Stoikov's operator once the centering condition weakens.
+
+Several directions remain open: principled state-space selection, dynamic re-centering when $\pi^T G_1 \neq 0$, and continuous-time generator formulations that connect the discrete Poisson picture directly to CTMC microstructure models.
+
+\newpage
+
+\appendix
+
+% ============================
+\section{Proofs}\label{app:proofs}
+
+\begin{proof}[Proof of Lemma~\ref{lem:substoch_spectral}]
+For any matrix $A$, the spectral radius satisfies $\rho(A)\le \|A\|$ in any submultiplicative operator norm.
+Taking the induced $\ell^\infty$ norm,
+\[
+\|Q\|_\infty = \max_x \sum_y |Q_{xy}| = \max_x \sum_y Q_{xy} \le 1-\varepsilon.
+\]
+Hence $\rho(Q)\le 1-\varepsilon<1$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:neumann}]
+Since $\rho(Q)<1$, the Neumann series $\sum_{k=0}^\infty Q^k$ converges absolutely and equals $(I-Q)^{-1}$.
+For the norm bound,
+\[
+\|N\|_\infty
+\le \sum_{k=0}^\infty \|Q^k\|_\infty
+\le \sum_{k=0}^\infty \|Q\|_\infty^k
+\le \sum_{k=0}^\infty (1-\varepsilon)^k
+= \frac{1}{\varepsilon}.
+\]
+The probabilistic interpretation is standard for absorbing chains: $N_{xy}$ is the expected number of visits to $y$ before absorption when starting from $x$; see, e.g., \cite{KemenySnell1976}.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:N_nonneg}]
+From $N = I + Q + Q^2 + \cdots$ and non-negativity of $Q$, each term is non-negative entrywise. Thus $N\ge 0$ and $N_{xx}\ge 1$ for all $x$.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:embedded_chain}]
+Let $\tau$ be the first event-time index at which a mid-price move occurs, as defined in Lemma~\ref{lem:embedded_chain}.
+Conditioning on the first step from $x$ gives the first-step equation
+\[
+G_1(x)=\sum_y Q_{xy}G_1(y) + \sum_y T_{xy}\,\E[\Delta p\mid x\to y,\text{ move}].
+\]
+By definition, the second term is $\bar r_x$, hence $G_1=\bar r+QG_1$ and $(I-Q)G_1=\bar r$.
+Since $\rho(Q)<1$, $I-Q$ is invertible and $G_1=(I-Q)^{-1}\bar r$.
+
+For the embedded chain, note that
+\[
+\Prob_x(X_\tau=y)
+=\sum_{k=0}^{\infty}\Prob_x(X_k=y,\ \tau=k+1)
+=\sum_{k=0}^{\infty} (Q^kT)_{xy}
+=\big((I-Q)^{-1}T\big)_{xy}
+=B_{xy}.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:move_time_markov}]
+The move times $(\tau_k)$ are stopping times for the event-time filtration $(\mathcal E_n)$, and the event-time chain $(X_n)$ is Markov with kernel $P=Q+T$.
+By the strong Markov property, the post-$\tau_k$ evolution of $(X_n)$ depends on the past only through $X_{\tau_k}$.
+The transition probabilities of the sampled chain follow:
+\[
+\Prob(X_{\tau_{k+1}}=y\mid X_{\tau_k}=x)
+=\sum_{n=1}^{\infty}\Prob(X_{\tau_k+n}=y,\ \tau_{k+1}=\tau_k+n\mid X_{\tau_k}=x)
+=\sum_{n=0}^{\infty}(Q^n T)_{xy}=B_{xy},
+\]
+where the last equality is the calculation from Lemma~\ref{lem:embedded_chain}.
+\end{proof}
+
+\begin{proof}[Proof of Lemma~\ref{lem:B_stochastic}]
+From $(Q + T)\1 = \1$, we have $T\1 = (I-Q)\1$.
+Thus
+\[
+B\1 = (I-Q)^{-1}T\1 = (I-Q)^{-1}(I-Q)\1 = \1.
+\]
+Non-negativity of $B$ follows from non-negativity of $N$ and $T$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:G1_bound}]
+By Lemma~\ref{lem:embedded_chain}, $G_1(x)=\E_x[\Delta p_\tau]$.
+Assumption~\ref{assump:bounded-increments} implies $|\Delta p_\tau|\le D$ almost surely, so
+Jensen's inequality gives $|G_1(x)|\le \E_x[|\Delta p_\tau|]\le D$.
+Hence $\|G_1\|_\infty\le D$.
+For the operator-norm bound, $\|G_1\|_\infty=\|N\bar r\|_\infty\le \|N\|_\infty\|\bar r\|_\infty\le \|\bar r\|_\infty/\varepsilon$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:convergence}]
+Write
+\[
+B = \1\pi^T + C,\qquad C:=B-\1\pi^T.
+\]
+Since $B\1=\1$ and $\pi^TB=\pi^T$, we have $C\1=0$ and $\pi^T C=0$.
+Ergodicity implies that $1$ is a simple eigenvalue of $B$ and all other eigenvalues have modulus $<1$, so $\rho(C)=\lambda_*<1$.
+
+Centering gives $\1\pi^T G_1 = 0$, hence for all $k\ge 0$,
+\[
+B^k G_1 = (\1\pi^T + C)^k G_1 = C^k G_1.
+\]
+Therefore,
+\[
+\sum_{k=0}^\infty B^k G_1 = \sum_{k=0}^\infty C^k G_1 = (I-C)^{-1}G_1,
+\]
+which proves the rank-one inverse formula since $I-C = I-B+\1\pi^T$.
+For centering, note that $\pi^T(I - B + \1\pi^T) = \pi^T$, so $\pi^T(I - B + \1\pi^T)^{-1} = \pi^T$, and therefore $\pi^T G^* = \pi^T G_1 = 0$.
+
+To verify the Poisson equation, start from the partial sums $S_n:=\sum_{k=0}^{n-1}B^kG_1$.
+Then
+\[
+(I-B)S_n = G_1 - B^n G_1.
+\]
+Since $B^nG_1=C^nG_1\to 0$ as $n\to\infty$ (because $\rho(C)<1$), taking $n\to\infty$ yields $(I-B)G^*=G_1$.
+Uniqueness under the centering condition follows because the nullspace of $I-B$ is $\spn\{\1\}$: if $(I-B)g=0$ and $\pi^T g=0$, then $g$ must be constant and hence $g\equiv 0$.
+
+For truncation, note that $G^*-S_n=\sum_{k=n}^\infty C^kG_1$.
+In finite dimensions, for any $\rho\in(\rho(C),1)$ there exists $C_\rho<\infty$ such that $\|C^k\|_\infty\le C_\rho \rho^k$ for all $k$.
+Hence
+\[
+\|G^*-S_n\|_\infty
+\le \sum_{k=n}^\infty \|C^k\|_\infty\,\|G_1\|_\infty
+\le \sum_{k=n}^\infty C_\rho \rho^k \|G_1\|_\infty
+= \frac{C_\rho\rho^n}{1-\rho}\|G_1\|_\infty.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:finite_horizon_decomp}]
+Since $G^{(n)}=\sum_{\ell=0}^{n-1} B^{\ell} G_1$ and $G_1 = \mu\1+h$ with $\mu=\pi^T G_1$, we have
+\[
+G^{(n)} = \sum_{\ell=0}^{n-1} B^{\ell}(\mu\1+h) = n\mu\,\1 + \sum_{\ell=0}^{n-1} B^{\ell} h,
+\]
+because $B^{\ell}\1=\1$ for every $\ell$.
+Now $h=(I-B)\tilde G = \tilde G-B\tilde G$, so
+\[
+\sum_{\ell=0}^{n-1} B^{\ell}h
+=
+\sum_{\ell=0}^{n-1}(B^{\ell}\tilde G-B^{\ell+1}\tilde G)
+=
+\tilde G-B^n\tilde G.
+\]
+This yields \eqref{eq:finite_horizon_decomp}. In the centered case $\mu=0$ and the unique centered Poisson solution is $\tilde G=G^*$, giving the final identity.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:microprice_martingale}]
+Using the Markov property at move times,
+\begin{align*}
+\E[\mathcal{P}_{k+1}\mid \mathcal{F}_k]
+&=\E[p_{k+1}+G^*(X_{k+1})\mid \mathcal{F}_k] \\
+&=p_k + \E[\Delta p_{k+1}\mid X_k] + \E[G^*(X_{k+1})\mid X_k]\\
+&=p_k + G_1(X_k) + (BG^*)(X_k).
+\end{align*}
+From $(I-B)G^*=G_1$ we have $G_1+BG^*=G^*$ pointwise, hence $\E[\mathcal{P}_{k+1}\mid \mathcal{F}_k]=p_k+G^*(X_k)=\mathcal{P}_k$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:map_corrector}]
+Let $\mathcal{M}_k$ be defined by \eqref{eq:map_martingale}. Then
+\[
+\mathcal{M}_{k+1}-\mathcal{M}_k
+= \xi_{k+1}-\mu + g(X_{k+1})-g(X_k).
+\]
+Taking conditional expectation given $\mathcal{G}_k$ and using $\E[\xi_{k+1}\mid \mathcal G_k]=\bar\xi(X_k)$ and $\E[g(X_{k+1})\mid \mathcal G_k]=Bg(X_k)$ gives
+\[
+\E[\mathcal{M}_{k+1}-\mathcal{M}_k\mid \mathcal{G}_k]
+= (\bar\xi-\mu\1)(X_k) + (Bg-g)(X_k)
+= h(X_k) - (g-Bg)(X_k)=0,
+\]
+where the last equality is \eqref{eq:poisson_general} written as $g-Bg=h$. Hence $(\mathcal{M}_k)$ is a martingale.
+\end{proof}
+
+
+\begin{proof}[Proof of Proposition~\ref{prop:pythag_condexp}]
+Write $Z= \hat Z + (Z-\hat Z)$ and $Y=\hat Z+(Y-\hat Z)$.
+Expanding,
+\[
+(Z-Y)^2 = (Z-\hat Z)^2 + (\hat Z-Y)^2 + 2(Z-\hat Z)(\hat Z-Y).
+\]
+Taking expectations, the cross term vanishes because $Y-\hat Z$ is $\mathcal G$-measurable and $Z-\hat Z$ is orthogonal to every $\mathcal G$-measurable square-integrable random variable:
+\[
+\E\big[(Z-\hat Z)(Y-\hat Z)\big]
+=\E\!\left[\E[Z-\hat Z\mid\mathcal G]\,(Y-\hat Z)\right]=0.
+\]
+This yields \eqref{eq:pythag_condexp}.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:dominance_state_based}]
+Apply Proposition~\ref{prop:pythag_condexp} with $\mathcal G=\mathcal F_k$, $Z=p_{k+n}$, $\hat Z=p_k^{(n)}=\E[p_{k+n}\mid\mathcal F_k]$, and $Y=\hat p_k=p_k+a(X_k)$.
+Then \eqref{eq:pythag_condexp} becomes
+\[
+\E[(p_{k+n}-\hat p_k)^2]
+=
+\E[(p_{k+n}-p_k^{(n)})^2]
++
+\E[(p_k^{(n)}-\hat p_k)^2].
+\]
+Using the decomposition $p_k^{(n)}=p_k+G^{(n)}(X_k)$ from \eqref{eq:fair_value_decomp} gives
+$p_k^{(n)}-\hat p_k = G^{(n)}(X_k)-a(X_k)$, yielding \eqref{eq:mse_dominance}.
+The optimality statements follow immediately because the second term is a nonnegative quadratic functional of $a$.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:discounted_interp}]
+For \eqref{eq:discounted_increment_interp}, expand the discounted sum and use the Markov property at move times:
+\[
+\E[\Delta p_{k+j}\mid \mathcal F_k]
+=
+\E\!\left[\E[\Delta p_{k+j}\mid X_{k+j-1}]\,\middle|\,\mathcal F_k\right]
+=
+\E\!\left[G_1(X_{k+j-1})\,\middle|\,\mathcal F_k\right]
+=
+(B^{j-1}G_1)(X_k).
+\]
+Therefore
+\[
+\E\!\left[\sum_{j=1}^\infty \alpha^{j-1}\Delta p_{k+j}\,\middle|\,\mathcal F_k\right]
+=
+\sum_{j=1}^\infty \alpha^{j-1}(B^{j-1}G_1)(X_k)
+=
+\sum_{\ell=0}^\infty \alpha^{\ell} (B^{\ell}G_1)(X_k)
+=
+G^{(\alpha)}(X_k).
+\]
+
+For the geometric-horizon identity \eqref{eq:geom_horizon}, use the tower property and the decomposition $p_{k+n}=p_k+\sum_{j=1}^{n}\Delta p_{k+j}$:
+\begin{align*}
+\E[p_{k+N}\mid \mathcal F_k]
+&=\sum_{n=0}^\infty (1-\alpha)\alpha^n\,\E[p_{k+n}\mid\mathcal F_k]\\
+&=p_k+\sum_{n=1}^\infty (1-\alpha)\alpha^n \sum_{j=1}^{n}\E[\Delta p_{k+j}\mid\mathcal F_k].
+\end{align*}
+Swap the order of summation (Fubini is justified since the increments are bounded) to obtain
+\[
+\sum_{n=1}^\infty (1-\alpha)\alpha^n \sum_{j=1}^{n}\E[\Delta p_{k+j}\mid\mathcal F_k]
+=
+\sum_{j=1}^\infty \left(\sum_{n=j}^\infty (1-\alpha)\alpha^n\right)\E[\Delta p_{k+j}\mid\mathcal F_k]
+=
+\sum_{j=1}^\infty \alpha^j\,\E[\Delta p_{k+j}\mid\mathcal F_k].
+\]
+Finally, apply \eqref{eq:discounted_increment_interp} and factor out $\alpha$ to get \eqref{eq:geom_horizon}.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:discount_limit_bound}]
+Since $\pi^T G_1=0$, we have $B^kG_1=C^kG_1$ with $C:=B-\1\pi^T$ and hence $\|B^kG_1\|_\infty\le C_\rho\rho^k\|G_1\|_\infty$ for all $k$.
+Using the series definitions,
+\[
+G^*-G^{(\alpha)}
+=
+\sum_{k=0}^\infty (1-\alpha^k)B^kG_1.
+\]
+Because $1-\alpha^k\le k(1-\alpha)$ for $\alpha\in(0,1)$,
+\[
+\|G^*-G^{(\alpha)}\|_\infty
+\le
+\sum_{k=0}^\infty (1-\alpha^k)\,\|B^kG_1\|_\infty
+\le
+(1-\alpha)\sum_{k=0}^\infty k\,C_\rho\rho^k\,\|G_1\|_\infty.
+\]
+The power-series identity $\sum_{k=0}^\infty k\rho^k=\rho/(1-\rho)^2$ (for $|\rho|<1$) yields the claimed bound.
+\end{proof}
+
+\newpage
+\begingroup
+\small
+\setlength{\itemsep}{3pt plus 1pt minus 1pt}
+\setlength{\parsep}{0pt}
+\begin{thebibliography}{99}
+
+\bibitem{Petersen2025Value}
+L.~Petersen, ``Beyond Microprice: Discounted Value Functions and Resolvent Operators,'' companion note / preprint, 2025.
+
+\bibitem{Stoikov2018}
+S.~Stoikov, ``The Micro-Price: A High Frequency Estimator of Future Prices,'' \textit{Quantitative Finance}, vol.~18, no.~12, pp.~1959--1966, 2018. \href{https://doi.org/10.1080/14697688.2018.1489139}{doi:10.1080/14697688.2018.1489139}.
+
+\bibitem{ContKukanovStoikov2014}
+R.~Cont, A.~Kukanov, and S.~Stoikov, ``The Price Impact of Order Book Events,'' \textit{Journal of Financial Econometrics}, vol.~12, no.~1, pp.~47--88, 2014. \href{https://doi.org/10.1093/jjfinec/nbt003}{doi:10.1093/jjfinec/nbt003}.
+
+\bibitem{GouldEtAl2013}
+M.~D.~Gould, M.~A.~Porter, S.~Williams, M.~McDonald, D.~J.~Fenn, and S.~D.~Howison, ``Limit Order Books,'' \textit{Quantitative Finance}, vol.~13, no.~11, pp.~1709--1742, 2013. \href{https://doi.org/10.1080/14697688.2013.803148}{doi:10.1080/14697688.2013.803148}.
+
+\bibitem{KemenySnell1976}
+J.~G.~Kemeny and J.~L.~Snell, \textit{Finite Markov Chains}. Springer, 1976.
+
+\bibitem{Meyer1975}
+C.~D.~Meyer, Jr., ``The Role of the Group Generalized Inverse in the Theory of Finite Markov Chains,'' \textit{SIAM Review}, vol.~17, no.~3, pp.~443--464, 1975. \href{https://doi.org/10.1137/1017044}{doi:10.1137/1017044}.
+
+\bibitem{Norris1997}
+J.~R.~Norris, \textit{Markov Chains}. Cambridge University Press, 1997. \href{https://doi.org/10.1017/CBO9780511810633}{doi:10.1017/CBO9780511810633}.
+
+\bibitem{LevinPeres2017}
+D.~A.~Levin and Y.~Peres, \textit{Markov Chains and Mixing Times}. 2nd ed., American Mathematical Society, 2017. \href{https://doi.org/10.1090/mbk/107}{doi:10.1090/mbk/107}.
+
+\bibitem{MeynTweedie2009}
+S.~P.~Meyn and R.~L.~Tweedie, \textit{Markov Chains and Stochastic Stability}. 2nd ed., Cambridge University Press, 2009. \href{https://doi.org/10.1017/CBO9780511626630}{doi:10.1017/CBO9780511626630}.
+
+\bibitem{GlynnMeyn1996}
+P.~W.~Glynn and S.~P.~Meyn, ``A Lyapunov Bound for Solutions of the Poisson Equation,'' \textit{The Annals of Probability}, vol.~24, no.~2, pp.~916--931, 1996. \href{https://doi.org/10.1214/aop/1039639370}{doi:10.1214/aop/1039639370}.
+
+\bibitem{Williams1991}
+D.~Williams, \textit{Probability with Martingales}. Cambridge University Press, 1991. \href{https://doi.org/10.1017/CBO9780511813658}{doi:10.1017/CBO9780511813658}.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}

@@ -1,0 +1,549 @@
+\documentclass[11pt,twoside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{newpxtext}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxmath}
+\usepackage[
+  activate={true,nocompatibility},
+  tracking=true,
+  expansion=true,
+  factor=1100,
+  stretch=10,
+  shrink=10
+]{microtype}
+\microtypecontext{spacing=nonfrench}
+\usepackage{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{needspace}
+\usepackage{etoolbox}
+\usepackage[most]{tcolorbox}
+\usepackage{tocloft}
+
+\geometry{
+  paperwidth=8.5in,
+  paperheight=11in,
+  left=1.2in,
+  right=1.2in,
+  top=1.2in,
+  bottom=1.2in,
+  headheight=15pt
+}
+
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+\setlength{\abovedisplayskip}{12pt plus 3pt minus 4pt}
+\setlength{\belowdisplayskip}{10pt plus 3pt minus 4pt}
+\setlength{\abovedisplayshortskip}{6pt plus 3pt}
+\setlength{\belowdisplayshortskip}{8pt plus 3pt minus 3pt}
+
+\definecolor{sectioncolor}{RGB}{25,25,45}
+\definecolor{linkcolor}{RGB}{60,50,130}
+\definecolor{citecolor}{RGB}{100,50,50}
+\definecolor{theorembar}{RGB}{50,50,80}
+\definecolor{defnbg}{RGB}{245,243,248}
+\definecolor{remarkbar}{RGB}{140,140,160}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{sectioncolor}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{sectioncolor}}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{sectioncolor}}
+  {\thesubsubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{3.5ex plus 1.5ex minus 1ex}{2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .5ex}{1.2ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{2ex plus 0.8ex minus .3ex}{1ex plus .2ex}
+
+% Prevent section/subsection headings from appearing at the bottom of a page
+\pretocmd{\section}{\needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
+
+% TOC styling
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\normalfont\bfseries}
+\renewcommand{\cftsecpagefont}{\normalfont\bfseries}
+\renewcommand{\cftsubsecfont}{\normalfont\small}
+\renewcommand{\cftsubsecpagefont}{\normalfont\small}
+\setlength{\cftbeforesecskip}{4pt plus 1pt}
+\setlength{\cftbeforesubsecskip}{1pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[RE]{\small\itshape Beyond Microprice: Discounted Value Functions}
+\fancyhead[LO]{\small\itshape L.\,Petersen}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\small\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}{Assumption}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Theorem-class styling: subtle left bar
+\tcolorboxenvironment{theorem}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{proposition}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{lemma}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+\tcolorboxenvironment{corollary}{
+  blanker, borderline west={2.5pt}{0pt}{theorembar},
+  left=10pt, before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+
+% Definition styling: light background
+\tcolorboxenvironment{definition}{
+  colback=defnbg, colframe=defnbg, boxrule=0pt, arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=10pt plus 2pt minus 2pt,
+  after skip=10pt plus 2pt minus 2pt, breakable
+}
+
+% Remark styling: thinner gray left bar
+\tcolorboxenvironment{remark}{
+  blanker, borderline west={1.5pt}{0pt}{remarkbar},
+  left=10pt, before skip=8pt plus 2pt minus 2pt,
+  after skip=8pt plus 2pt minus 2pt, breakable
+}
+
+% Spacing between consecutive proofs
+\AtEndEnvironment{proof}{\medskip}
+
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=linkcolor,
+  citecolor=citecolor,
+  urlcolor=linkcolor,
+  bookmarksnumbered=true,
+  pdfauthor={Lev Petersen},
+  pdftitle={Beyond Microprice: Discounted Value Functions and Resolvent Operators}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+
+\vspace*{1.4cm}
+
+{\Huge\bfseries\color{sectioncolor} Beyond Microprice\\[0.5em]
+Discounted Value Functions\\[0.3em]
+and Resolvent Operators\par}
+
+\vspace{0.4cm}
+
+{\large\color{sectioncolor} A Companion Note to\\[0.3em]
+\textit{Beyond Microprice}\par}
+
+\vspace{0.4cm}
+{\color{sectioncolor}\rule{0.4\textwidth}{0.8pt}}
+
+\vspace{1cm}
+
+{\Large Lev Petersen\par}
+
+\vspace{1.4cm}
+
+\begin{minipage}{0.85\textwidth}
+\setstretch{1.15}
+\small
+\noindent\textbf{Abstract.}
+The companion paper \cite{Petersen2025} identifies Stoikov's microprice correction as one instance of a broader Poisson-corrector framework on the post-move chain~$B$. This note isolates the discounted/resolvent side of that construction.
+
+We study the fixed-point equation $V = u + \Gamma M V$ and recall that, under $\|\Gamma M\| < 1$, the solution is the Neumann series $(I - \Gamma M)^{-1}u$. The main microprice application is the discounted resolvent $(I-\alpha B)^{-1}$. For an ergodic chain, this resolvent splits exactly into a divergent constant mode $(\pi^T v)/(1-\alpha)\,\1$ and a finite centered part. Hence the microprice operator is the centered boundary limit of discounted resolvents as $\alpha\uparrow 1$.
+
+We record the absorbing-kernel and state-dependent-killing special cases, the geometric-horizon interpretation, and an explicit $O(1-\alpha)$ bias bound on centered inputs.
+
+\vspace{0.9em}
+\noindent\textbf{Keywords:} microprice, value function, Neumann series, resolvent, discounted potential, Markov operator, absorbing Markov chain
+
+\end{minipage}
+
+\vfill
+
+{\small\color{sectioncolor} Draft \textbullet\ \today}
+
+\end{titlepage}
+
+\tableofcontents
+\thispagestyle{plain}
+
+\bigskip
+
+% ============================
+\section{Introduction}\label{sec:intro}
+
+In \cite{Petersen2025} we established that Stoikov's microprice \cite{Stoikov2018} is the centered solution of a Poisson equation on the post-move chain. That result is fundamentally undiscounted: because $B$ is stochastic, the constant mode prevents $(I-B)^{-1}$ from existing on all of $\R^L$.
+
+This note isolates the discounted resolvent picture. The general template is the fixed-point equation
+\[
+V = u + \Gamma M V,
+\]
+where $M$ is a Markov kernel and $\Gamma$ encodes continuation or discounting. Under $\|\Gamma M\| < 1$, the solution is the Neumann series $(I-\Gamma M)^{-1}u$.
+
+For microprice operators the important case is $V=(I-\alpha B)^{-1}v$ with $\alpha\in(0,1)$. The key identity is the mode decomposition
+\[
+(I-\alpha B)^{-1}v
+=
+\frac{\pi^T v}{1-\alpha}\,\1
++
+(I-\alpha B)^{-1}(I-\Pi)v,
+\qquad \Pi=\1\pi^T.
+\]
+It isolates the only singular piece as $\alpha\uparrow 1$: the constant mode. On centered inputs the divergent term vanishes, and the finite limit is exactly the microprice operator $(I-B+\Pi)^{-1}$.
+
+\paragraph{Roadmap.}
+Section~\ref{sec:neumann} records the generic Neumann-series lemma. Section~\ref{sec:examples} collects the main discounted and killed-kernel examples. Section~\ref{sec:boundary} proves the mode decomposition and the centered boundary limit relevant for microprice corrections.
+
+\paragraph{Notation.}
+We use the notation of \cite{Petersen2025} throughout.
+$B$ is the post-move chain (a row-stochastic matrix on a finite state space $\mathcal{X}$ with $|\mathcal{X}| = L$), $\pi$ its stationary distribution, $\Pi = \1\pi^T$ the projection onto constants, $Q$ the substochastic no-move kernel, $T$ the move kernel ($Q + T$ is row-stochastic), and $N = (I-Q)^{-1}$ the absorbing-chain fundamental matrix.
+$\|\cdot\|_\infty$ denotes the induced $\ell^\infty$ operator norm throughout.
+
+% ============================
+\section{Neumann-series value functions}\label{sec:neumann}
+
+Let $M \in \R^{L \times L}$ be a row-stochastic matrix (a Markov kernel on the finite state space $\mathcal{X}$).
+Let $\Gamma \in \R^{L \times L}$ be a bounded linear operator satisfying the contraction condition
+\begin{equation}\label{eq:neumann_condition}
+\|\Gamma M\|_\infty < 1.
+\end{equation}
+Given a bounded payoff $u : \mathcal{X} \to \R$, consider the linear fixed-point equation
+\begin{equation}\label{eq:value_fp}
+V = u + \Gamma M V.
+\end{equation}
+This template covers a wide range of discounted or randomized-horizon objectives; the only property used below is the contraction condition \eqref{eq:neumann_condition}.
+
+\begin{proposition}[Neumann-series value function]\label{prop:value_neumann}
+Assume \eqref{eq:neumann_condition}. Then \eqref{eq:value_fp} has a unique bounded solution given by
+\begin{equation}\label{eq:value_neumann}
+V = (I - \Gamma M)^{-1} u = \sum_{k=0}^{\infty} (\Gamma M)^k u.
+\end{equation}
+Moreover,
+\[
+\|V\|_\infty \le \frac{1}{1 - \|\Gamma M\|_\infty}\,\|u\|_\infty.
+\]
+\end{proposition}
+
+\begin{remark}[Operator viewpoint]
+The map $u \mapsto (I - \Gamma M)^{-1} u$ is a bounded linear operator on $\R^L$.
+When $\Gamma$ and $M$ are both non-negative, $V$ inherits the sign of $u$: non-negative payoffs produce non-negative values.
+\end{remark}
+
+% ============================
+\section{Examples of continuation operators}\label{sec:examples}
+
+The template \eqref{eq:value_fp} separates the \emph{Markov skeleton}~$M$ from the \emph{continuation} mechanism~$\Gamma$.
+We now record the main special cases that arise in practice.
+
+\subsection{Geometric discounting}
+
+With $\Gamma = \alpha I$ for $\alpha \in (0,1)$ one has
+\[
+V = u + \alpha M V,
+\qquad\text{so}\qquad
+V(x) = \E_x\!\left[\sum_{n=0}^{\infty} \alpha^n u(X_n)\right].
+\]
+The solution is $V = (I - \alpha M)^{-1} u$, the classical discounted resolvent.
+The contraction condition is simply $\|\alpha M\|_\infty = \alpha < 1$.
+
+This is the most natural starting point for the microprice connection: as $\alpha \uparrow 1$, the resolvent approaches the undiscounted boundary where centering becomes necessary.
+
+\paragraph{Geometric-horizon representation.}
+Let $N$ be independent of $(X_n)$ with geometric distribution on $\{1,2,\dots\}$:
+\[
+\Prob(N=n)=(1-\alpha)\alpha^{n-1}.
+\]
+Then the discounted value admits the equivalent ``random-horizon'' representation
+\[
+V(x)=\E_x\!\left[\sum_{k=0}^{\infty}\alpha^k u(X_k)\right]
+=\E_x\!\left[\sum_{k=0}^{N-1} u(X_k)\right].
+\]
+This viewpoint is often useful in microstructure settings: discounting can be interpreted as evaluating an \emph{undiscounted} payoff up to a random geometric move horizon. Indeed, $\Prob(N>k)=\alpha^k$, so Tonelli's theorem gives
+\[
+\E_x\!\left[\sum_{k=0}^{N-1} u(X_k)\right]
+=
+\sum_{k=0}^{\infty} \Prob(N>k)\,\E_x[u(X_k)]
+=
+\sum_{k=0}^{\infty} \alpha^k \E_x[u(X_k)].
+\]
+
+\subsection{State-dependent killing}
+
+If $\Gamma = D_\gamma := \mathrm{diag}(\gamma(x))$ with $\gamma(x) \in [0,1)$ for each $x \in \mathcal{X}$, then
+\[
+V = u + D_\gamma M V
+\]
+corresponds to a Markov chain that \emph{continues} from state $x$ with probability $\gamma(x)$ and terminates with probability $1 - \gamma(x)$.
+The contraction condition is $\|D_\gamma M\|_\infty \le \|\gamma\|_\infty < 1$.
+
+This captures objectives stopped at a state-dependent random horizon: from each state, the chain independently decides whether to continue or stop, and the value function accumulates payoffs until termination.
+
+\subsection{Absorbing-chain fundamentals as resolvents}\label{sec:absorbing_resolvent}
+
+Any substochastic kernel $Q$ can be viewed as a killed Markov kernel: at each step the chain either continues (with probabilities given by $Q$) or is absorbed (with the remaining probability mass).
+Its fundamental matrix
+\[
+N = (I-Q)^{-1} = \sum_{n \ge 0} Q^n
+\]
+is exactly the value function associated with $\Gamma M = Q$ \cite{KemenySnell1976}.
+The event-time microprice computation in \cite{Petersen2025} is of this type: $Q$ encodes ``continue without a price move,'' and the absorption condition ($\rho(Q) < 1$) guarantees the Neumann series converges.
+
+In contrast, the post-move chain $B$ is fully stochastic ($B\1 = \1$), so $\Gamma M = B$ violates the contraction condition.
+The undiscounted inverse requires centering, which is the subject of the next section.
+
+% ============================
+\section{Microprice as a centered boundary case}\label{sec:boundary}
+
+From this point onward, assume $B$ is a finite ergodic Markov kernel with stationary distribution $\pi$ and let $\Pi:=\1\pi^T$.
+For $\alpha \in (0,1)$, the discounted potential $(I - \alpha B)^{-1}$ is well-defined on all of $\R^L$ and admits the Neumann series
+\[
+(I - \alpha B)^{-1} v = \sum_{k=0}^{\infty} \alpha^k B^k v.
+\]
+As $\alpha \uparrow 1$, the resolvent becomes singular because $B\1=\1$. The next proposition isolates this singularity exactly.
+
+\begin{proposition}[Mode decomposition and centered boundary limit]\label{prop:resolvent_split}
+For every $v\in\R^L$ and $\alpha\in(0,1)$,
+\begin{equation}\label{eq:resolvent_split}
+(I-\alpha B)^{-1}v
+=
+\frac{\pi^T v}{1-\alpha}\,\1
++
+(I-\alpha B)^{-1}(I-\Pi)v.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:resolvent_finite_part}
+(I-\alpha B)^{-1}v - \frac{\pi^T v}{1-\alpha}\,\1
+=
+\sum_{k=0}^{\infty}\alpha^k B^k (I-\Pi)v.
+\end{equation}
+If $v$ is centered ($\Pi v=0$), then
+\begin{equation}\label{eq:centered_resolvent_limit}
+(I-\alpha B)^{-1}v \longrightarrow (I-B+\Pi)^{-1}v
+\qquad\text{as }\alpha\uparrow 1.
+\end{equation}
+More generally,
+\begin{equation}\label{eq:renorm_resolvent_limit}
+(I-\alpha B)^{-1}v - \frac{\pi^T v}{1-\alpha}\,\1
+\longrightarrow
+(I-B+\Pi)^{-1}(I-\Pi)v
+\qquad\text{as }\alpha\uparrow 1.
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Quantitative bias bound on centered inputs]\label{prop:resolvent_bias_bound}
+Fix a centered vector $v$ ($\pi^T v=0$).
+Let $\rho\in(\lambda_*,1)$ and choose $C_\rho<\infty$ such that $\|B^k v\|_\infty\le C_\rho\rho^k\|v\|_\infty$ for all $k\ge 0$.
+Then for every $\alpha\in(0,1)$,
+\[
+\left\|(I-\alpha B)^{-1}v - (I-B+\Pi)^{-1}v\right\|_\infty
+\le
+(1-\alpha)\,\frac{C_\rho\,\rho}{(1-\rho)^2}\,\|v\|_\infty.
+\]
+In particular, the convergence in \eqref{eq:centered_resolvent_limit} is at least linear in $(1-\alpha)$ on centered inputs.
+\end{proposition}
+
+This clarifies the relationship between the discounted and undiscounted theories: after removing the explicit constant divergence $(\pi^T v)/(1-\alpha)\,\1$, the resolvent has a finite limit governed by the same operator $(I-B+\Pi)^{-1}$ that appears in the microprice correction.
+In practice, the centering condition $\pi^T G_1 = 0$ (zero stationary drift per move) ensures that the first adjustment already lies in this finite-part subspace.
+
+% ============================
+\section{Empirical interpretation}\label{sec:empirical}
+
+\subsection{Replication setting}
+
+The empirical role of this companion note is deliberately narrow. It is not a
+second benchmark paper, and it does not need a broad results section parallel
+to \cite{Petersen2025}. The point here is only to verify the boundary-limit
+claim on the canonical public data used by Stoikov. We therefore reuse the BAC
+and CVX March~2011 quote files distributed with Stoikov's notebook, along with
+Stoikov's original discretizations and forecast horizons.
+
+\subsection{Observed boundary-limit behavior}
+
+On those public BAC/CVX files, the discounted resolvent behaves exactly like a
+centered boundary approximation should. Using Stoikov's own discretization and
+horizons, Disc(.99) is almost indistinguishable from the undiscounted
+microprice: for BAC at $3$ minutes the grouped conditional-curve RMSE is
+$5.47\times 10^{-4}$ for both $G^*$ and Disc(.99), while for CVX at $10$
+seconds it is $6.97\times 10^{-4}$ for $G^*$ and $6.99\times 10^{-4}$ for
+Disc(.99).
+
+This is exactly the empirical signature predicted by the theory. The BAC/CVX
+data are close to the symmetrized, near-zero-drift regime in which the
+undiscounted construction is well posed, so the resolvent family should
+collapse back to the classical microprice as $\alpha\uparrow 1$, and it does.
+
+\subsection{What this section establishes}
+
+The practical reason to keep the resolvent viewpoint is not that it beats the
+original microprice on Stoikov's centered data set. It is that it provides the
+stable continuation of the same operator once one leaves that regime. The
+public BAC/CVX rerun therefore plays a specific role in the paper architecture:
+it confirms the boundary-limit interpretation on the canonical benchmark, while
+the main paper handles the broader empirical question of what happens when
+centering weakens or the data become materially less ideal.
+
+\section{Summary}\label{sec:summary}
+
+The objects studied in \cite{Petersen2025} and in this note fit into a single resolvent family:
+\[
+\begin{array}{lll}
+\text{Absorbing fundamental matrix:} & N = (I-Q)^{-1}, & \Gamma M = Q,\ \rho(Q)<1. \\[0.5em]
+\text{Discounted potential:} & (I - \alpha B)^{-1}, & \Gamma M = \alpha B,\ \alpha < 1. \\[0.5em]
+\text{State-dependent killing:} & (I - D_\gamma M)^{-1}, & \|\gamma\|_\infty < 1. \\[0.5em]
+\text{Centered boundary operator:} & (I - B + \Pi)^{-1}(I-\Pi), & \text{finite part as }\alpha\uparrow 1.
+\end{array}
+\]
+The first three are well-posed Neumann-series inverses under the contraction condition $\|\Gamma M\|_\infty < 1$.
+The fourth is the boundary case: the discounted resolvent splits into an explicit divergent constant mode and a finite centered part.
+All share the same algebraic structure; the only difference is whether the continuation operator $\Gamma$ is strictly contractive or whether one must remove the invariant constant mode first.
+
+\newpage
+
+\appendix
+
+% ============================
+\section{Proofs}\label{app:proofs}
+
+\begin{proof}[Proof of Proposition~\ref{prop:value_neumann}]
+Since $\|\Gamma M\|_\infty < 1$, the Neumann series $\sum_{k=0}^{\infty}(\Gamma M)^k$ converges absolutely in the induced operator norm, defining a bounded linear operator
+\[
+S := \sum_{k=0}^{\infty}(\Gamma M)^k.
+\]
+Telescoping gives
+\[
+(I - \Gamma M)S = \sum_{k=0}^{\infty}(\Gamma M)^k - \sum_{k=1}^{\infty}(\Gamma M)^k = I,
+\]
+so $S = (I - \Gamma M)^{-1}$.
+Setting $V = Su$ yields \eqref{eq:value_neumann}, and multiplying by $(I - \Gamma M)$ recovers the fixed-point equation \eqref{eq:value_fp}.
+
+For uniqueness, if $V$ and $W$ both solve \eqref{eq:value_fp}, then $V - W = \Gamma M(V - W)$.
+Taking $\|\cdot\|_\infty$ norms gives $\|V - W\|_\infty \le \|\Gamma M\|_\infty \|V - W\|_\infty$, hence $V = W$.
+
+Finally,
+\[
+\|V\|_\infty \le \sum_{k=0}^{\infty} \|\Gamma M\|_\infty^k\,\|u\|_\infty = \frac{1}{1 - \|\Gamma M\|_\infty}\,\|u\|_\infty.
+\]
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:resolvent_split}]
+Decompose $v = \Pi v + (I-\Pi)v = (\pi^T v)\1 + (I-\Pi)v$.
+Since $B\1=\1$, the constant component is explicit:
+\[
+(I-\alpha B)^{-1}\Pi v
+=
+\sum_{k=0}^{\infty}\alpha^k B^k \Pi v
+=
+\sum_{k=0}^{\infty}\alpha^k \Pi v
+=
+\frac{1}{1-\alpha}\,\Pi v
+=
+\frac{\pi^T v}{1-\alpha}\,\1.
+\]
+This proves \eqref{eq:resolvent_split}, and \eqref{eq:resolvent_finite_part} is the same identity with the centered component written as a Neumann series.
+
+For the limit, write $C:=B-\Pi$. Then $C\1=0$, $\pi^T C=0$, and ergodicity implies $\rho(C)<1$.
+Because $(I-\Pi)v$ is centered, one has $B^k(I-\Pi)v=C^k(I-\Pi)v$ for all $k\ge 0$.
+Hence
+\[
+(I-\alpha B)^{-1}(I-\Pi)v
+=
+\sum_{k=0}^{\infty}\alpha^k C^k (I-\Pi)v
+=
+(I-\alpha C)^{-1}(I-\Pi)v.
+\]
+Letting $\alpha\uparrow 1$ yields
+\[
+(I-\alpha B)^{-1}(I-\Pi)v \to (I-C)^{-1}(I-\Pi)v = (I-B+\Pi)^{-1}(I-\Pi)v.
+\]
+This gives \eqref{eq:centered_resolvent_limit} when $\Pi v=0$ and \eqref{eq:renorm_resolvent_limit} in general.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:resolvent_bias_bound}]
+Because $\pi^Tv=0$, one has $B^k v=C^k v$ with $C:=B-\1\pi^T$ and $\rho(C)=\lambda_*<1$, hence the undiscounted inverse on the centered subspace admits the convergent series
+\[
+(I-B+\1\pi^T)^{-1}v=\sum_{k=0}^{\infty}B^k v.
+\]
+Therefore,
+\[
+(I-\alpha B)^{-1}v-(I-B+\1\pi^T)^{-1}v
+=\sum_{k=0}^{\infty}(\alpha^k-1)B^k v
+=-\sum_{k=0}^{\infty}(1-\alpha^k)B^k v.
+\]
+Using $1-\alpha^k\le k(1-\alpha)$ and the assumed bound $\|B^k v\|_\infty\le C_\rho\rho^k\|v\|_\infty$ gives
+\[
+\left\|(I-\alpha B)^{-1}v-(I-B+\1\pi^T)^{-1}v\right\|_\infty
+\le
+(1-\alpha)\sum_{k=0}^{\infty}k\,C_\rho\rho^k\,\|v\|_\infty
+=
+(1-\alpha)\,\frac{C_\rho\,\rho}{(1-\rho)^2}\,\|v\|_\infty,
+\]
+since $\sum_{k\ge 0}k\rho^k=\rho/(1-\rho)^2$ for $|\rho|<1$.
+\end{proof}
+
+
+
+\newpage
+\begingroup
+\small
+\setlength{\itemsep}{3pt plus 1pt minus 1pt}
+\setlength{\parsep}{0pt}
+\begin{thebibliography}{99}
+
+\bibitem{Petersen2025}
+L.~Petersen, ``Beyond Microprice: Martingale Correctors and Value Functions from the Limit Order Book,'' preprint, 2025.
+
+\bibitem{Stoikov2018}
+S.~Stoikov, ``The Micro-Price: A High Frequency Estimator of Future Prices,'' \textit{Quantitative Finance}, vol.~18, no.~12, pp.~1959--1966, 2018. \href{https://doi.org/10.1080/14697688.2018.1489139}{doi:10.1080/14697688.2018.1489139}.
+
+\bibitem{KemenySnell1976}
+J.~G.~Kemeny and J.~L.~Snell, \textit{Finite Markov Chains}. Springer, 1976.
+
+\bibitem{Puterman1994}
+M.~L.~Puterman, \textit{Markov Decision Processes: Discrete Stochastic Dynamic Programming}. Wiley, 1994.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}
