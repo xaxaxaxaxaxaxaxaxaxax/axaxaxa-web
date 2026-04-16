@@ -4,6 +4,7 @@
 \usepackage{newpxtext}
 \usepackage{amsmath,amsthm,mathtools}
 \usepackage{newpxmath}
+\usepackage{booktabs}
 \usepackage[
   activate={true,nocompatibility},
   tracking=true,
@@ -21,7 +22,6 @@
 \usepackage{needspace}
 \usepackage{etoolbox}
 \usepackage[most]{tcolorbox}
-\usepackage{tocloft}
 
 \geometry{
   paperwidth=8.5in,
@@ -63,23 +63,13 @@
 \titlespacing*{\subsection}{0pt}{2.5ex plus 1ex minus .5ex}{1.2ex plus .2ex}
 \titlespacing*{\subsubsection}{0pt}{2ex plus 0.8ex minus .3ex}{1ex plus .2ex}
 
-% Prevent section/subsection headings from appearing at the bottom of a page
 \pretocmd{\section}{\needspace{6\baselineskip}}{}{}
 \pretocmd{\subsection}{\needspace{5\baselineskip}}{}{}
-
-% TOC styling
-\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-\renewcommand{\cftsecfont}{\normalfont\bfseries}
-\renewcommand{\cftsecpagefont}{\normalfont\bfseries}
-\renewcommand{\cftsubsecfont}{\normalfont\small}
-\renewcommand{\cftsubsecpagefont}{\normalfont\small}
-\setlength{\cftbeforesecskip}{4pt plus 1pt}
-\setlength{\cftbeforesubsecskip}{1pt}
 
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\small\thepage}
-\fancyhead[RE]{\small\itshape Beyond Microprice: Discounted Value Functions}
+\fancyhead[RE]{\small\itshape Microprice and Semi-Markov Reinforcement Learning}
 \fancyhead[LO]{\small\itshape L.\,Petersen}
 \renewcommand{\headrulewidth}{0.3pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -98,12 +88,10 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{assumption}{Assumption}
 
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-% Theorem-class styling: subtle left bar
 \tcolorboxenvironment{theorem}{
   blanker, borderline west={2.5pt}{0pt}{theorembar},
   left=10pt, before skip=10pt plus 2pt minus 2pt,
@@ -124,23 +112,18 @@
   left=10pt, before skip=10pt plus 2pt minus 2pt,
   after skip=10pt plus 2pt minus 2pt, breakable
 }
-
-% Definition styling: light background
 \tcolorboxenvironment{definition}{
   colback=defnbg, colframe=defnbg, boxrule=0pt, arc=2pt,
   left=8pt, right=8pt, top=6pt, bottom=6pt,
   before skip=10pt plus 2pt minus 2pt,
   after skip=10pt plus 2pt minus 2pt, breakable
 }
-
-% Remark styling: thinner gray left bar
 \tcolorboxenvironment{remark}{
   blanker, borderline west={1.5pt}{0pt}{remarkbar},
   left=10pt, before skip=8pt plus 2pt minus 2pt,
   after skip=8pt plus 2pt minus 2pt, breakable
 }
 
-% Spacing between consecutive proofs
 \AtEndEnvironment{proof}{\medskip}
 
 \newcommand{\1}{\mathbf{1}}
@@ -148,6 +131,7 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\PiP}{\Pi_P}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -157,8 +141,10 @@
   urlcolor=linkcolor,
   bookmarksnumbered=true,
   pdfauthor={Lev Petersen},
-  pdftitle={Beyond Microprice: Discounted Value Functions and Resolvent Operators}
+  pdftitle={Microprice, Bellman Values, and Semi-Markov Reinforcement Learning}
 }
+
+\input{rl_note_summary_macros.tex}
 
 \begin{document}
 
@@ -167,37 +153,71 @@
 
 \vspace*{1.4cm}
 
-{\Huge\bfseries\color{sectioncolor} Beyond Microprice\\[0.5em]
-Discounted Value Functions\\[0.3em]
-and Resolvent Operators\par}
+{\Huge\bfseries\color{sectioncolor} Microprice, Bellman Values,\\[0.5em]
+Semi-Markov Reinforcement Learning\par}
+
+\vspace{0.45cm}
+
+{\large\color{sectioncolor} A companion note to\\[0.3em]
+\textit{Microprice as a Centered Poisson Corrector}\par}
 
 \vspace{0.4cm}
+{\color{sectioncolor}\rule{0.42\textwidth}{0.8pt}}
 
-{\large\color{sectioncolor} A Companion Note to\\[0.3em]
-\textit{Beyond Microprice}\par}
-
-\vspace{0.4cm}
-{\color{sectioncolor}\rule{0.4\textwidth}{0.8pt}}
-
-\vspace{1cm}
+\vspace{1.0cm}
 
 {\Large Lev Petersen\par}
 
-\vspace{1.4cm}
+\vspace{1.3cm}
 
-\begin{minipage}{0.85\textwidth}
-\setstretch{1.15}
+\begin{minipage}{0.86\textwidth}
+\setstretch{1.14}
 \small
 \noindent\textbf{Abstract.}
-The companion paper \cite{Petersen2025} identifies Stoikov's microprice correction as one instance of a broader Poisson-corrector framework on the post-move chain~$B$. This note isolates the discounted/resolvent side of that construction.
+The starting point is the move-time representation of \cite{Petersen2025}: if the event-time chain splits as $P=Q+T$, then the one-move reward and move-time kernel are
+\[
+G_1=(I-Q)^{-1}r,
+\qquad
+B=(I-Q)^{-1}T.
+\]
+This note shows that the discounted event-time Bellman value is the exact discounted analogue of the same construction. For every $\gamma\in(0,1)$,
+\[
+V_\gamma=(I-\gamma P)^{-1}r
+\]
+admits the move-time factorization
+\[
+V_\gamma=G_{1,\gamma}+B_\gamma V_\gamma,
+\qquad
+G_{1,\gamma}=(I-\gamma Q)^{-1}r,
+\qquad
+B_\gamma=\gamma(I-\gamma Q)^{-1}T.
+\]
+Thus the reinforcement-learning extension is not external to microprice; it is the discounted version of the same operator calculus. The original centered correction is itself a move-time relative value function:
+\[
+g=G_1-\mu\,\1+Bg,
+\qquad
+\mu=\pi^T G_1,
+\qquad
+\pi^T g=0.
+\]
+So classical microprice may be learned online by differential TD on price-move episodes, while discounted forecasting may be learned by semi-Markov TD on the same episodes. For deterministic horizons,
+\[
+V^{(H)}=\sum_{k=0}^{H-1}P^k r
+\]
+is the exact $H$-step Bellman target, and when $P$ is ergodic it decomposes as
+\[
+V^{(H)}=H\mu_P\,\1+g_P-P^H g_P,
+\qquad
+g_P=(I-P+\Pi_P)^{-1}(r-\mu_P\1),
+\qquad
+\mu_P=\pi_P^T r.
+\]
+The event-time differential value $g_P$ is therefore the exact event-time counterpart of the centered correction in \cite{Petersen2025}.
 
-We study the fixed-point equation $V = u + \Gamma M V$ and recall that, under $\|\Gamma M\| < 1$, the solution is the Neumann series $(I - \Gamma M)^{-1}u$. The main microprice application is the discounted resolvent $(I-\alpha B)^{-1}$. For an ergodic chain, this resolvent splits exactly into a divergent constant mode $(\pi^T v)/(1-\alpha)\,\1$ and a finite centered part. Hence the microprice operator is the centered boundary limit of discounted resolvents as $\alpha\uparrow 1$.
-
-We record the absorbing-kernel and state-dependent-killing special cases, the geometric-horizon interpretation, and an explicit $O(1-\alpha)$ bias bound on centered inputs.
+On the bundled public panels shipped with the workspace (\RLEmpiricalCellCount\ dataset-horizon cells), the fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells with geometric-mean grouped-RMSE ratio \RLEmpiricalFiniteGeo, while the horizon-matched discounted value wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The event-time boundary value $g_P$ is numerically indistinguishable from $G^*$ on the centered Stoikov and WSELOB panels, and improves all six IEX cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo. The semi-Markov formulation also yields a substantial online-learning gain: updating once per price move rather than once per event compresses the update count by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x (median \RLEmpiricalMoveCompressionMedian{}x, range \RLEmpiricalMoveCompressionMin{}x--\RLEmpiricalMoveCompressionMax{}x).
 
 \vspace{0.9em}
-\noindent\textbf{Keywords:} microprice, value function, Neumann series, resolvent, discounted potential, Markov operator, absorbing Markov chain
-
+\noindent\textbf{Keywords:} microprice, reinforcement learning, semi-Markov decision process, temporal-difference learning, value function, successor representation, average reward
 \end{minipage}
 
 \vfill
@@ -206,323 +226,369 @@ We record the absorbing-kernel and state-dependent-killing special cases, the ge
 
 \end{titlepage}
 
-\tableofcontents
-\thispagestyle{plain}
+% ============================
+\section{Introduction}
 
-\bigskip
+The main paper \cite{Petersen2025} identifies classical microprice as a centered Poisson corrector on the move-time chain: after the decomposition $P=Q+T$, the event-time model collapses to a one-move reward $G_1=(I-Q)^{-1}r$ and a move-time kernel $B=(I-Q)^{-1}T$. The undiscounted correction solves
+\[
+(I-B)g=G_1-\mu\1,
+\qquad
+\mu=\pi^T G_1,
+\qquad
+\pi^T g=0,
+\]
+so the state-dependent part of the long-run predictor is a centered Poisson solution on the post-move chain.
+
+The present note keeps that notation and extends it in two directions that are natural from reinforcement learning. The first is the exact event-time Bellman family on $P$:
+\[
+V^{(H)}=\sum_{k=0}^{H-1}P^k r,
+\qquad
+V_\gamma=(I-\gamma P)^{-1}r.
+\]
+These are the exact fixed-horizon and discounted predictors of future mid-price change. The second is a move-time semi-Markov representation that stays as close as possible to the original paper: the option ``wait until the next mid-price move'' has discounted reward $G_{1,\gamma}=(I-\gamma Q)^{-1}r$ and continuation kernel $B_\gamma=\gamma(I-\gamma Q)^{-1}T$.
+
+The key point is that these are the same value written at different temporal resolutions. The event-time Bellman value $V_\gamma$ can be evaluated on $P$, or equivalently on the move-time semi-Markov chain generated by $B_\gamma$. That equivalence makes the extension seamless with the original microprice paper. It also yields a clean pair of move-time RL updates on the very same state space: differential TD for the original centered microprice correction, and semi-Markov TD for discounted forecasting.
+
+Empirically, the exact fixed-horizon Bellman value remains the strongest forecasting object on the bundled public panels, while the discounted event-time solve remains the cleanest computational object. The event-time differential value $g_P$ sharpens the conceptual bridge back to \cite{Petersen2025}: on the centered Stoikov and WSELOB panels it coincides with $G^*$ to numerical tolerance, whereas on the IEX stress panels it moves in a slightly more favorable direction on all six cells. The move-time updates are also materially more ergonomic: both the differential-TD microprice learner and the discounted SMDP learner update only once per price move, not once per event.
 
 % ============================
-\section{Introduction}\label{sec:intro}
+\section{Discounted move-time Bellman equations}
 
-In \cite{Petersen2025} we established that Stoikov's microprice \cite{Stoikov2018} is the centered solution of a Poisson equation on the post-move chain. That result is fundamentally undiscounted: because $B$ is stochastic, the constant mode prevents $(I-B)^{-1}$ from existing on all of $\R^L$.
-
-This note isolates the discounted resolvent picture. The general template is the fixed-point equation
+Let $X_n$ be the event-time Markov chain of top-of-book states and let $p_n$ be the mid-price. As in \cite{Petersen2025}, write
 \[
-V = u + \Gamma M V,
+P=Q+T,
+\qquad
+r(x):=\E[p_{n+1}-p_n\mid X_n=x].
 \]
-where $M$ is a Markov kernel and $\Gamma$ encodes continuation or discounting. Under $\|\Gamma M\| < 1$, the solution is the Neumann series $(I-\Gamma M)^{-1}u$.
+Here $Q$ collects no-move transitions and $T$ move transitions. Assume $\rho(Q)<1$ so that the fundamental matrix $N=(I-Q)^{-1}$ exists.
 
-For microprice operators the important case is $V=(I-\alpha B)^{-1}v$ with $\alpha\in(0,1)$. The key identity is the mode decomposition
+\begin{definition}[Classical move-time objects]
+The one-move reward and move-time kernel are
 \[
-(I-\alpha B)^{-1}v
-=
-\frac{\pi^T v}{1-\alpha}\,\1
-+
-(I-\alpha B)^{-1}(I-\Pi)v,
-\qquad \Pi=\1\pi^T.
+G_1:=Nr=(I-Q)^{-1}r,
+\qquad
+B:=NT=(I-Q)^{-1}T.
 \]
-It isolates the only singular piece as $\alpha\uparrow 1$: the constant mode. On centered inputs the divergent term vanishes, and the finite limit is exactly the microprice operator $(I-B+\Pi)^{-1}$.
+These are exactly the objects appearing in \cite{Petersen2025}.
+\end{definition}
 
-\paragraph{Roadmap.}
-Section~\ref{sec:neumann} records the generic Neumann-series lemma. Section~\ref{sec:examples} collects the main discounted and killed-kernel examples. Section~\ref{sec:boundary} proves the mode decomposition and the centered boundary limit relevant for microprice corrections.
-
-\paragraph{Notation.}
-We use the notation of \cite{Petersen2025} throughout.
-$B$ is the post-move chain (a row-stochastic matrix on a finite state space $\mathcal{X}$ with $|\mathcal{X}| = L$), $\pi$ its stationary distribution, $\Pi = \1\pi^T$ the projection onto constants, $Q$ the substochastic no-move kernel, $T$ the move kernel ($Q + T$ is row-stochastic), and $N = (I-Q)^{-1}$ the absorbing-chain fundamental matrix.
-$\|\cdot\|_\infty$ denotes the induced $\ell^\infty$ operator norm throughout.
-
-% ============================
-\section{Neumann-series value functions}\label{sec:neumann}
-
-Let $M \in \R^{L \times L}$ be a row-stochastic matrix (a Markov kernel on the finite state space $\mathcal{X}$).
-Let $\Gamma \in \R^{L \times L}$ be a bounded linear operator satisfying the contraction condition
-\begin{equation}\label{eq:neumann_condition}
-\|\Gamma M\|_\infty < 1.
+For $\gamma\in(0,1)$ define the discounted event-time Bellman value
+\begin{equation}\label{eq:discounted_event_value}
+V_\gamma(x):=\E_x\!\left[\sum_{n=0}^{\infty}\gamma^n(p_{n+1}-p_n)\right].
 \end{equation}
-Given a bounded payoff $u : \mathcal{X} \to \R$, consider the linear fixed-point equation
-\begin{equation}\label{eq:value_fp}
-V = u + \Gamma M V.
-\end{equation}
-This template covers a wide range of discounted or randomized-horizon objectives; the only property used below is the contraction condition \eqref{eq:neumann_condition}.
+The first proposition shows that $V_\gamma$ can be written using the same move-time reduction as microprice.
 
-\begin{proposition}[Neumann-series value function]\label{prop:value_neumann}
-Assume \eqref{eq:neumann_condition}. Then \eqref{eq:value_fp} has a unique bounded solution given by
-\begin{equation}\label{eq:value_neumann}
-V = (I - \Gamma M)^{-1} u = \sum_{k=0}^{\infty} (\Gamma M)^k u.
+\begin{proposition}[Discounted move-time factorization]\label{prop:discounted_move_factorization}
+For $\gamma\in(0,1)$ define
+\[
+G_{1,\gamma}:=(I-\gamma Q)^{-1}r,
+\qquad
+B_\gamma:=\gamma(I-\gamma Q)^{-1}T.
+\]
+Then $V_\gamma$ satisfies the semi-Markov Bellman equation
+\begin{equation}\label{eq:discounted_move_bellman}
+V_\gamma = G_{1,\gamma} + B_\gamma V_\gamma.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:discounted_move_resolvent}
+V_\gamma=(I-B_\gamma)^{-1}G_{1,\gamma}.
 \end{equation}
 Moreover,
-\[
-\|V\|_\infty \le \frac{1}{1 - \|\Gamma M\|_\infty}\,\|u\|_\infty.
-\]
+\begin{equation}\label{eq:discounted_move_identity}
+I-B_\gamma=(I-\gamma Q)^{-1}(I-\gamma P),
+\end{equation}
+so \eqref{eq:discounted_move_resolvent} is exactly the same value as
+\begin{equation}\label{eq:discounted_event_resolvent}
+V_\gamma=(I-\gamma P)^{-1}r.
+\end{equation}
 \end{proposition}
 
-\begin{remark}[Operator viewpoint]
-The map $u \mapsto (I - \Gamma M)^{-1} u$ is a bounded linear operator on $\R^L$.
-When $\Gamma$ and $M$ are both non-negative, $V$ inherits the sign of $u$: non-negative payoffs produce non-negative values.
+Equation \eqref{eq:discounted_move_bellman} is the most direct RL bridge from the original paper. The only change from the undiscounted move-time objects $(G_1,B)$ is that every no-move excursion is discounted before it is collapsed.
+
+\begin{remark}[Temporal abstraction]
+The option ``wait until the next mid-price move'' is a semi-Markov option in the sense of Sutton, Precup, and Singh \cite{SuttonPrecupSingh1999}. Its option reward is $G_{1,\gamma}$ and its continuation kernel is $B_\gamma$. The original microprice paper corresponds to the undiscounted boundary case $\gamma\uparrow 1$, where $G_{1,\gamma}\to G_1$ and $B_\gamma\to B$ and the constant mode must be centered explicitly.
+\end{remark}
+
+\begin{proposition}[Classical microprice as a move-time relative value]\label{prop:move_time_relative_value}
+Assume the move-time chain $B$ is ergodic with stationary distribution $\pi$ and set
+\[
+\mu:=\pi^T G_1,
+\qquad
+\Pi_B:=\1\pi^T.
+\]
+Then the centered correction
+\begin{equation}\label{eq:move_time_relative_value}
+g:=(I-B+\Pi_B)^{-1}(G_1-\mu\1)
+\end{equation}
+satisfies
+\begin{equation}\label{eq:move_time_average_reward_bellman}
+g=G_1-\mu\1+Bg,
+\qquad
+\pi^T g=0.
+\end{equation}
+So the centered microprice correction of \cite{Petersen2025} is precisely the average-reward relative value function of the move-time chain.
+\end{proposition}
+
+This identity is the most seamless RL interpretation of the original paper. The undiscounted object is already a value function; the discounted semi-Markov family simply replaces the average-reward boundary problem by a horizon-aware Bellman objective.
+
+% ============================
+\section{Event-time Bellman values and differential limits}
+
+The event-time chain admits an exact finite-horizon Bellman family.
+
+\begin{proposition}[Finite-horizon Bellman values]\label{prop:finite_horizon}
+For each integer $H\ge 0$, define
+\[
+V^{(0)}:=0,
+\qquad
+V^{(h+1)}:=r+PV^{(h)}.
+\]
+Then
+\begin{equation}\label{eq:finite_horizon_closed}
+V^{(H)}=\sum_{k=0}^{H-1}P^k r,
+\end{equation}
+and, if $R_n:=p_{n+1}-p_n$,
+\begin{equation}\label{eq:finite_horizon_expectation}
+V^{(H)}(x)=\E_x\!\left[\sum_{n=0}^{H-1}R_n\right].
+\end{equation}
+Thus $V^{(H)}$ is the exact deterministic-horizon predictor of future mid-price change.
+\end{proposition}
+
+When $P$ is ergodic, the same Poisson-corrector structure that appears in \cite{Petersen2025} reappears on event time.
+
+\begin{proposition}[Event-time differential value]\label{prop:event_time_poisson}
+Assume $P$ is ergodic with stationary distribution $\pi_P$ and set
+\[
+\Pi_P:=\1\pi_P^T,
+\qquad
+\mu_P:=\pi_P^T r.
+\]
+Define the event-time differential value
+\begin{equation}\label{eq:event_time_diff_value}
+g_P:=(I-P+\Pi_P)^{-1}(r-\mu_P\1),
+\qquad
+\pi_P^T g_P=0.
+\end{equation}
+Then, for every integer $H\ge 0$,
+\begin{equation}\label{eq:finite_horizon_decomp}
+V^{(H)}=H\mu_P\,\1+g_P-P^H g_P.
+\end{equation}
+For every $\gamma\in(0,1)$,
+\begin{equation}\label{eq:discounted_split_event_time}
+V_\gamma
+=
+\frac{\mu_P}{1-\gamma}\,\1
++
+(I-\gamma P)^{-1}(I-\Pi_P)r.
+\end{equation}
+Hence
+\begin{equation}\label{eq:discounted_boundary_event_time}
+V_\gamma-\frac{\mu_P}{1-\gamma}\,\1
+\longrightarrow g_P
+\qquad\text{as }\gamma\uparrow 1.
+\end{equation}
+\end{proposition}
+
+This is the exact event-time analogue of the main theorem in \cite{Petersen2025}. The move-time correction $G^*$ is the centered long-run value after the $Q/T$ reduction; the event-time correction $g_P$ is the centered long-run value before that reduction.
+
+\begin{remark}[Two boundary objects]
+The choice between $G^*$ and $g_P$ is a modelling choice about temporal resolution. If the objective is expressed in moves, $G^*$ is the natural centered boundary object. If the objective is expressed in events or clock-time horizons induced from events, $g_P$ is the natural boundary object. The finite-horizon values $V^{(H)}$ interpolate between short-horizon forecasting and these long-run correctors through \eqref{eq:finite_horizon_decomp}.
 \end{remark}
 
 % ============================
-\section{Examples of continuation operators}\label{sec:examples}
+\section{Learning rules}
 
-The template \eqref{eq:value_fp} separates the \emph{Markov skeleton}~$M$ from the \emph{continuation} mechanism~$\Gamma$.
-We now record the main special cases that arise in practice.
+\subsection{Event-time TD and LSTD}
 
-\subsection{Geometric discounting}
-
-With $\Gamma = \alpha I$ for $\alpha \in (0,1)$ one has
+The discounted Bellman equation on event time,
 \[
-V = u + \alpha M V,
-\qquad\text{so}\qquad
-V(x) = \E_x\!\left[\sum_{n=0}^{\infty} \alpha^n u(X_n)\right].
+V_\gamma=r+\gamma PV_\gamma,
 \]
-The solution is $V = (I - \alpha M)^{-1} u$, the classical discounted resolvent.
-The contraction condition is simply $\|\alpha M\|_\infty = \alpha < 1$.
+may be learned online by standard temporal-difference learning \cite{Sutton1988}. With $X_t$ the discretized state and $R_t:=p_{t+1}-p_t$,
+\begin{equation}\label{eq:td0}
+V_{t+1}(X_t)
+\leftarrow
+V_t(X_t)+\eta_t\bigl(R_t+\gamma V_t(X_{t+1})-V_t(X_t)\bigr).
+\end{equation}
+In the tabular case this is a one-pass $O(L)$-memory update. With linear features $\phi(x)$, least-squares TD solves
+\begin{equation}\label{eq:lstd}
+A_T w_T=b_T,
+\qquad
+A_T:=\sum_{t<T}\phi_t(\phi_t-\gamma\phi_{t+1})^T,
+\qquad
+b_T:=\sum_{t<T}\phi_t R_t,
+\end{equation}
+which is the natural linear policy-evaluation analogue \cite{BradtkeBarto1996}.
 
-This is the most natural starting point for the microprice connection: as $\alpha \uparrow 1$, the resolvent approaches the undiscounted boundary where centering becomes necessary.
+The same value also admits the successor-representation factorization \cite{Dayan1993}
+\begin{equation}\label{eq:sr}
+M_\gamma:=(I-\gamma P)^{-1}=
+\sum_{k=0}^{\infty}\gamma^k P^k,
+\qquad
+V_\gamma=M_\gamma r.
+\end{equation}
+If rewards are parameterized as $r_\theta=\Phi\theta$, then the successor features are $\Psi_\gamma:=M_\gamma\Phi$ and $V_{\gamma,\theta}=\Psi_\gamma\theta$ \cite{Barreto2018}.
 
-\paragraph{Geometric-horizon representation.}
-Let $N$ be independent of $(X_n)$ with geometric distribution on $\{1,2,\dots\}$:
-\[
-\Prob(N=n)=(1-\alpha)\alpha^{n-1}.
-\]
-Then the discounted value admits the equivalent ``random-horizon'' representation
-\[
-V(x)=\E_x\!\left[\sum_{k=0}^{\infty}\alpha^k u(X_k)\right]
-=\E_x\!\left[\sum_{k=0}^{N-1} u(X_k)\right].
-\]
-This viewpoint is often useful in microstructure settings: discounting can be interpreted as evaluating an \emph{undiscounted} payoff up to a random geometric move horizon. Indeed, $\Prob(N>k)=\alpha^k$, so Tonelli's theorem gives
-\[
-\E_x\!\left[\sum_{k=0}^{N-1} u(X_k)\right]
-=
-\sum_{k=0}^{\infty} \Prob(N>k)\,\E_x[u(X_k)]
-=
-\sum_{k=0}^{\infty} \alpha^k \E_x[u(X_k)].
-\]
+\subsection{Move-time differential TD for classical microprice}
 
-\subsection{State-dependent killing}
+Proposition~\ref{prop:move_time_relative_value} shows that the centered correction of \cite{Petersen2025} is already an average-reward Bellman value on move time. Writing $\Delta P_k:=p_{\tau_{k+1}}-p_{\tau_k}$ for the move increment,
+\begin{equation}\label{eq:move_time_relative_expectation}
+g(y)=\E\bigl[\Delta P_k-\mu+g(Y_{k+1})\mid Y_k=y\bigr].
+\end{equation}
+Hence the original microprice correction may be learned online by differential TD. A tabular recursion is
+\begin{equation}\label{eq:move_time_differential_td}
+\delta_k:=\Delta P_k-\bar\mu_k+h_k(Y_{k+1})-h_k(Y_k),
+\end{equation}
+\begin{equation}\label{eq:move_time_differential_td_updates}
+h_{k+1}(Y_k)\leftarrow h_k(Y_k)+\alpha_k\delta_k,
+\qquad
+\bar\mu_{k+1}\leftarrow \bar\mu_k+\beta_k\delta_k.
+\end{equation}
+This is the exact RL version of classical microprice: same move-time chain, same state space, same centered boundary object. In particular, no event-time surrogate is required to learn the predictor online.
 
-If $\Gamma = D_\gamma := \mathrm{diag}(\gamma(x))$ with $\gamma(x) \in [0,1)$ for each $x \in \mathcal{X}$, then
-\[
-V = u + D_\gamma M V
-\]
-corresponds to a Markov chain that \emph{continues} from state $x$ with probability $\gamma(x)$ and terminates with probability $1 - \gamma(x)$.
-The contraction condition is $\|D_\gamma M\|_\infty \le \|\gamma\|_\infty < 1$.
+\subsection{Move-time semi-Markov TD for discounted forecasting}
 
-This captures objectives stopped at a state-dependent random horizon: from each state, the chain independently decides whether to continue or stop, and the value function accumulates payoffs until termination.
-
-\subsection{Absorbing-chain fundamentals as resolvents}\label{sec:absorbing_resolvent}
-
-Any substochastic kernel $Q$ can be viewed as a killed Markov kernel: at each step the chain either continues (with probabilities given by $Q$) or is absorbed (with the remaining probability mass).
-Its fundamental matrix
-\[
-N = (I-Q)^{-1} = \sum_{n \ge 0} Q^n
-\]
-is exactly the value function associated with $\Gamma M = Q$ \cite{KemenySnell1976}.
-The event-time microprice computation in \cite{Petersen2025} is of this type: $Q$ encodes ``continue without a price move,'' and the absorption condition ($\rho(Q) < 1$) guarantees the Neumann series converges.
-
-In contrast, the post-move chain $B$ is fully stochastic ($B\1 = \1$), so $\Gamma M = B$ violates the contraction condition.
-The undiscounted inverse requires centering, which is the subject of the next section.
-
-% ============================
-\section{Microprice as a centered boundary case}\label{sec:boundary}
-
-From this point onward, assume $B$ is a finite ergodic Markov kernel with stationary distribution $\pi$ and let $\Pi:=\1\pi^T$.
-For $\alpha \in (0,1)$, the discounted potential $(I - \alpha B)^{-1}$ is well-defined on all of $\R^L$ and admits the Neumann series
-\[
-(I - \alpha B)^{-1} v = \sum_{k=0}^{\infty} \alpha^k B^k v.
-\]
-As $\alpha \uparrow 1$, the resolvent becomes singular because $B\1=\1$. The next proposition isolates this singularity exactly.
-
-\begin{proposition}[Mode decomposition and centered boundary limit]\label{prop:resolvent_split}
-For every $v\in\R^L$ and $\alpha\in(0,1)$,
-\begin{equation}\label{eq:resolvent_split}
-(I-\alpha B)^{-1}v
-=
-\frac{\pi^T v}{1-\alpha}\,\1
+For horizon-aware forecasting, replace the average-reward boundary problem by the discounted semi-Markov value. Let $\tau_k$ be the successive mid-price move times, $Y_k:=X_{\tau_k}$ the move-time chain, and $D_k:=\tau_{k+1}-\tau_k$ the move duration. Then the discounted value at move times satisfies the recursion
+\begin{equation}\label{eq:smdp_bellman}
+W_\gamma(y)=\E\bigl[\Delta P_k+\gamma^{D_k}W_\gamma(Y_{k+1})\mid Y_k=y\bigr].
+\end{equation}
+The corresponding tabular SMDP-TD(0) update is
+\begin{equation}\label{eq:smdp_td}
+W_{k+1}(Y_k)
+\leftarrow
+W_k(Y_k)
 +
-(I-\alpha B)^{-1}(I-\Pi)v.
+\eta_k\bigl(\Delta P_k+\gamma^{D_k}W_k(Y_{k+1})-W_k(Y_k)\bigr).
 \end{equation}
-Equivalently,
-\begin{equation}\label{eq:resolvent_finite_part}
-(I-\alpha B)^{-1}v - \frac{\pi^T v}{1-\alpha}\,\1
-=
-\sum_{k=0}^{\infty}\alpha^k B^k (I-\Pi)v.
-\end{equation}
-If $v$ is centered ($\Pi v=0$), then
-\begin{equation}\label{eq:centered_resolvent_limit}
-(I-\alpha B)^{-1}v \longrightarrow (I-B+\Pi)^{-1}v
-\qquad\text{as }\alpha\uparrow 1.
-\end{equation}
-More generally,
-\begin{equation}\label{eq:renorm_resolvent_limit}
-(I-\alpha B)^{-1}v - \frac{\pi^T v}{1-\alpha}\,\1
-\longrightarrow
-(I-B+\Pi)^{-1}(I-\Pi)v
-\qquad\text{as }\alpha\uparrow 1.
-\end{equation}
-\end{proposition}
+This update uses the same move-time episodes as differential TD, but it targets the discounted Bellman value rather than the centered long-run corrector. The choice between the two is therefore objective-driven: differential TD learns the classical microprice boundary object, while SMDP-TD learns the horizon-aware discounted predictor.
 
-\begin{proposition}[Quantitative bias bound on centered inputs]\label{prop:resolvent_bias_bound}
-Fix a centered vector $v$ ($\pi^T v=0$).
-Let $\rho\in(\lambda_*,1)$ and choose $C_\rho<\infty$ such that $\|B^k v\|_\infty\le C_\rho\rho^k\|v\|_\infty$ for all $k\ge 0$.
-Then for every $\alpha\in(0,1)$,
-\[
-\left\|(I-\alpha B)^{-1}v - (I-B+\Pi)^{-1}v\right\|_\infty
-\le
-(1-\alpha)\,\frac{C_\rho\,\rho}{(1-\rho)^2}\,\|v\|_\infty.
-\]
-In particular, the convergence in \eqref{eq:centered_resolvent_limit} is at least linear in $(1-\alpha)$ on centered inputs.
-\end{proposition}
-
-This clarifies the relationship between the discounted and undiscounted theories: after removing the explicit constant divergence $(\pi^T v)/(1-\alpha)\,\1$, the resolvent has a finite limit governed by the same operator $(I-B+\Pi)^{-1}$ that appears in the microprice correction.
-In practice, the centering condition $\pi^T G_1 = 0$ (zero stationary drift per move) ensures that the first adjustment already lies in this finite-part subspace.
+If one prefers a model-based target, $V^{(H)}$ remains the exact finite-horizon forecast and $V_{\gamma_H}$ with $\gamma_H=1-1/H$ remains the cleanest one-shot surrogate. The move-time learning rules are the online versions of those same objectives.
 
 % ============================
-\section{Empirical interpretation}\label{sec:empirical}
+\section{Empirical results}
 
-\subsection{Replication setting}
+The empirical role of this note is deliberately narrow. We evaluate the RL extension on the bundled public panels already shipped with the workspace: Stoikov BAC/CVX, IEX BAC/SPY/GLD, and WSELOB PEKAO/PZU/PKOBP/PKNORLEN/KGHM. The grouped conditional-curve metric is the same one used by the existing public scripts.
 
-The empirical role of this companion note is deliberately narrow. It is not a
-second benchmark paper, and it does not need a broad results section parallel
-to \cite{Petersen2025}. The point here is only to verify the boundary-limit
-claim on the canonical public data used by Stoikov. We therefore reuse the BAC
-and CVX March~2011 quote files distributed with Stoikov's notebook, along with
-Stoikov's original discretizations and forecast horizons.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}p{4.3cm}ccp{3.2cm}@{}}
+\toprule
+Predictor & Wins vs. $G^*$ & Geo.-mean RMSE ratio & Interpretation \\
+\midrule
+Finite-horizon Bellman $V^{(H)}$ & \RLEmpiricalFiniteWins/\RLEmpiricalCellCount & \RLEmpiricalFiniteGeo & exact fixed-horizon target \\
+Discounted Bellman $V_{\gamma_H}$ & \RLEmpiricalDiscountWins/\RLEmpiricalCellCount & \RLEmpiricalDiscountGeo & one discounted solve \\
+Event-time differential value $g_P$ & IEX 6/6; elsewhere ties & \RLEmpiricalDiffGeo & event-time boundary object \\
+\bottomrule
+\end{tabular}
+\caption{Bundled-data comparison against classical microprice. Ratios below one favor the RL extension. For $g_P$, the non-IEX panels are equal to $G^*$ up to numerical tolerance, so the only visible differences come from the IEX stress cases.}
+\label{tab:rl_summary}
+\end{table}
 
-\subsection{Observed boundary-limit behavior}
+Table~\ref{tab:rl_summary} gives the main forecasting message. The exact fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells, with geometric-mean RMSE ratio \RLEmpiricalFiniteGeo. The horizon-matched discounted value, with $\gamma_H=1-1/H$, wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The strongest gains are off the canonical centered regime: PEKAO at ten steps drops from $4.551\times 10^{-3}$ for $G^*$ to $1.003\times 10^{-3}$ for $V^{(H)}$, and PKOBP at ten steps drops from $1.403\times 10^{-3}$ to $2.42\times 10^{-4}$. The clean negative case remains SPY at sixty steps, where $G^*$ has RMSE $8.284\times 10^{-3}$ versus $1.027\times 10^{-2}$ for $V^{(H)}$.
 
-On those public BAC/CVX files, the discounted resolvent behaves exactly like a
-centered boundary approximation should. Using Stoikov's own discretization and
-horizons, Disc(.99) is almost indistinguishable from the undiscounted
-microprice: for BAC at $3$ minutes the grouped conditional-curve RMSE is
-$5.47\times 10^{-4}$ for both $G^*$ and Disc(.99), while for CVX at $10$
-seconds it is $6.97\times 10^{-4}$ for $G^*$ and $6.99\times 10^{-4}$ for
-Disc(.99).
+The event-time boundary value $g_P$ does exactly what the theory suggests. On the Stoikov and WSELOB panels, which are already close to the centered regime of \cite{Petersen2025}, $g_P$ and $G^*$ coincide to numerical tolerance. On the six IEX cells, where event time and move time are more visibly separated, $g_P$ improves all six cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo. So $g_P$ is not a replacement for the objective-matched finite-horizon value, but it is the correct event-time boundary object and the cleanest conceptual bridge back to the original paper.
 
-This is exactly the empirical signature predicted by the theory. The BAC/CVX
-data are close to the symmetrized, near-zero-drift regime in which the
-undiscounted construction is well posed, so the resolvent family should
-collapse back to the classical microprice as $\alpha\uparrow 1$, and it does.
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+Panel & Geo.-mean events per move & Interpretation \\
+\midrule
+Stoikov & \RLEmpiricalMoveCompressionStoikovGeo{}x & modest temporal aggregation \\
+IEX & \RLEmpiricalMoveCompressionIEXGeo{}x & moderate update compression \\
+WSELOB & \RLEmpiricalMoveCompressionWSEGeo{}x & very sparse move times \\
+Overall & \RLEmpiricalMoveCompressionGeo{}x & median \RLEmpiricalMoveCompressionMedian{}x \\
+\bottomrule
+\end{tabular}
+\caption{Online-learning compression from move-time TD updates. One move-time update --- differential TD for classical microprice or SMDP-TD for discounted forecasting --- replaces one event-time TD step for each no-move event absorbed into the current price-move episode.}
+\label{tab:compression}
+\end{table}
 
-\subsection{What this section establishes}
+Table~\ref{tab:compression} records the ergonomic gain behind the move-time RL formulation. Both the differential-TD microprice learner and the discounted SMDP learner update only once per price move, so the update count is compressed by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x overall, with median \RLEmpiricalMoveCompressionMedian{}x and range \RLEmpiricalMoveCompressionMin{}x to \RLEmpiricalMoveCompressionMax{}x. This matters most on the sparse-move panels: the WSELOB names sit at \RLEmpiricalMoveCompressionWSEGeo{}x on average, and PEKAO reaches \RLEmpiricalMoveCompressionMax{}x. In other words, the move-time RL rules are not just notational reformulations. They are substantial variance-reduction and throughput improvements whenever no-move events dominate the tape.
 
-The practical reason to keep the resolvent viewpoint is not that it beats the
-original microprice on Stoikov's centered data set. It is that it provides the
-stable continuation of the same operator once one leaves that regime. The
-public BAC/CVX rerun therefore plays a specific role in the paper architecture:
-it confirms the boundary-limit interpretation on the canonical benchmark, while
-the main paper handles the broader empirical question of what happens when
-centering weakens or the data become materially less ideal.
+The discounted linear solve remains the cleanest model-based object as well. On the bundled models, solving $(I-\gamma P)V=r$ is \RLEmpiricalDiscountSpeedMean{}x cheaper on average than the classical microprice solve stage. So the practical message is split cleanly: $V^{(H)}$ is the exact forecasting target, $V_{\gamma_H}$ is the simplest fast surrogate, and the move-time SMDP formulation is the most ergonomic online learner.
 
-\section{Summary}\label{sec:summary}
+% ============================
+\section{Conclusion}
 
-The objects studied in \cite{Petersen2025} and in this note fit into a single resolvent family:
-\[
-\begin{array}{lll}
-\text{Absorbing fundamental matrix:} & N = (I-Q)^{-1}, & \Gamma M = Q,\ \rho(Q)<1. \\[0.5em]
-\text{Discounted potential:} & (I - \alpha B)^{-1}, & \Gamma M = \alpha B,\ \alpha < 1. \\[0.5em]
-\text{State-dependent killing:} & (I - D_\gamma M)^{-1}, & \|\gamma\|_\infty < 1. \\[0.5em]
-\text{Centered boundary operator:} & (I - B + \Pi)^{-1}(I-\Pi), & \text{finite part as }\alpha\uparrow 1.
-\end{array}
-\]
-The first three are well-posed Neumann-series inverses under the contraction condition $\|\Gamma M\|_\infty < 1$.
-The fourth is the boundary case: the discounted resolvent splits into an explicit divergent constant mode and a finite centered part.
-All share the same algebraic structure; the only difference is whether the continuation operator $\Gamma$ is strictly contractive or whether one must remove the invariant constant mode first.
+The reinforcement-learning extension of microprice is best understood as an extension of the original move-time operator calculus, not as a separate theory. The same decomposition $P=Q+T$ that produces the undiscounted pair $(G_1,B)$ also produces the discounted pair $(G_{1,\gamma},B_\gamma)$, and the exact discounted Bellman value may be written either on event time or on the corresponding semi-Markov move-time chain.
 
-\newpage
+This viewpoint keeps the mathematics and the implementation aligned. The exact fixed-horizon Bellman value $V^{(H)}$ matches the forecasting objective, the discounted value $V_\gamma$ gives the cleanest one-shot solve, the event-time differential value $g_P$ is the correct event-time boundary object, the move-time differential recursion learns the classical microprice correction itself, and the move-time SMDP recursion learns the horizon-aware discounted predictor on the same state space used in \cite{Petersen2025}. The empirical picture is correspondingly simple: fixed-horizon Bellman values produce the largest forecasting gains, while move-time RL updates deliver the largest ergonomic gain.
 
 \appendix
 
 % ============================
-\section{Proofs}\label{app:proofs}
+\section{Proofs}
 
-\begin{proof}[Proof of Proposition~\ref{prop:value_neumann}]
-Since $\|\Gamma M\|_\infty < 1$, the Neumann series $\sum_{k=0}^{\infty}(\Gamma M)^k$ converges absolutely in the induced operator norm, defining a bounded linear operator
+\begin{proof}[Proof of Proposition~\ref{prop:discounted_move_factorization}]
+Partition the discounted return at the first price move. If the chain makes $n$ no-move transitions before the move step, then the contribution of the first episode is $\gamma^n Q^n r$, and the post-move continuation to state $y$ contributes $\gamma^{n+1}(Q^nT)_{xy}V_\gamma(y)$. Summing over $n\ge 0$ gives
 \[
-S := \sum_{k=0}^{\infty}(\Gamma M)^k.
+V_\gamma
+=
+\sum_{n\ge 0}\gamma^n Q^n r
++
+\sum_{n\ge 0}\gamma^{n+1}Q^n T V_\gamma
+=
+(I-\gamma Q)^{-1}r+\gamma(I-\gamma Q)^{-1}T V_\gamma,
 \]
-Telescoping gives
+which is \eqref{eq:discounted_move_bellman}. Rearranging yields \eqref{eq:discounted_move_resolvent}. Finally,
 \[
-(I - \Gamma M)S = \sum_{k=0}^{\infty}(\Gamma M)^k - \sum_{k=1}^{\infty}(\Gamma M)^k = I,
+(I-\gamma Q)(I-B_\gamma)
+=
+I-\gamma Q-\gamma T
+=
+I-\gamma P,
 \]
-so $S = (I - \Gamma M)^{-1}$.
-Setting $V = Su$ yields \eqref{eq:value_neumann}, and multiplying by $(I - \Gamma M)$ recovers the fixed-point equation \eqref{eq:value_fp}.
-
-For uniqueness, if $V$ and $W$ both solve \eqref{eq:value_fp}, then $V - W = \Gamma M(V - W)$.
-Taking $\|\cdot\|_\infty$ norms gives $\|V - W\|_\infty \le \|\Gamma M\|_\infty \|V - W\|_\infty$, hence $V = W$.
-
-Finally,
-\[
-\|V\|_\infty \le \sum_{k=0}^{\infty} \|\Gamma M\|_\infty^k\,\|u\|_\infty = \frac{1}{1 - \|\Gamma M\|_\infty}\,\|u\|_\infty.
-\]
+which is \eqref{eq:discounted_move_identity}. Multiplying \eqref{eq:discounted_move_resolvent} by $I-\gamma P$ therefore gives \eqref{eq:discounted_event_resolvent}.
 \end{proof}
 
-\begin{proof}[Proof of Proposition~\ref{prop:resolvent_split}]
-Decompose $v = \Pi v + (I-\Pi)v = (\pi^T v)\1 + (I-\Pi)v$.
-Since $B\1=\1$, the constant component is explicit:
+\begin{proof}[Proof of Proposition~\ref{prop:move_time_relative_value}]
+By definition, $g$ solves
 \[
-(I-\alpha B)^{-1}\Pi v
-=
-\sum_{k=0}^{\infty}\alpha^k B^k \Pi v
-=
-\sum_{k=0}^{\infty}\alpha^k \Pi v
-=
-\frac{1}{1-\alpha}\,\Pi v
-=
-\frac{\pi^T v}{1-\alpha}\,\1.
+(I-B+\Pi_B)g=G_1-\mu\1.
 \]
-This proves \eqref{eq:resolvent_split}, and \eqref{eq:resolvent_finite_part} is the same identity with the centered component written as a Neumann series.
-
-For the limit, write $C:=B-\Pi$. Then $C\1=0$, $\pi^T C=0$, and ergodicity implies $\rho(C)<1$.
-Because $(I-\Pi)v$ is centered, one has $B^k(I-\Pi)v=C^k(I-\Pi)v$ for all $k\ge 0$.
-Hence
+Because $\Pi_B g=\1\pi^T g$, the normalization $\pi^T g=0$ reduces this to
 \[
-(I-\alpha B)^{-1}(I-\Pi)v
-=
-\sum_{k=0}^{\infty}\alpha^k C^k (I-\Pi)v
-=
-(I-\alpha C)^{-1}(I-\Pi)v.
+(I-B)g=G_1-\mu\1,
 \]
-Letting $\alpha\uparrow 1$ yields
-\[
-(I-\alpha B)^{-1}(I-\Pi)v \to (I-C)^{-1}(I-\Pi)v = (I-B+\Pi)^{-1}(I-\Pi)v.
-\]
-This gives \eqref{eq:centered_resolvent_limit} when $\Pi v=0$ and \eqref{eq:renorm_resolvent_limit} in general.
+which rearranges to \eqref{eq:move_time_average_reward_bellman}. Conversely, if \eqref{eq:move_time_average_reward_bellman} holds together with $\pi^T g=0$, then applying $\pi^T$ gives $\mu=\pi^T G_1$, and adding $\Pi_B g=0$ recovers \eqref{eq:move_time_relative_value}.
 \end{proof}
 
-\begin{proof}[Proof of Proposition~\ref{prop:resolvent_bias_bound}]
-Because $\pi^Tv=0$, one has $B^k v=C^k v$ with $C:=B-\1\pi^T$ and $\rho(C)=\lambda_*<1$, hence the undiscounted inverse on the centered subspace admits the convergent series
+\begin{proof}[Proof of Proposition~\ref{prop:finite_horizon}]
+The recursion implies inductively that
 \[
-(I-B+\1\pi^T)^{-1}v=\sum_{k=0}^{\infty}B^k v.
+V^{(H)}=r+Pr+\cdots+P^{H-1}r=\sum_{k=0}^{H-1}P^k r,
 \]
-Therefore,
-\[
-(I-\alpha B)^{-1}v-(I-B+\1\pi^T)^{-1}v
-=\sum_{k=0}^{\infty}(\alpha^k-1)B^k v
-=-\sum_{k=0}^{\infty}(1-\alpha^k)B^k v.
-\]
-Using $1-\alpha^k\le k(1-\alpha)$ and the assumed bound $\|B^k v\|_\infty\le C_\rho\rho^k\|v\|_\infty$ gives
-\[
-\left\|(I-\alpha B)^{-1}v-(I-B+\1\pi^T)^{-1}v\right\|_\infty
-\le
-(1-\alpha)\sum_{k=0}^{\infty}k\,C_\rho\rho^k\,\|v\|_\infty
-=
-(1-\alpha)\,\frac{C_\rho\,\rho}{(1-\rho)^2}\,\|v\|_\infty,
-\]
-since $\sum_{k\ge 0}k\rho^k=\rho/(1-\rho)^2$ for $|\rho|<1$.
+which is \eqref{eq:finite_horizon_closed}. Since $P^k r(x)=\E_x[R_k]$, summing over $k=0,\dots,H-1$ gives \eqref{eq:finite_horizon_expectation}.
 \end{proof}
 
-
+\begin{proof}[Proof of Proposition~\ref{prop:event_time_poisson}]
+Since $g_P$ solves $(I-P)g_P=r-\mu_P\1$, we have $r=\mu_P\1+g_P-Pg_P$. Therefore
+\[
+V^{(H)}
+=
+\sum_{k=0}^{H-1}P^k r
+=
+\sum_{k=0}^{H-1}P^k(\mu_P\1+g_P-Pg_P)
+=
+H\mu_P\1+g_P-P^H g_P,
+\]
+which is \eqref{eq:finite_horizon_decomp}. For the discounted identity, decompose
+\[
+r=\Pi_P r+(I-\Pi_P)r=\mu_P\1+(I-\Pi_P)r.
+\]
+Because $P\1=\1$ and $P\Pi_P=\Pi_P$,
+\[
+(I-\gamma P)^{-1}\Pi_P r
+=
+\sum_{k=0}^{\infty}\gamma^k\Pi_P r
+=
+\frac{\mu_P}{1-\gamma}\,\1.
+\]
+This gives \eqref{eq:discounted_split_event_time}. On the centered subspace $(I-\Pi_P)\R^L$, the powers of $P$ converge to zero, so the Neumann series converges to $(I-P+\Pi_P)^{-1}(I-\Pi_P)r=g_P$, which yields \eqref{eq:discounted_boundary_event_time}.
+\end{proof}
 
 \newpage
 \begingroup
@@ -532,16 +598,31 @@ since $\sum_{k\ge 0}k\rho^k=\rho/(1-\rho)^2$ for $|\rho|<1$.
 \begin{thebibliography}{99}
 
 \bibitem{Petersen2025}
-L.~Petersen, ``Beyond Microprice: Martingale Correctors and Value Functions from the Limit Order Book,'' preprint, 2025.
+L.~Petersen, ``Microprice as a Centered Poisson Corrector,'' preprint, 2025.
 
 \bibitem{Stoikov2018}
 S.~Stoikov, ``The Micro-Price: A High Frequency Estimator of Future Prices,'' \textit{Quantitative Finance}, vol.~18, no.~12, pp.~1959--1966, 2018. \href{https://doi.org/10.1080/14697688.2018.1489139}{doi:10.1080/14697688.2018.1489139}.
 
-\bibitem{KemenySnell1976}
-J.~G.~Kemeny and J.~L.~Snell, \textit{Finite Markov Chains}. Springer, 1976.
+\bibitem{Sutton1988}
+R.~S.~Sutton, ``Learning to Predict by the Methods of Temporal Differences,'' \textit{Machine Learning}, vol.~3, no.~1, pp.~9--44, 1988. \href{https://doi.org/10.1023/A:1022633531479}{doi:10.1023/A:1022633531479}.
 
-\bibitem{Puterman1994}
-M.~L.~Puterman, \textit{Markov Decision Processes: Discrete Stochastic Dynamic Programming}. Wiley, 1994.
+\bibitem{BradtkeBarto1996}
+S.~J.~Bradtke and A.~G.~Barto, ``Linear Least-Squares Algorithms for Temporal Difference Learning,'' \textit{Machine Learning}, vol.~22, pp.~33--57, 1996. \href{https://doi.org/10.1023/A:1018056104778}{doi:10.1023/A:1018056104778}.
+
+\bibitem{Dayan1993}
+P.~Dayan, ``Improving Generalization for Temporal Difference Learning: The Successor Representation,'' \textit{Neural Computation}, vol.~5, no.~4, pp.~613--624, 1993. \href{https://doi.org/10.1162/neco.1993.5.4.613}{doi:10.1162/neco.1993.5.4.613}.
+
+\bibitem{SuttonPrecupSingh1999}
+R.~S.~Sutton, D.~Precup, and S.~Singh, ``Between MDPs and Semi-MDPs: A Framework for Temporal Abstraction in Reinforcement Learning,'' \textit{Artificial Intelligence}, vol.~112, no.~1--2, pp.~181--211, 1999. \href{https://doi.org/10.1016/S0004-3702(99)00052-1}{doi:10.1016/S0004-3702(99)00052-1}.
+
+\bibitem{TsitsiklisVanRoy1999}
+J.~N.~Tsitsiklis and B.~Van Roy, ``Average Cost Temporal-Difference Learning,'' \textit{Automatica}, vol.~35, no.~11, pp.~1799--1808, 1999. \href{https://doi.org/10.1016/S0005-1098(99)00115-1}{doi:10.1016/S0005-1098(99)00115-1}.
+
+\bibitem{TsitsiklisVanRoy2002}
+J.~N.~Tsitsiklis and B.~Van Roy, ``On Average versus Discounted Reward Temporal-Difference Learning,'' \textit{Machine Learning}, vol.~49, pp.~179--191, 2002. \href{https://doi.org/10.1023/A:1017994911517}{doi:10.1023/A:1017994911517}.
+
+\bibitem{Barreto2018}
+A.~Barreto, D.~Borsa, J.~Quan, T.~Schaul, D.~Silver, M.~Hessel, D.~Mankowitz, A.~Zidek, and R.~Munos, ``Transfer in Deep Reinforcement Learning Using Successor Features and Generalised Policy Improvement,'' in \textit{Proceedings of the 35th International Conference on Machine Learning}, PMLR~80, pp.~501--510, 2018.
 
 \end{thebibliography}
 \endgroup
