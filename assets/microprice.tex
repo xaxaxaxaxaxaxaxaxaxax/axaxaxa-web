@@ -171,14 +171,14 @@ G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 \]
 Thus classical microprice is a centered Poisson corrector on the move-time chain, while the transient term $-B^n g$ governs the horizon effect. We also study the move-time discounted resolvent $(I-\beta B)^{-1}G_1$, where $\beta$ discounts across price moves after the reduction; this is distinct from the event-time discount $\gamma$ used in the companion note \emph{Microprice, Bellman Values, and Semi-Markov Reinforcement Learning}.
 
-Empirically, this decomposition predicts a horizon effect: at short horizons the transient term can still dominate, so $G_1$ or even the raw mid can outperform $G^*$; at longer horizons the centered correction wins when the move-time martingale diagnostic remains small. Public BAC/CVX benchmarks, a five-name WSELOB panel, and a one-day IEX stress test all support that pattern. On WSELOB, the raw mid or $G_1$ is best at 10 seconds, whereas $G^*$ or Disc(.99) is best on all five names by 60 seconds.
+Empirically, this decomposition predicts a horizon effect: at short horizons the transient term can still dominate, so $G_1$ or even the raw mid can outperform $G^*$; at longer horizons the centered correction wins when the move-time martingale diagnostic remains small. The public BAC/CVX benchmarks are mixed, WSELOB shows the clearest crossover, and a one-day IEX panel isolates the residual-drift failure mode.
 \end{tcolorbox}
 
 \section{Introduction}
 
-Stoikov's microprice \cite{Stoikov2018} estimates fair value from top-of-book state by propagating expected future price changes through an absorbing Markov chain. This paper is the structural half of a two-note sequence. Its aim is to identify the long-run object computed by the original construction and to explain the finite-horizon effects that appear when that long-run object is used as a short-horizon forecaster.
+Stoikov's microprice \cite{Stoikov2018} propagates expected future price changes through an absorbing top-of-book Markov chain. This paper is the structural half of a two-note sequence. It identifies the long-run object computed by the classical construction and explains why that object need not be the best short-horizon forecast.
 
-Throughout both notes we use the same basic notation. Let
+Throughout both notes we use the same dictionary:
 \[
 r(x):=\E[p_{n+1}-p_n\mid X_n=x],
 \qquad
@@ -202,11 +202,9 @@ and
 \[
 G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 \]
-Thus $g$ is the centered move-time relative value, while $G^*$ is the uncentered long-run move-time microprice level. In centered regimes $\mu=0$, so the two coincide.
+Here $g$ is the centered move-time relative value and $G^*$ the uncentered long-run move-time microprice level; in centered regimes, $G^*=g$.
 
-The division of labor between the two papers is deliberate. The present paper isolates the move-time Poisson structure, the martingale correction, and the empirical horizon crossover. The companion note keeps the same objects $(r,N,G_1,B,g,G^*)$ and adds exact Bellman targets on event time, a semi-Markov interpretation on move time, and online TD-style learning rules. Read together, the first paper explains what microprice is asymptotically, while the second explains how the same construction fits into value-function language and horizon-aware forecasting.
-
-The empirical section evaluates that prediction on three datasets. The public BAC/CVX benchmarks remain useful calibration checks, but they do not show uniform dominance: on BAC the weighted mid is still best under the grouped conditional-curve metric used here. The clearest positive evidence comes from WSELOB, where short- and long-horizon regimes separate cleanly. A one-day IEX venue-local panel then shows the complementary boundary case in which the centering diagnostic fails and discounted extrapolation becomes unreliable.
+Paper~I analyzes the move-time Poisson decomposition, the martingale correction, and the horizon effect. Paper~II keeps the same objects $(r,N,G_1,B,g,G^*)$ and adds exact event-time Bellman targets together with move-time TD/SMDP learning rules. Empirically, the public BAC/CVX benchmarks are mixed, WSELOB gives the clearest horizon crossover, and the one-day IEX panel isolates the residual-drift failure mode.
 
 \section{From event time to move time}
 
@@ -246,13 +244,13 @@ G_1(x)=\E_x[p_{\tau_1}-p_{\tau_0}],
 so $G_1$ is the expected price change at the next move conditional on the current state.
 \end{proposition}
 
-The absorbing-chain recursion therefore reduces to a move-time Markov system: $B$ controls transitions from one price move to the next, and $G_1$ is the corresponding one-move price drift. The same reduction also produces the event-time-discounted objects studied in the companion note: for $\gamma\in(0,1)$,
+Thus the event-time recursion collapses to move time: $B$ is the price-move kernel and $G_1$ the one-move drift. The companion note uses the discounted counterparts
 \[
 G_{1,\gamma}:=(I-\gamma Q)^{-1}r,
 \qquad
-B_\gamma:=\gamma(I-\gamma Q)^{-1}T.
+B_\gamma:=\gamma(I-\gamma Q)^{-1}T,
 \]
-These are the move-time Bellman reward and continuation kernel for the option ``wait until the next mid-price move.'' They discount each no-move excursion in event time before the excursion is collapsed. By contrast, the present paper later studies a move-time resolvent $(I-\beta B)^{-1}G_1$, where the discount is applied only after the reduction to price-move episodes. We therefore reserve $\gamma$ for event-time discounting and $\beta$ for move-time discounting.
+which discount each no-move excursion before it is collapsed. In this paper, $\beta$ is reserved for the move-time resolvent $(I-\beta B)^{-1}G_1$, which discounts only across already-collapsed price moves.
 
 If $\pi$ denotes the stationary distribution of $B$, define
 \[
@@ -309,7 +307,7 @@ G^{(n)}\to G^*.
 \]
 \end{proposition}
 
-The predictor therefore splits into three pieces: a linear drift term $n\mu\1$, a bounded state correction $g$, and a transient remainder $-B^n g$. The centered microprice is the bounded component. The empirical horizon effect comes from the transient term: at short horizons it can still dominate the limiting correction.
+Thus the predictor splits into linear drift, a bounded state correction, and the transient remainder $-B^n g$. The empirical horizon effect is entirely that last term.
 
 \begin{corollary}[Move-time martingale correction]\label{cor:mart}
 Under the assumptions of Proposition~\ref{prop:finite},
@@ -346,7 +344,7 @@ then
 \]
 \end{proposition}
 
-The resolvent is always well posed, even when sample centering is imperfect. In centered regimes it is nearly lossless; in drifting or weakly centered regimes its constant mode can dominate. It is therefore best viewed as a regularized proxy and a useful stress test, not as an automatic substitute for the centered correction. It also differs conceptually from the discounted Bellman values in the companion note: $(I-\beta B)^{-1}G_1$ discounts after the reduction to move time, whereas $V_\gamma=(I-\gamma P)^{-1}r$ discounts before the reduction and therefore reweights no-move excursion lengths.
+The resolvent is therefore best viewed as a regularized proxy for $G^*$: nearly lossless when $\mu\approx 0$, but dominated by the constant mode when centering fails. Unlike $V_\gamma=(I-\gamma P)^{-1}r$ in Paper~II, it discounts only after the move-time reduction.
 
 \section{Empirical results}
 
@@ -374,7 +372,7 @@ Small values of $\widehat t_M$ indicate that the estimated correction is close t
 
 \subsection{Public BAC/CVX benchmarks}
 
-Table~\ref{tab:public} and Figure~\ref{fig:public} summarize the public BAC/CVX benchmarks. On BAC, $G^*$ reduces grouped RMSE by about $51\%$ at 60 seconds and $76\%$ at 180 seconds relative to the raw mid, but the weighted mid remains best on this metric. On CVX, by contrast, $G^*$ reduces grouped RMSE by roughly $62\%$ and decisively beats the weighted mid. In all three benchmark cases, $\widehat t_M<2$.
+Table~\ref{tab:public} and Figure~\ref{fig:public} summarize the public BAC/CVX benchmarks. BAC is the mixed case: $G^*$ materially improves on the raw mid but not on the weighted mid. CVX is the cleaner public success case for $G^*$. In all three benchmark cells, $\widehat t_M<2$.
 
 \needspace{10\baselineskip}
 \par\noindent\begin{minipage}{\textwidth}
@@ -405,9 +403,7 @@ CVX & 10  & 0.001828 & 0.003941 & 0.000910 & 0.000697 & 0.000699 & 0.84 \\
 
 \subsection{WSELOB: the horizon crossover}
 
-WSELOB gives the clearest horizon crossover. At 10 seconds, the raw mid is best on PEKAO, PKOBP, and PZU, while $G_1$ is best on KGHM and PKNORLEN. On those same names, $G^*$ is still between $6\%$ and $83\%$ worse than the raw mid, which is exactly what one expects when the transient term $-B^n g$ remains material.
-
-By 60 seconds the ordering reverses. $G^*$ is best on four names and Disc(.99) is best on the fifth. Relative to the raw mid, $G^*$ reduces grouped RMSE by between $20\%$ and $56\%$ on all five names. The weighted mid is not competitive: it is between $4.7\times$ and $11.0\times$ the raw-mid error at 10 seconds, and between $2.1\times$ and $6.6\times$ the $G^*$ error at 60 seconds. The move-time diagnostic remains comfortably in the centered regime, with $\widehat t_M<2$ for every name.
+WSELOB gives the clearest horizon crossover. At 10 seconds, the raw mid is best on PEKAO, PKOBP, and PZU, while $G_1$ is best on KGHM and PKNORLEN; $G^*$ can still be between $6\%$ and $83\%$ worse than the raw mid, consistent with a material transient. By 60 seconds the ordering reverses: $G^*$ is best on four names and Disc(.99) on the fifth, with grouped-RMSE reductions of $20\%$ to $56\%$ relative to the raw mid. The weighted mid is not competitive, and $\widehat t_M<2$ for every name.
 
 \needspace{11\baselineskip}
 \par\noindent\begin{minipage}{\textwidth}
@@ -440,7 +436,7 @@ PZU       & Raw mid & $G^*$      & 2.26 & 6.37 & 0.77 \\
 
 \subsection{IEX: centering as a diagnostic}
 
-The IEX venue-local panel is deliberately harder: it uses a single venue, a short sample, and a coarse state description, so residual drift is more likely. BAC remains near-centered with $\widehat t_M=0.16$, and $G^*$ is modestly better than the raw or weighted mid at both horizons. SPY and GLD look different. Their diagnostics are $\widehat t_M=3.09$ and $2.24$, respectively, and the discounted surrogate no longer shadows the centered correction. At 10 seconds, Disc(.99) is about $3.16\times$ the $G^*$ error on GLD and $9.50\times$ the $G^*$ error on SPY. This is exactly the failure mode predicted by Proposition~\ref{prop:disc}: once the constant mode is not well centered, discounted extrapolation can be dominated by residual drift rather than by the bounded state correction.
+The IEX venue-local panel is deliberately harder: a single venue, a short sample, and a coarse state description leave more room for residual drift. BAC remains near-centered with $\widehat t_M=0.16$ and $G^*$ modestly improves on the raw and weighted mid. SPY and GLD do not: $\widehat t_M=3.09$ and $2.24$, and the discounted surrogate no longer shadows the centered correction. This is the failure mode of Proposition~\ref{prop:disc}: when the constant mode is not well centered, discounted extrapolation is driven by residual drift rather than by the bounded state correction.
 
 \needspace{18\baselineskip}
 \par\noindent\begin{minipage}{\textwidth}
@@ -452,17 +448,13 @@ The IEX venue-local panel is deliberately harder: it uses a single venue, a shor
 
 \section{Conclusion}
 
-Sampling at move times turns the microprice construction into a finite-state Poisson problem. The event-time recursion collapses to a move-time kernel $B$ and a one-move drift $G_1$, while the $n$-move predictor admits the exact decomposition
+Sampling at move times turns microprice into a finite-state Poisson problem. The event-time recursion collapses to a move-time kernel $B$ and a one-move drift $G_1$, and the $n$-move predictor decomposes as
 \[
 G^{(n)}=n\mu\,\1+g-B^n g.
 \]
-This representation clarifies both the martingale correction and the empirical horizon dependence of the estimator.
+This identity isolates the martingale correction and the horizon effect.
 
-Across datasets, the centered correction is most useful when two conditions hold at once: the horizon is long enough for the transient term to decay, and the move-time martingale diagnostic remains small. WSELOB is the clearest positive case. BAC/CVX confirm the public benchmark, with the important qualification that BAC still favors the weighted mid under the grouped metric used here. The IEX panel shows the complementary failure mode: when centering weakens, discounted regularization amplifies the wrong mode rather than recovering the bounded state correction.
-
-The companion RL note starts from exactly this dictionary. It keeps $(r,N,G_1,B,g,G^*)$ fixed, replaces the move-time regularizer by exact event-time Bellman values $V^{(H)}$ and $V_\gamma$, and shows that the same price-move episodes support both differential TD for the classical centered correction and semi-Markov TD for discounted forecasting.
-
-Read together, the two papers separate the asymptotic and the objective-matched questions cleanly. The present paper explains the move-time Poisson structure, the martingale diagnostic, and the horizon crossover of $G^*$. The companion note explains how the same reduced model fits into Bellman, average-reward, and semi-Markov RL language without changing the underlying microprice primitives.
+Empirically, the correction works best when the horizon is long enough for $B^n g$ to decay and the move-time martingale diagnostic remains small. WSELOB is the clearest positive case, BAC/CVX are useful public calibrations, and the IEX panel shows the residual-drift failure mode. Paper~II starts from the same primitives $(r,N,G_1,B,g,G^*)$ and adds exact event-time Bellman objectives together with move-time TD/SMDP learning rules.
 
 \appendix
 
@@ -487,39 +479,21 @@ The Markov property of $(Y_k)$ follows from the strong Markov property at the st
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:finite}]
-Write $G_1=\mu\1+h$ with $\pi^\top h=0$. Since $(I-B)g=h$,
-\[
-\sum_{j=0}^{n-1}B^j h
-=
-\sum_{j=0}^{n-1}B^j(I-B)g
-=
-\sum_{j=0}^{n-1}(B^jg-B^{j+1}g)
-=
-g-B^n g.
-\]
-Therefore
+Write $G_1=\mu\1+h$ with $\pi^\top h=0$. Since $h=(I-B)g$,
 \[
 G^{(n)}
 =
 \sum_{j=0}^{n-1}B^jG_1
 =
+n\mu\,\1+\sum_{j=0}^{n-1}B^j(I-B)g
+=
 n\mu\,\1+g-B^n g.
 \]
-Next,
+Also,
 \[
-(I-B+\PiB)(g+\mu\1)
-=
-(I-B)g+\PiB g+\mu\PiB\1
-=
-h+0+\mu\1
-=
-G_1,
+(I-B+\PiB)(g+\mu\1)=(I-B)g+\PiB g+\mu\PiB\1=h+\mu\1=G_1,
 \]
-so $G^*=g+\mu\1$. If $\mu=0$, then $G^*=g$ and ergodicity gives
-\[
-B^ng\to \PiB g=\1\pi^\top g=0,
-\]
-hence $G^{(n)}\to G^*$. Uniqueness of $g$ under $\pi^\top g=0$ follows because the nullspace of $I-B$ consists of constants.
+so $G^*=g+\mu\1$. If $\mu=0$, then $G^*=g$ and ergodicity gives $B^n g\to \PiB g=\1\pi^\top g=0$, hence $G^{(n)}\to G^*$.
 \end{proof}
 
 \begin{proof}[Proof of Corollary~\ref{cor:mart}]
@@ -542,33 +516,26 @@ Adding the two conditional expectations yields
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:disc}]
-Because $\|\beta B\|_\infty\le \beta<1$, the Neumann series converges and
+The Neumann series gives
 \[
 g_\beta=\sum_{k\ge 0}\beta^k B^kG_1.
 \]
-Using $G_1=\mu\1+h$ and $B^k\1=\1$,
+With $G_1=\mu\1+h$ and $B^k\1=\1$,
 \[
-g_\beta
-=
-\sum_{k\ge 0}\beta^k(\mu\1+B^kh)
-=
-\frac{\mu}{1-\beta}\,\1+(I-\beta B)^{-1}h.
+g_\beta=\sum_{k\ge 0}\beta^k(\mu\1+B^k h)=\frac{\mu}{1-\beta}\,\1+(I-\beta B)^{-1}h.
 \]
 If $\mu=0$, then $h=G_1$ and
 \[
-G^*-g_\beta
-=
-\sum_{k\ge 0}(1-\beta^k)B^kG_1.
+G^*-g_\beta=\sum_{k\ge 0}(1-\beta^k)B^kG_1.
 \]
-The $k=0$ term vanishes. For $k\ge 1$, $1-\beta^k\le k(1-\beta)$, so
+The $k=0$ term vanishes, and for $k\ge 1$ we have $1-\beta^k\le k(1-\beta)$. Hence
 \[
 \norm{G^*-g_\beta}_\infty
 \le
-(1-\beta)\sum_{k\ge 1}k\,\norm{B^kG_1}_\infty
-\le
-(1-\beta)C_\rho\norm{G_1}_\infty\sum_{k\ge 1}k\rho^k.
+(1-\beta)C_\rho\norm{G_1}_\infty\sum_{k\ge 1}k\rho^k
+=
+(1-\beta)\frac{C_\rho\rho}{(1-\rho)^2}\norm{G_1}_\infty.
 \]
-Since $\sum_{k\ge 1}k\rho^k=\rho/(1-\rho)^2$, the stated bound follows.
 \end{proof}
 
 \begin{thebibliography}{99}
@@ -577,16 +544,6 @@ Since $\sum_{k\ge 1}k\rho^k=\rho/(1-\rho)^2$, the stated bound follows.
 S. Stoikov,
 \emph{The Micro-Price: A High Frequency Estimator of Future Prices},
 Quantitative Finance, 18(12):1959--1966, 2018.
-
-\bibitem{KemenySnell1976}
-J. G. Kemeny and J. L. Snell,
-\emph{Finite Markov Chains},
-Springer, 1976.
-
-\bibitem{Meyer1975}
-C. D. Meyer,
-The role of the group generalized inverse in the theory of finite Markov chains,
-\emph{SIAM Review}, 17(3):443--464, 1975.
 
 \end{thebibliography}
 

@@ -175,7 +175,7 @@ Semi-Markov Reinforcement Learning\par}
 \setstretch{1.14}
 \small
 \noindent\textbf{Abstract.}
-This companion note has two goals. First, it rewrites the move-time objects of \cite{Petersen2025} in standard value-function language without changing the underlying microprice model. Second, it adds exact event-time forecasting targets and online learning rules that use the same price-move episodes. Let
+This companion note rewrites the move-time objects of \cite{Petersen2025} in value-function language and adds exact event-time targets together with online learning rules on the same price-move episodes. Let
 \[
 r(x):=\E[p_{n+1}-p_n\mid X_n=x],
 \qquad
@@ -195,7 +195,7 @@ g=(I-B+\PiB)^{-1}(G_1-\mu\1),
 \qquad
 G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 \]
-Then classical microprice is already a move-time relative value function:
+Then classical microprice is already the move-time relative value function,
 \[
 g=G_1-\mu\,\1+Bg,
 \qquad
@@ -205,7 +205,7 @@ The event-time discounted Bellman value
 \[
 V_\gamma=(I-\gamma P)^{-1}r
 \]
-admits the move-time factorization
+factorizes as
 \[
 V_\gamma=G_{1,\gamma}+B_\gamma V_\gamma,
 \qquad
@@ -213,21 +213,21 @@ G_{1,\gamma}=(I-\gamma Q)^{-1}r,
 \qquad
 B_\gamma=\gamma(I-\gamma Q)^{-1}T.
 \]
-Thus the reinforcement-learning extension is not external to microprice; it is the event-time-discounted version of the same operator calculus. We reserve $\gamma$ for event-time discounting here; the move-time resolvent $(I-\beta B)^{-1}G_1$ studied in Paper~I discounts only across price moves after the reduction. For deterministic horizons,
+We reserve $\gamma$ for event-time discounting; the move-time resolvent $(I-\beta B)^{-1}G_1$ of Paper~I discounts only after the reduction. For deterministic horizons,
 \[
-V^{(H)}=\sum_{k=0}^{H-1}P^k r
-\]
-is the exact $H$-step Bellman target, and when $P$ is ergodic it decomposes as
-\[
-V^{(H)}=H\mu_P\,\1+g_P-P^H g_P,
+V^{(H)}=\sum_{k=0}^{H-1}P^k r,
 \qquad
+V^{(H)}=H\mu_P\,\1+g_P-P^H g_P,
+\]
+where
+\[
 g_P=(I-P+\PiP)^{-1}(r-\mu_P\1),
 \qquad
 \mu_P=\pi_P^\top r.
 \]
-The event-time differential value $g_P$ is therefore the exact event-time counterpart of the move-time boundary object from \cite{Petersen2025}.
+Thus $g_P$ is the event-time analogue of the move-time boundary object $G^*$.
 
-On the bundled public panels shipped with the workspace (\RLEmpiricalCellCount\ dataset-horizon cells), the fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells with geometric-mean grouped-RMSE ratio \RLEmpiricalFiniteGeo, while the horizon-matched discounted value wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The event-time boundary value $g_P$ is numerically indistinguishable from $G^*$ on the centered Stoikov and WSELOB panels, and improves all six IEX cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo. The semi-Markov formulation also yields a substantial online-learning gain: updating once per price move rather than once per event compresses the update count by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x (median \RLEmpiricalMoveCompressionMedian{}x, range \RLEmpiricalMoveCompressionMin{}x--\RLEmpiricalMoveCompressionMax{}x).
+On the bundled public panels (\RLEmpiricalCellCount\ dataset-horizon cells), the fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells with geometric-mean grouped-RMSE ratio \RLEmpiricalFiniteGeo, and the horizon-matched discounted value wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The event-time boundary value $g_P$ coincides with $G^*$ on the centered Stoikov and WSELOB panels, improves all six IEX cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo, and the move-time formulation compresses event-time TD updates by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x (median \RLEmpiricalMoveCompressionMedian{}x).
 
 \vspace{0.9em}
 \noindent\textbf{Keywords:} microprice, reinforcement learning, semi-Markov decision process, temporal-difference learning, value function, successor representation, average reward
@@ -242,9 +242,9 @@ On the bundled public panels shipped with the workspace (\RLEmpiricalCellCount\ 
 % ============================
 \section{Introduction}
 
-The main paper \cite{Petersen2025} identifies classical microprice as a centered Poisson corrector on the move-time chain. This note is Paper~II in the same sequence. It keeps the move-time reduction and the notation of Paper~I fixed, and asks two Bellman questions: what are the exact event-time forecasting targets on the full chain $P$, and how do those targets translate into online learning rules on the same price-move episodes used by classical microprice?
+The main paper \cite{Petersen2025} identifies classical microprice as a centered Poisson corrector on the move-time chain. This note keeps the same reduction and asks two Bellman questions: what are the exact event-time forecasting targets on the full chain $P$, and how do those targets induce online learning rules on the same price-move episodes?
 
-To keep the two papers aligned, we use the same core dictionary throughout:
+We therefore keep the same core dictionary:
 \[
 r(x):=\E[p_{n+1}-p_n\mid X_n=x],
 \qquad
@@ -268,9 +268,7 @@ and
 \[
 G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 \]
-Here $g$ is the centered move-time relative value and $G^*$ is the uncentered long-run move-time microprice level. In the centered regimes emphasized in Paper~I, $\mu=0$ and $G^*=g$.
-
-The division of labor is therefore simple. Paper~I proves the move-time Poisson representation, studies the move-time regularizer $(I-\beta B)^{-1}G_1$, and documents the horizon effect and martingale diagnostic. The present note adds exact event-time Bellman values $V^{(H)}$ and $V_\gamma$, the event-time differential value $g_P$, and the corresponding TD/SMDP learning rules. Read together, the two notes show that microprice, Bellman forecasting, and semi-Markov RL are different views of the same reduced operator calculus.
+Paper~I focuses on the move-time Poisson representation, the regularizer $(I-\beta B)^{-1}G_1$, and the horizon effect. Paper~II adds the event-time Bellman values $V^{(H)}$ and $V_\gamma$, the event-time differential value $g_P$, and the corresponding TD/SMDP learning rules.
 
 \begin{table}[t]
 \centering
@@ -290,7 +288,7 @@ $(I-\beta B)^{-1}G_1$ vs.\ $V_\gamma$ & Move-time discount after reduction vs.\ 
 \label{tab:paper_map}
 \end{table}
 
-Empirically, the exact fixed-horizon Bellman value remains the strongest forecasting object on the bundled public panels, while the discounted event-time solve remains the cleanest computational object. The event-time differential value $g_P$ sharpens the conceptual bridge back to \cite{Petersen2025}: on the centered Stoikov and WSELOB panels it coincides with $G^*$ to numerical tolerance, whereas on the IEX stress panels it moves in a slightly more favorable direction on all six cells. The move-time updates are also materially more ergonomic: both the differential-TD microprice learner and the discounted SMDP learner update only once per price move, not once per event.
+Empirically, $V^{(H)}$ is the strongest forecasting object on the bundled public panels, $V_\gamma$ is the cleanest one-shot surrogate, and the move-time updates are the most ergonomic online learners.
 
 % ============================
 \section{Discounted move-time Bellman equations}
@@ -348,14 +346,10 @@ V_\gamma=(I-\gamma P)^{-1}r.
 \end{equation}
 \end{proposition}
 
-Equation \eqref{eq:discounted_move_bellman} is the most direct RL bridge from the original paper. The only change from the undiscounted move-time objects $(G_1,B)$ is that every no-move excursion is discounted before it is collapsed.
-
-\begin{remark}[Temporal abstraction]
-The option ``wait until the next mid-price move'' is a semi-Markov option in the sense of Sutton, Precup, and Singh \cite{SuttonPrecupSingh1999}. Its option reward is $G_{1,\gamma}$ and its continuation kernel is $B_\gamma$. The original microprice paper corresponds to the undiscounted boundary case $\gamma\uparrow 1$, where $G_{1,\gamma}\to G_1$ and $B_\gamma\to B$ and the constant mode must be centered explicitly.
-\end{remark}
+Equation \eqref{eq:discounted_move_bellman} is the most direct RL bridge from the original paper: the only change from $(G_1,B)$ is that each no-move excursion is discounted before it is collapsed.
 
 \begin{remark}[Event-time discounting versus move-time discounting]
-The discounted resolvent $(I-\beta B)^{-1}G_1$ studied in \cite{Petersen2025} discounts after the reduction to move time, so each price-move episode receives the same geometric weight $\beta^k$ regardless of its duration in event time. By contrast, $V_\gamma=(I-\gamma P)^{-1}r$ discounts before the reduction, and the induced pair $(G_{1,\gamma},B_\gamma)$ therefore carries episode-length-dependent discount factors. The two specific formulas agree only when every move occurs after one event.
+The discounted resolvent $(I-\beta B)^{-1}G_1$ studied in \cite{Petersen2025} discounts after the reduction to move time, so each price-move episode receives the same geometric weight $\beta^k$ regardless of its duration in event time. By contrast, $V_\gamma=(I-\gamma P)^{-1}r$ discounts before the reduction, and the induced pair $(G_{1,\gamma},B_\gamma)$ therefore carries episode-length-dependent discount factors. The two formulas agree only when every move occurs after one event.
 \end{remark}
 
 \begin{proposition}[Classical microprice as a move-time relative value]\label{prop:move_time_relative_value}
@@ -382,7 +376,7 @@ G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 So the centered microprice correction of \cite{Petersen2025} is precisely the average-reward relative value function of the move-time chain.
 \end{proposition}
 
-This identity is the most seamless RL interpretation of the original paper. The undiscounted object is already a value function; the discounted semi-Markov family simply replaces the average-reward boundary problem by a horizon-aware Bellman objective.
+Thus the undiscounted microprice correction is already a value function; the discounted semi-Markov family simply replaces the average-reward boundary problem by a horizon-aware Bellman objective.
 
 % ============================
 \section{Event-time Bellman values and differential limits}
@@ -442,12 +436,7 @@ V_\gamma-\frac{\mu_P}{1-\gamma}\,\1
 \end{equation}
 \end{proposition}
 
-This is the exact event-time analogue of the main theorem in \cite{Petersen2025}. The move-time correction $G^*$ is the centered long-run value after the $Q/T$ reduction; the event-time correction $g_P$ is the centered long-run value before that reduction.
-
-\begin{remark}[Two boundary objects]
-The choice between $G^*$ and $g_P$ is a modelling choice about temporal resolution. If the objective is expressed in moves, $G^*$ is the natural centered boundary object. If the objective is expressed in events or clock-time horizons induced from events, $g_P$ is the natural boundary object. The finite-horizon values $V^{(H)}$ interpolate between short-horizon forecasting and these long-run correctors through \eqref{eq:finite_horizon_decomp}.
-\end{remark}
-
+This is the exact event-time analogue of the main theorem in \cite{Petersen2025}: $G^*$ is the centered long-run value after the $Q/T$ reduction, while $g_P$ is the centered long-run value before that reduction.
 % ============================
 \section{Learning rules}
 
@@ -463,7 +452,7 @@ V_{t+1}(X_t)
 \leftarrow
 V_t(X_t)+\eta_t\bigl(R_t+\gamma V_t(X_{t+1})-V_t(X_t)\bigr).
 \end{equation}
-In the tabular case this is a one-pass $O(L)$-memory update. With linear features $\phi(x)$, least-squares TD solves
+With linear features $\phi(x)$, least-squares TD solves
 \begin{equation}\label{eq:lstd}
 A_T w_T=b_T,
 \qquad
@@ -471,9 +460,7 @@ A_T:=\sum_{t<T}\phi_t(\phi_t-\gamma\phi_{t+1})^\top,
 \qquad
 b_T:=\sum_{t<T}\phi_t R_t,
 \end{equation}
-which is the natural linear policy-evaluation analogue \cite{BradtkeBarto1996}.
-
-The same value also admits the successor-representation factorization \cite{Dayan1993}
+the standard linear policy-evaluation analogue \cite{BradtkeBarto1996}. The same value also admits the successor-representation factorization \cite{Dayan1993}
 \begin{equation}\label{eq:sr}
 M_\gamma:=(I-\gamma P)^{-1}=
 \sum_{k=0}^{\infty}\gamma^k P^k,
@@ -497,7 +484,7 @@ h_{k+1}(Y_k)\leftarrow h_k(Y_k)+\alpha_k\delta_k,
 \qquad
 \bar\mu_{k+1}\leftarrow \bar\mu_k+\beta_k\delta_k.
 \end{equation}
-This is the exact RL version of classical microprice: same move-time chain, same state space, same centered boundary object. In particular, no event-time surrogate is required to learn the predictor online.
+This is the exact RL version of classical microprice: same move-time chain, same state space, same centered boundary object.
 
 \subsection{Move-time semi-Markov TD for discounted forecasting}
 
@@ -505,7 +492,7 @@ For horizon-aware forecasting, replace the average-reward boundary problem by th
 \begin{equation}\label{eq:smdp_bellman}
 W_\gamma(y)=\E\bigl[\gamma^{D_k-1}\Delta P_k+\gamma^{D_k}W_\gamma(Y_{k+1})\mid Y_k=y\bigr].
 \end{equation}
-The factor $\gamma^{D_k-1}$ on $\Delta P_k$ appears because the price change is realized on the last event of the episode, exactly as in Proposition~\ref{prop:discounted_move_factorization}. The corresponding tabular SMDP-TD(0) update is
+The factor $\gamma^{D_k-1}$ on $\Delta P_k$ appears because the price change is realized on the last event of the episode. The corresponding tabular SMDP-TD(0) update is
 \begin{equation}\label{eq:smdp_td}
 W_{k+1}(Y_k)
 \leftarrow
@@ -513,14 +500,12 @@ W_k(Y_k)
 +
 \eta_k\bigl(\gamma^{D_k-1}\Delta P_k+\gamma^{D_k}W_k(Y_{k+1})-W_k(Y_k)\bigr).
 \end{equation}
-This update uses the same move-time episodes as differential TD, but it targets the discounted Bellman value rather than the centered long-run corrector. The choice between the two is therefore objective-driven: differential TD learns the classical microprice boundary object, while SMDP-TD learns the horizon-aware discounted predictor.
-
-If one prefers a model-based target, $V^{(H)}$ remains the exact finite-horizon forecast and $V_{\gamma_H}$ with $\gamma_H=1-1/H$ remains the cleanest one-shot surrogate. The move-time learning rules are the online versions of those same objectives.
+This uses the same move-time episodes as differential TD, but targets the discounted Bellman value rather than the centered long-run corrector. The choice is therefore objective-driven: differential TD learns the classical microprice boundary object, while SMDP-TD learns the horizon-aware discounted predictor. The model-based counterparts are the exact finite-horizon value $V^{(H)}$ and the one-shot surrogate $V_{\gamma_H}$ with $\gamma_H=1-1/H$.
 
 % ============================
 \section{Empirical results}
 
-The empirical role of this note is deliberately narrow. We evaluate the RL extension on the bundled public panels already shipped with the workspace: Stoikov BAC/CVX, IEX BAC/SPY/GLD, and WSELOB PEKAO/PZU/PKOBP/PKNORLEN/KGHM. The grouped conditional-curve metric is the same one used by the existing public scripts.
+We evaluate the RL extension on the bundled public panels: Stoikov BAC/CVX, IEX BAC/SPY/GLD, and WSELOB PEKAO/PZU/PKOBP/PKNORLEN/KGHM. The grouped conditional-curve metric is the same one used by the existing public scripts.
 
 \begin{table}[t]
 \centering
@@ -538,9 +523,9 @@ Event-time differential value $g_P$ & IEX 6/6; elsewhere ties & \RLEmpiricalDiff
 \label{tab:rl_summary}
 \end{table}
 
-Table~\ref{tab:rl_summary} gives the main forecasting message. The exact fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells, with geometric-mean RMSE ratio \RLEmpiricalFiniteGeo. The horizon-matched discounted value, with $\gamma_H=1-1/H$, wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The strongest gains are off the canonical centered regime: PEKAO at ten steps drops from $4.551\times 10^{-3}$ for $G^*$ to $1.003\times 10^{-3}$ for $V^{(H)}$, and PKOBP at ten steps drops from $1.403\times 10^{-3}$ to $2.42\times 10^{-4}$. The clean negative case remains SPY at sixty steps, where $G^*$ has RMSE $8.284\times 10^{-3}$ versus $1.027\times 10^{-2}$ for $V^{(H)}$.
+Table~\ref{tab:rl_summary} gives the main forecasting message. The exact fixed-horizon Bellman value beats classical microprice in \RLEmpiricalFiniteWins/\RLEmpiricalCellCount\ cells, with geometric-mean RMSE ratio \RLEmpiricalFiniteGeo. The horizon-matched discounted value, with $\gamma_H=1-1/H$, wins in \RLEmpiricalDiscountWins/\RLEmpiricalCellCount\ cells with ratio \RLEmpiricalDiscountGeo. The largest gains are on short-horizon WSELOB cells; SPY at sixty steps remains the main negative case.
 
-The event-time boundary value $g_P$ does exactly what the theory suggests. On the Stoikov and WSELOB panels, which are already close to the centered regime of \cite{Petersen2025}, $g_P$ and $G^*$ coincide to numerical tolerance. On the six IEX cells, where event time and move time are more visibly separated, $g_P$ improves all six cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo. So $g_P$ is not a replacement for the objective-matched finite-horizon value, but it is the correct event-time boundary object and the cleanest conceptual bridge back to the original paper.
+The event-time boundary value $g_P$ does exactly what the theory suggests. On the Stoikov and WSELOB panels, which are already close to the centered regime of \cite{Petersen2025}, $g_P$ and $G^*$ coincide to numerical tolerance. On the six IEX cells, where event time and move time are more visibly separated, $g_P$ improves all six cells with geometric-mean ratio \RLEmpiricalDiffIEXGeo. It is therefore the correct event-time boundary object, though not a replacement for the objective-matched finite-horizon value.
 
 \begin{table}[t]
 \centering
@@ -559,16 +544,16 @@ Overall & \RLEmpiricalMoveCompressionGeo{}x & median \RLEmpiricalMoveCompression
 \label{tab:compression}
 \end{table}
 
-Table~\ref{tab:compression} records the ergonomic gain behind the move-time RL formulation. Both the differential-TD microprice learner and the discounted SMDP learner update only once per price move, so the update count is compressed by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x overall, with median \RLEmpiricalMoveCompressionMedian{}x and range \RLEmpiricalMoveCompressionMin{}x to \RLEmpiricalMoveCompressionMax{}x. This matters most on the sparse-move panels: the WSELOB names sit at \RLEmpiricalMoveCompressionWSEGeo{}x on average, and PEKAO reaches \RLEmpiricalMoveCompressionMax{}x. In other words, the move-time RL rules are not just notational reformulations. They are substantial variance-reduction and throughput improvements whenever no-move events dominate the tape.
+Table~\ref{tab:compression} records the ergonomic gain behind the move-time RL formulation. Both the differential-TD microprice learner and the discounted SMDP learner update only once per price move, so the update count is compressed by a geometric-mean factor \RLEmpiricalMoveCompressionGeo{}x overall, with median \RLEmpiricalMoveCompressionMedian{}x and range \RLEmpiricalMoveCompressionMin{}x to \RLEmpiricalMoveCompressionMax{}x. This matters most on the sparse-move panels, where WSELOB averages \RLEmpiricalMoveCompressionWSEGeo{}x and PEKAO reaches \RLEmpiricalMoveCompressionMax{}x.
 
-The discounted linear solve remains the cleanest model-based object as well. On the bundled models, solving $(I-\gamma P)V=r$ is \RLEmpiricalDiscountSpeedMean{}x cheaper on average than the classical microprice solve stage. So the practical message is split cleanly: $V^{(H)}$ is the exact forecasting target, $V_{\gamma_H}$ is the simplest fast surrogate, and the move-time SMDP formulation is the most ergonomic online learner.
+The discounted linear solve remains the cleanest model-based object. On the bundled models, solving $(I-\gamma P)V=r$ is \RLEmpiricalDiscountSpeedMean{}x cheaper on average than the classical microprice solve stage. In practice, $V^{(H)}$ is the exact forecasting target, $V_{\gamma_H}$ the simplest fast surrogate, and move-time SMDP the most ergonomic online learner.
 
 % ============================
 \section{Conclusion}
 
-The reinforcement-learning extension of microprice is best understood as Paper~II of the same operator story, not as a separate theory. Paper~I reduces event time to move time and identifies $G^*$ as the long-run move-time boundary object. The present note keeps that reduction fixed and adds the exact event-time Bellman objectives $V^{(H)}$, $V_\gamma$, and $g_P$.
+The reinforcement-learning extension of microprice is best read as Paper~II of the same operator story. Paper~I reduces event time to move time and identifies $G^*$ as the long-run move-time boundary object; the present note keeps that reduction fixed and adds the exact event-time Bellman objectives $V^{(H)}$, $V_\gamma$, and $g_P$.
 
-This viewpoint keeps the mathematics and the implementation aligned. The exact fixed-horizon Bellman value $V^{(H)}$ matches the forecasting objective, the discounted value $V_\gamma$ gives the cleanest one-shot solve, the event-time differential value $g_P$ is the correct event-time boundary object, the move-time differential recursion learns the classical microprice correction itself, and the move-time SMDP recursion learns the horizon-aware discounted predictor on the same price-move episodes used in \cite{Petersen2025}. The empirical picture is correspondingly simple: fixed-horizon Bellman values produce the largest forecasting gains, while move-time RL updates deliver the largest ergonomic gain.
+This keeps the mathematics and the implementation aligned. The exact fixed-horizon Bellman value $V^{(H)}$ matches the forecasting objective, $V_\gamma$ gives the cleanest one-shot solve, $g_P$ is the correct event-time boundary object, the move-time differential recursion learns the classical microprice correction itself, and the move-time SMDP recursion learns the horizon-aware discounted predictor on the same price-move episodes. Empirically, fixed-horizon Bellman values deliver the largest forecasting gains, while move-time RL updates deliver the largest ergonomic gain.
 
 \appendix
 
@@ -576,7 +561,7 @@ This viewpoint keeps the mathematics and the implementation aligned. The exact f
 \section{Proofs}
 
 \begin{proof}[Proof of Proposition~\ref{prop:discounted_move_factorization}]
-Partition the discounted return at the first price move. If the chain makes $n$ no-move transitions before the move step, then the contribution of the first episode is $\gamma^n Q^n r$, and the post-move continuation to state $y$ contributes $\gamma^{n+1}(Q^nT)_{xy}V_\gamma(y)$. Summing over $n\ge 0$ gives
+Partition the discounted return at the first price move. Summing over $n\ge 0$ no-move steps before that move gives
 \[
 V_\gamma
 =
@@ -586,31 +571,27 @@ V_\gamma
 =
 (I-\gamma Q)^{-1}r+\gamma(I-\gamma Q)^{-1}T V_\gamma,
 \]
-which is \eqref{eq:discounted_move_bellman}. Rearranging yields \eqref{eq:discounted_move_resolvent}. Finally,
+which is \eqref{eq:discounted_move_bellman}. Rearranging yields \eqref{eq:discounted_move_resolvent}. Also,
 \[
-(I-\gamma Q)(I-B_\gamma)
-=
-I-\gamma Q-\gamma T
-=
-I-\gamma P,
+(I-\gamma Q)(I-B_\gamma)=I-\gamma Q-\gamma T=I-\gamma P,
 \]
-which is \eqref{eq:discounted_move_identity}. Multiplying \eqref{eq:discounted_move_resolvent} by $I-\gamma P$ therefore gives \eqref{eq:discounted_event_resolvent}.
+which is \eqref{eq:discounted_move_identity}; multiplying \eqref{eq:discounted_move_resolvent} by $I-\gamma P$ gives \eqref{eq:discounted_event_resolvent}.
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:move_time_relative_value}]
-By definition, $g$ solves
+By definition,
 \[
 (I-B+\PiB)g=G_1-\mu\1.
 \]
-Because $\PiB g=\1\pi^\top g$, the normalization $\pi^\top g=0$ reduces this to
+Since $\PiB g=\1\pi^\top g=0$, this reduces to
 \[
 (I-B)g=G_1-\mu\1,
 \]
-which rearranges to \eqref{eq:move_time_average_reward_bellman}. Conversely, if \eqref{eq:move_time_average_reward_bellman} holds together with $\pi^\top g=0$, then applying $\pi^\top$ gives $\mu=\pi^\top G_1$, and adding $\PiB g=0$ recovers \eqref{eq:move_time_relative_value}.
+which is \eqref{eq:move_time_average_reward_bellman}. Conversely, \eqref{eq:move_time_average_reward_bellman} together with $\pi^\top g=0$ implies $\PiB g=0$ and therefore \eqref{eq:move_time_relative_value}.
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:finite_horizon}]
-The recursion implies inductively that
+The recursion telescopes to
 \[
 V^{(H)}=r+Pr+\cdots+P^{H-1}r=\sum_{k=0}^{H-1}P^k r,
 \]
@@ -618,7 +599,7 @@ which is \eqref{eq:finite_horizon_closed}. Since $P^k r(x)=\E_x[R_k]$, summing o
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:event_time_poisson}]
-Since $g_P$ solves $(I-P)g_P=r-\mu_P\1$, we have $r=\mu_P\1+g_P-Pg_P$. Therefore
+Since $g_P$ solves $(I-P)g_P=r-\mu_P\1$, we have $r=\mu_P\1+g_P-Pg_P$. Hence
 \[
 V^{(H)}
 =
@@ -634,13 +615,9 @@ r=\PiP r+(I-\PiP)r=\mu_P\1+(I-\PiP)r.
 \]
 Because $P\1=\1$ and $P\PiP=\PiP$,
 \[
-(I-\gamma P)^{-1}\PiP r
-=
-\sum_{k=0}^{\infty}\gamma^k\PiP r
-=
-\frac{\mu_P}{1-\gamma}\,\1.
+(I-\gamma P)^{-1}\PiP r=\sum_{k=0}^{\infty}\gamma^k\PiP r=\frac{\mu_P}{1-\gamma}\,\1.
 \]
-This gives \eqref{eq:discounted_split_event_time}. On the centered subspace $(I-\PiP)\R^L$, the powers of $P$ converge to zero, so the Neumann series converges to $(I-P+\PiP)^{-1}(I-\PiP)r=g_P$, which yields \eqref{eq:discounted_boundary_event_time}.
+This gives \eqref{eq:discounted_split_event_time}. On the centered subspace $(I-\PiP)\R^L$, $P^k\to 0$, so the Neumann series converges to $(I-P+\PiP)^{-1}(I-\PiP)r=g_P$, yielding \eqref{eq:discounted_boundary_event_time}.
 \end{proof}
 
 \newpage
@@ -653,9 +630,6 @@ This gives \eqref{eq:discounted_split_event_time}. On the centered subspace $(I-
 \bibitem{Petersen2025}
 L.~Petersen, ``Microprice as a Centered Poisson Corrector,'' preprint, 2025.
 
-\bibitem{Stoikov2018}
-S.~Stoikov, ``The Micro-Price: A High Frequency Estimator of Future Prices,'' \textit{Quantitative Finance}, vol.~18, no.~12, pp.~1959--1966, 2018. \href{https://doi.org/10.1080/14697688.2018.1489139}{doi:10.1080/14697688.2018.1489139}.
-
 \bibitem{Sutton1988}
 R.~S.~Sutton, ``Learning to Predict by the Methods of Temporal Differences,'' \textit{Machine Learning}, vol.~3, no.~1, pp.~9--44, 1988. \href{https://doi.org/10.1023/A:1022633531479}{doi:10.1023/A:1022633531479}.
 
@@ -664,15 +638,6 @@ S.~J.~Bradtke and A.~G.~Barto, ``Linear Least-Squares Algorithms for Temporal Di
 
 \bibitem{Dayan1993}
 P.~Dayan, ``Improving Generalization for Temporal Difference Learning: The Successor Representation,'' \textit{Neural Computation}, vol.~5, no.~4, pp.~613--624, 1993. \href{https://doi.org/10.1162/neco.1993.5.4.613}{doi:10.1162/neco.1993.5.4.613}.
-
-\bibitem{SuttonPrecupSingh1999}
-R.~S.~Sutton, D.~Precup, and S.~Singh, ``Between MDPs and Semi-MDPs: A Framework for Temporal Abstraction in Reinforcement Learning,'' \textit{Artificial Intelligence}, vol.~112, no.~1--2, pp.~181--211, 1999. \href{https://doi.org/10.1016/S0004-3702(99)00052-1}{doi:10.1016/S0004-3702(99)00052-1}.
-
-\bibitem{TsitsiklisVanRoy1999}
-J.~N.~Tsitsiklis and B.~Van Roy, ``Average Cost Temporal-Difference Learning,'' \textit{Automatica}, vol.~35, no.~11, pp.~1799--1808, 1999. \href{https://doi.org/10.1016/S0005-1098(99)00115-1}{doi:10.1016/S0005-1098(99)00115-1}.
-
-\bibitem{TsitsiklisVanRoy2002}
-J.~N.~Tsitsiklis and B.~Van Roy, ``On Average versus Discounted Reward Temporal-Difference Learning,'' \textit{Machine Learning}, vol.~49, pp.~179--191, 2002. \href{https://doi.org/10.1023/A:1017994911517}{doi:10.1023/A:1017994911517}.
 
 \bibitem{Barreto2018}
 A.~Barreto, D.~Borsa, J.~Quan, T.~Schaul, D.~Silver, M.~Hessel, D.~Mankowitz, A.~Zidek, and R.~Munos, ``Transfer in Deep Reinforcement Learning Using Successor Features and Generalised Policy Improvement,'' in \textit{Proceedings of the 35th International Conference on Machine Learning}, PMLR~80, pp.~501--510, 2018.
