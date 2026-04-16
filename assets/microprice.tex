@@ -116,17 +116,19 @@
 \newcommand{\E}{\mathbb{E}}
 \newcommand{\Prob}{\mathbb{P}}
 \newcommand{\norm}[1]{\lVert #1 \rVert}
-\newcommand{\Piop}{\Pi}
+\newcommand{\PiB}{\Pi_B}
 
 \begin{document}
 \thispagestyle{plain}
 
 \begin{center}
 {\LARGE\bfseries Microprice as a Centered Poisson Corrector\par}
+\vspace{0.35em}
+{\large\color{sectioncolor} Paper I: move-time structure, centering, and horizon effects\par}
 \vspace{0.7em}
 {\large Lev Petersen\par}
 \vspace{0.7em}
-{\color{titleline}\rule{0.22\textwidth}{0.8pt}}\par
+{\color{titleline}\rule{0.34\textwidth}{0.8pt}}\par
 \end{center}
 
 \vspace{0.55em}
@@ -141,36 +143,68 @@
   top=6pt,
   bottom=6pt
 ]
-\textbf{Abstract.} Stoikov's microprice is most transparent on the embedded chain observed only at mid-price move times. For a finite top-of-book Markov model with no-move kernel $Q$, move kernel $T$, and fundamental matrix $N=(I-Q)^{-1}$, define the one-move drift $G_1=N\bar r$ and the move-time kernel $B=NT$. The $n$-move predictor is then
+\textbf{Abstract.} This paper has two goals. First, it identifies the object that classical microprice estimates after the event-time model is reduced to price-move time. For a finite top-of-book Markov model with no-move kernel $Q$, move kernel $T$, event-time one-step drift
+\[
+r(x):=\E[p_{n+1}-p_n\mid X_n=x],
+\]
+and fundamental matrix $N=(I-Q)^{-1}$, define
+\[
+G_1:=Nr,
+\qquad
+B:=NT.
+\]
+The $n$-move predictor is then
 \[
 G^{(n)}=\sum_{j=0}^{n-1}B^jG_1.
 \]
-If the move-time chain is ergodic with stationary distribution $\pi$ and stationary drift $\mu=\pi^\top G_1$, then
+Second, it explains why the long-run correction can fail at short horizons even when the move-time model is well specified. If the move-time chain is ergodic with stationary distribution $\pi$, mean move drift $\mu=\pi^\top G_1$, and projector $\PiB:=\1\pi^\top$, then
 \[
 G^{(n)}=n\mu\,\1+g-B^n g,
 \qquad
 (I-B)g=G_1-\mu\1,
 \qquad
-\pi^\top g=0.
+\pi^\top g=0,
 \]
-The long-run state adjustment is therefore the centered Poisson solution of the move-time chain, and
+and the long-run move-time microprice level is
 \[
-p_{\tau_k}-k\mu+g(Y_k)
+G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
 \]
-is a martingale at move times. We also study the discounted resolvent $(I-\alpha B)^{-1}G_1$, which regularizes the constant mode and converges to the centered correction in centered regimes.
+Thus classical microprice is a centered Poisson corrector on the move-time chain, while the transient term $-B^n g$ governs the horizon effect. We also study the move-time discounted resolvent $(I-\beta B)^{-1}G_1$, where $\beta$ discounts across price moves after the reduction; this is distinct from the event-time discount $\gamma$ used in the companion note \emph{Microprice, Bellman Values, and Semi-Markov Reinforcement Learning}.
 
-Empirically, this decomposition predicts a horizon effect: at short horizons the transient term can still dominate, so $G_1$ or even the raw mid can outperform the long-run correction; at longer horizons the centered correction wins when the move-time martingale diagnostic remains small. Public BAC/CVX benchmarks, a five-name WSELOB panel, and a one-day IEX stress test all support that pattern. On WSELOB, the raw mid or $G_1$ is best at 10 seconds, whereas $G^*$ or Disc(.99) is best on all five names by 60 seconds.
+Empirically, this decomposition predicts a horizon effect: at short horizons the transient term can still dominate, so $G_1$ or even the raw mid can outperform $G^*$; at longer horizons the centered correction wins when the move-time martingale diagnostic remains small. Public BAC/CVX benchmarks, a five-name WSELOB panel, and a one-day IEX stress test all support that pattern. On WSELOB, the raw mid or $G_1$ is best at 10 seconds, whereas $G^*$ or Disc(.99) is best on all five names by 60 seconds.
 \end{tcolorbox}
 
 \section{Introduction}
 
-Stoikov's microprice \cite{Stoikov2018} estimates fair value from top-of-book state by propagating expected future price changes through an absorbing Markov chain. The construction is useful, but its operator structure becomes much clearer after sampling only at price-move times. In that representation the problem reduces to a finite-state Poisson equation on the move-time chain \cite{KemenySnell1976,Meyer1975}.
+Stoikov's microprice \cite{Stoikov2018} estimates fair value from top-of-book state by propagating expected future price changes through an absorbing Markov chain. This paper is the structural half of a two-note sequence. Its aim is to identify the long-run object computed by the original construction and to explain the finite-horizon effects that appear when that long-run object is used as a short-horizon forecaster.
 
-This paper isolates that move-time representation and uses it to sharpen both the theory and the empirical interpretation of microprice estimates. The event-time model collapses to a move-time kernel $B$ and a one-move drift $G_1$. The $n$-move predictor then admits the exact decomposition
+Throughout both notes we use the same basic notation. Let
 \[
-G^{(n)}=n\mu\,\1+g-B^n g,
+r(x):=\E[p_{n+1}-p_n\mid X_n=x],
+\qquad
+N:=(I-Q)^{-1},
+\qquad
+G_1:=Nr,
+\qquad
+B:=NT.
 \]
-which separates a linear drift, a bounded state correction, and a transient remainder. The centered microprice is the bounded component, while the transient term explains why the long-run correction need not be best at the shortest horizons.
+If the move-time chain $B$ is ergodic with stationary distribution $\pi$, we write
+\[
+\mu:=\pi^\top G_1,
+\qquad
+\PiB:=\1\pi^\top,
+\qquad
+(I-B)g=G_1-\mu\1,
+\qquad
+\pi^\top g=0,
+\]
+and
+\[
+G^*:=(I-B+\PiB)^{-1}G_1=g+\mu\1.
+\]
+Thus $g$ is the centered move-time relative value, while $G^*$ is the uncentered long-run move-time microprice level. In centered regimes $\mu=0$, so the two coincide.
+
+The division of labor between the two papers is deliberate. The present paper isolates the move-time Poisson structure, the martingale correction, and the empirical horizon crossover. The companion note keeps the same objects $(r,N,G_1,B,g,G^*)$ and adds exact Bellman targets on event time, a semi-Markov interpretation on move time, and online TD-style learning rules. Read together, the first paper explains what microprice is asymptotically, while the second explains how the same construction fits into value-function language and horizon-aware forecasting.
 
 The empirical section evaluates that prediction on three datasets. The public BAC/CVX benchmarks remain useful calibration checks, but they do not show uniform dominance: on BAC the weighted mid is still best under the grouped conditional-curve metric used here. The clearest positive evidence comes from WSELOB, where short- and long-horizon regimes separate cleanly. A one-day IEX venue-local panel then shows the complementary boundary case in which the centering diagnostic fails and discounted extrapolation becomes unreliable.
 
@@ -182,7 +216,7 @@ P=Q+T,
 \]
 where $Q_{xy}$ is the probability of moving from state $x$ to state $y$ without changing the mid-price and $T_{xy}$ is the probability of moving from $x$ to $y$ with a price change. Define the event-time one-step drift
 \[
-\bar r_x:=\E[p_{n+1}-p_n\mid X_n=x].
+r(x):=\E[p_{n+1}-p_n\mid X_n=x].
 \]
 
 Assume $\rho(Q)<1$, so the no-move subchain is transient and
@@ -191,7 +225,7 @@ N:=(I-Q)^{-1}=\sum_{k\ge 0}Q^k
 \]
 exists. Set
 \[
-G_1:=N\bar r,
+G_1:=Nr,
 \qquad
 B:=NT.
 \]
@@ -212,15 +246,23 @@ G_1(x)=\E_x[p_{\tau_1}-p_{\tau_0}],
 so $G_1$ is the expected price change at the next move conditional on the current state.
 \end{proposition}
 
-The absorbing-chain recursion therefore reduces to a move-time Markov system: $B$ controls transitions from one price move to the next, and $G_1$ is the corresponding one-move price drift. If $\pi$ denotes the stationary distribution of $B$, define
+The absorbing-chain recursion therefore reduces to a move-time Markov system: $B$ controls transitions from one price move to the next, and $G_1$ is the corresponding one-move price drift. The same reduction also produces the event-time-discounted objects studied in the companion note: for $\gamma\in(0,1)$,
+\[
+G_{1,\gamma}:=(I-\gamma Q)^{-1}r,
+\qquad
+B_\gamma:=\gamma(I-\gamma Q)^{-1}T.
+\]
+These are the move-time Bellman reward and continuation kernel for the option ``wait until the next mid-price move.'' They discount each no-move excursion in event time before the excursion is collapsed. By contrast, the present paper later studies a move-time resolvent $(I-\beta B)^{-1}G_1$, where the discount is applied only after the reduction to price-move episodes. We therefore reserve $\gamma$ for event-time discounting and $\beta$ for move-time discounting.
+
+If $\pi$ denotes the stationary distribution of $B$, define
 \[
 \mu:=\pi^\top G_1,
 \qquad
-\Piop:=\1\pi^\top.
+\PiB:=\1\pi^\top.
 \]
 
 \begin{remark}[Centering]
-When $B$ is ergodic, $B^n\to \Piop$. Hence Stoikov's convergence condition $B^nG_1\to 0$ is equivalent to
+When $B$ is ergodic, $B^n\to \PiB$. Hence Stoikov's convergence condition $B^nG_1\to 0$ is equivalent to
 \[
 \pi^\top G_1=0.
 \]
@@ -255,7 +297,7 @@ G^{(n)}=n\mu\,\1+g-B^n g.
 \]
 If
 \[
-G^*:=(I-B+\Piop)^{-1}G_1,
+G^*:=(I-B+\PiB)^{-1}G_1,
 \]
 then
 \[
@@ -281,16 +323,16 @@ p_{\tau_k}+G^*(Y_k)
 is a move-time martingale.
 \end{corollary}
 
-\begin{proposition}[Discounted regularization]\label{prop:disc}
-For $\alpha\in(0,1)$ define
+\begin{proposition}[Move-time discounted regularization]\label{prop:disc}
+For $\beta\in(0,1)$ define
 \[
-g_\alpha:=(I-\alpha B)^{-1}G_1.
+g_\beta:=(I-\beta B)^{-1}G_1.
 \]
 Then
 \[
-g_\alpha=\frac{\mu}{1-\alpha}\,\1+(I-\alpha B)^{-1}(G_1-\mu\1).
+g_\beta=\frac{\mu}{1-\beta}\,\1+(I-\beta B)^{-1}(G_1-\mu\1).
 \]
-Hence the only singular term as $\alpha\uparrow 1$ is the constant mode. If $\mu=0$ and, for some $\rho\in(0,1)$,
+Hence the only singular term as $\beta\uparrow 1$ is the constant mode. If $\mu=0$ and, for some $\rho\in(0,1)$,
 \[
 \norm{B^kG_1}_\infty\le C_\rho\rho^k\norm{G_1}_\infty
 \qquad
@@ -298,13 +340,13 @@ Hence the only singular term as $\alpha\uparrow 1$ is the constant mode. If $\mu
 \]
 then
 \[
-\norm{g_\alpha-G^*}_\infty
+\norm{g_\beta-G^*}_\infty
 \le
-(1-\alpha)\frac{C_\rho\rho}{(1-\rho)^2}\norm{G_1}_\infty.
+(1-\beta)\frac{C_\rho\rho}{(1-\rho)^2}\norm{G_1}_\infty.
 \]
 \end{proposition}
 
-The resolvent is always well posed, even when sample centering is imperfect. In centered regimes it is nearly lossless; in drifting or weakly centered regimes its constant mode can dominate. It is therefore best viewed as a regularized proxy and a useful stress test, not as an automatic substitute for the centered correction.
+The resolvent is always well posed, even when sample centering is imperfect. In centered regimes it is nearly lossless; in drifting or weakly centered regimes its constant mode can dominate. It is therefore best viewed as a regularized proxy and a useful stress test, not as an automatic substitute for the centered correction. It also differs conceptually from the discounted Bellman values in the companion note: $(I-\beta B)^{-1}G_1$ discounts after the reduction to move time, whereas $V_\gamma=(I-\gamma P)^{-1}r$ discounts before the reduction and therefore reweights no-move excursion lengths.
 
 \section{Empirical results}
 
@@ -318,11 +360,13 @@ We evaluate predictors against grouped state-conditioned future-price curves rat
 \sum_{c\in C_h}\bigl(\bar \Delta_h(c)-\bar f(c)\bigr)^2
 \right)^{1/2}.
 \]
-The horizons are fixed clock/event-time horizons rather than exact move counts, so the empirical question is qualitative: does the long-run correction become more useful as the horizon lengthens?
+The horizons are fixed clock/event-time horizons rather than exact move counts, so the empirical question is qualitative: does the long-run correction become more useful as the horizon lengthens? Throughout this paper, ``Disc(.99)'' means the move-time resolvent $(I-0.99\,B)^{-1}G_1$; the companion note reserves $V_{0.99}$ for event-time discounting on $P$.
 
-To connect the data back to Corollary~\ref{cor:mart}, we also report the move-time martingale diagnostic
+To connect the data back to Corollary~\ref{cor:mart}, we also report the move-time martingale diagnostic. Writing
 \[
-\widehat \xi_k:=\Delta p_k-\widehat\mu+G^*(Y_{k+1})-G^*(Y_k),
+\Delta P_k:=p_{\tau_{k+1}}-p_{\tau_k},
+\qquad
+\widehat \xi_k:=\Delta P_k-\widehat\mu+G^*(Y_{k+1})-G^*(Y_k),
 \qquad
 \widehat t_M:=\left|\frac{\overline{\widehat \xi}}{s_{\widehat \xi}/\sqrt{n}}\right|.
 \]
@@ -416,6 +460,10 @@ This representation clarifies both the martingale correction and the empirical h
 
 Across datasets, the centered correction is most useful when two conditions hold at once: the horizon is long enough for the transient term to decay, and the move-time martingale diagnostic remains small. WSELOB is the clearest positive case. BAC/CVX confirm the public benchmark, with the important qualification that BAC still favors the weighted mid under the grouped metric used here. The IEX panel shows the complementary failure mode: when centering weakens, discounted regularization amplifies the wrong mode rather than recovering the bounded state correction.
 
+The companion RL note starts from exactly this dictionary. It keeps $(r,N,G_1,B,g,G^*)$ fixed, replaces the move-time regularizer by exact event-time Bellman values $V^{(H)}$ and $V_\gamma$, and shows that the same price-move episodes support both differential TD for the classical centered correction and semi-Markov TD for discounted forecasting.
+
+Read together, the two papers separate the asymptotic and the objective-matched questions cleanly. The present paper explains the move-time Poisson structure, the martingale diagnostic, and the horizon crossover of $G^*$. The companion note explains how the same reduced model fits into Bellman, average-reward, and semi-Markov RL language without changing the underlying microprice primitives.
+
 \appendix
 
 \section{Proofs}
@@ -431,8 +479,8 @@ Thus $B$ is the move-time transition kernel. For the reward identity,
 \[
 \E_x[p_{\tau_1}-p_{\tau_0}]
 =
-\sum_{n\ge 0}(Q^n\bar r)_x
-=((I-Q)^{-1}\bar r)_x
+\sum_{n\ge 0}(Q^nr)_x
+=((I-Q)^{-1}r)_x
 =G_1(x).
 \]
 The Markov property of $(Y_k)$ follows from the strong Markov property at the stopping times $(\tau_k)$.
@@ -459,9 +507,9 @@ n\mu\,\1+g-B^n g.
 \]
 Next,
 \[
-(I-B+\Piop)(g+\mu\1)
+(I-B+\PiB)(g+\mu\1)
 =
-(I-B)g+\Piop g+\mu\Piop\1
+(I-B)g+\PiB g+\mu\PiB\1
 =
 h+0+\mu\1
 =
@@ -469,7 +517,7 @@ G_1,
 \]
 so $G^*=g+\mu\1$. If $\mu=0$, then $G^*=g$ and ergodicity gives
 \[
-B^ng\to \Piop g=\1\pi^\top g=0,
+B^ng\to \PiB g=\1\pi^\top g=0,
 \]
 hence $G^{(n)}\to G^*$. Uniqueness of $g$ under $\pi^\top g=0$ follows because the nullspace of $I-B$ consists of constants.
 \end{proof}
@@ -494,31 +542,31 @@ Adding the two conditional expectations yields
 \end{proof}
 
 \begin{proof}[Proof of Proposition~\ref{prop:disc}]
-Because $\|\alpha B\|_\infty\le \alpha<1$, the Neumann series converges and
+Because $\|\beta B\|_\infty\le \beta<1$, the Neumann series converges and
 \[
-g_\alpha=\sum_{k\ge 0}\alpha^k B^kG_1.
+g_\beta=\sum_{k\ge 0}\beta^k B^kG_1.
 \]
 Using $G_1=\mu\1+h$ and $B^k\1=\1$,
 \[
-g_\alpha
+g_\beta
 =
-\sum_{k\ge 0}\alpha^k(\mu\1+B^kh)
+\sum_{k\ge 0}\beta^k(\mu\1+B^kh)
 =
-\frac{\mu}{1-\alpha}\,\1+(I-\alpha B)^{-1}h.
+\frac{\mu}{1-\beta}\,\1+(I-\beta B)^{-1}h.
 \]
 If $\mu=0$, then $h=G_1$ and
 \[
-G^*-g_\alpha
+G^*-g_\beta
 =
-\sum_{k\ge 0}(1-\alpha^k)B^kG_1.
+\sum_{k\ge 0}(1-\beta^k)B^kG_1.
 \]
-The $k=0$ term vanishes. For $k\ge 1$, $1-\alpha^k\le k(1-\alpha)$, so
+The $k=0$ term vanishes. For $k\ge 1$, $1-\beta^k\le k(1-\beta)$, so
 \[
-\norm{G^*-g_\alpha}_\infty
+\norm{G^*-g_\beta}_\infty
 \le
-(1-\alpha)\sum_{k\ge 1}k\,\norm{B^kG_1}_\infty
+(1-\beta)\sum_{k\ge 1}k\,\norm{B^kG_1}_\infty
 \le
-(1-\alpha)C_\rho\norm{G_1}_\infty\sum_{k\ge 1}k\rho^k.
+(1-\beta)C_\rho\norm{G_1}_\infty\sum_{k\ge 1}k\rho^k.
 \]
 Since $\sum_{k\ge 1}k\rho^k=\rho/(1-\rho)^2$, the stated bound follows.
 \end{proof}
